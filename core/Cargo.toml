@@ -1,5 +1,5 @@
 [package]
-name = "rustiq"
+name = "rustiqshell"
 version = "0.1.0"
 edition = "2021"
 authors = ["Enosh"]
@@ -7,7 +7,7 @@ description = "Rust backend daemon for RUSTIQ desktop shell"
 license = "MIT"
 
 [[bin]]
-name = "rustiq"
+name = "rustiqshell"
 path = "src/main.rs"
 
 [dependencies]

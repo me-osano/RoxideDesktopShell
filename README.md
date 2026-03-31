@@ -1,4 +1,4 @@
-# RUSTIQ
+# RUSTIQSHELL
 
 > A handcrafted Wayland desktop shell for [niri](https://github.com/YaLTeR/niri), built with Quickshell/QML and a Rust backend.
 
@@ -14,7 +14,7 @@
 ## Architecture
 
 ```
-rustiq/
+rustiqshell/
 ├── core/         # Rust daemon — IPC, sysmon, search, weather, niri IPC
 └── quickshell/   # QML shell — bar, launcher, widgets, notifications
 ```
@@ -86,4 +86,4 @@ rustiq niri windows     # window list
 
 ## License
 
-MIT
+

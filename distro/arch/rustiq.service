@@ -1,6 +1,6 @@
 [Unit]
 Description=RUSTIQ desktop shell daemon
-Documentation=https://github.com/yourname/rustiq
+Documentation=https://github.com/me-osano/rustiqshell
 After=graphical-session.target
 PartOf=graphical-session.target
 Wants=network.target
