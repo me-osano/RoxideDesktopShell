@@ -1,0 +1,23 @@
+[Unit]
+Description=RUSTIQ desktop shell daemon
+Documentation=https://github.com/yourname/rustiq
+After=graphical-session.target
+PartOf=graphical-session.target
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/rustiq daemon
+Restart=on-failure
+RestartSec=3s
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=rustiq
+
+# Environment
+Environment=RUSTIQ_LOG=info
+
+[Install]
+WantedBy=graphical-session.target

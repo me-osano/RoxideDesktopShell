@@ -1,0 +1,69 @@
+[package]
+name = "rustiq"
+version = "0.1.0"
+edition = "2021"
+authors = ["Enosh"]
+description = "Rust backend daemon for RUSTIQ desktop shell"
+license = "MIT"
+
+[[bin]]
+name = "rustiq"
+path = "src/main.rs"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# HTTP / IPC server
+axum = { version = "0.7", features = ["ws"] }
+tower = "0.4"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# CLI
+clap = { version = "4", features = ["derive", "env"] }
+
+# System monitoring
+sysinfo = "0.30"
+
+# Full-text search (dsearch replacement)
+tantivy = "0.21"
+
+# Filesystem watcher (for search index)
+notify = "6"
+
+# HTTP client (weather / geolocation)
+reqwest = { version = "0.11", features = ["json", "rustls-tls"], default-features = false }
+
+# D-Bus (notifications, NetworkManager, upower, bluez)
+zbus = { version = "4", features = ["tokio"] }
+
+# Niri IPC
+niri-ipc = "0.1"
+
+# Config file
+toml = "0.8"
+dirs = "5"
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Errors
+anyhow = "1"
+thiserror = "1"
+
+# Encoding
+base64 = "0.22"
+
+# Unix socket path helpers
+nix = { version = "0.28", features = ["socket"] }
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

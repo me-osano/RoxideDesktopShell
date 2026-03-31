@@ -1,0 +1,9 @@
+core/target/
+*.lock
+!flake.lock
+.direnv/
+result
+result-*
+*.swp
+*.swo
+.DS_Store
