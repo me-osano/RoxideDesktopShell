@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicU32, Ordering};
+use std::time::Instant;
 use tracing::{debug, info};
 use zbus::{ConnectionBuilder, dbus_interface};
 
@@ -11,6 +12,7 @@ static NOTIF_ID: AtomicU32 = AtomicU32::new(1);
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
 pub struct NotificationStore {
     pub active: Vec<Notification>,
+    pub history: Vec<Notification>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -25,9 +27,31 @@ pub struct Notification {
     pub timestamp: i64,
 }
 
-/// D-Bus interface implementation
+impl Notification {
+    fn is_duplicate(&self, other: &Notification) -> bool {
+        self.app_name == other.app_name
+            && self.summary == other.summary
+            && self.body == other.body
+    }
+}
+
 struct NotificationsServer {
     state: AppState,
+}
+
+fn extract_urgency(hints: &HashMap<String, zbus::zvariant::OwnedValue>) -> u8 {
+    if let Some(v) = hints.get("urgency") {
+        if let Ok(val) = v.downcast_ref::<u8>() {
+            return val;
+        }
+        if let Ok(val) = v.downcast_ref::<i32>() {
+            return val as u8;
+        }
+        if let Ok(val) = v.downcast_ref::<u32>() {
+            return val as u8;
+        }
+    }
+    1
 }
 
 #[dbus_interface(name = "org.freedesktop.Notifications")]
@@ -38,6 +62,8 @@ impl NotificationsServer {
             "body-markup".to_string(),
             "icon-static".to_string(),
             "persistence".to_string(),
+            "action-icons".to_string(),
+            "actions".to_string(),
         ]
     }
 
@@ -48,8 +74,8 @@ impl NotificationsServer {
         app_icon: String,
         summary: String,
         body: String,
-        _actions: Vec<String>,
-        hints: HashMap<String, zbus::zvariant::Value<'_>>,
+        actions: Vec<String>,
+        hints: HashMap<String, zbus::zvariant::OwnedValue>,
         expire_timeout: i32,
     ) -> u32 {
         let id = if replaces_id > 0 {
@@ -58,12 +84,7 @@ impl NotificationsServer {
             NOTIF_ID.fetch_add(1, Ordering::SeqCst)
         };
 
-        let urgency = hints.get("urgency")
-            .and_then(|v| v.downcast_ref::<u8>().ok())
-            .copied()
-            .unwrap_or(1);
-
-        debug!("notification [{id}] from {app_name}: {summary}");
+        let urgency = extract_urgency(&hints);
 
         let notif = Notification {
             id,
@@ -78,11 +99,25 @@ impl NotificationsServer {
 
         {
             let mut store = self.state.inner.notifications.write().await;
-            // Replace if same ID, else push
+            
+            if replaces_id == 0 {
+                if let Some(last) = store.active.last() {
+                    if last.is_duplicate(&notif) {
+                        debug!("notification [{id}] deduplicated (matches recent)");
+                        return last.id;
+                    }
+                }
+            }
+
             if let Some(pos) = store.active.iter().position(|n| n.id == id) {
-                store.active[pos] = notif;
+                store.active[pos] = notif.clone();
             } else {
-                store.active.push(notif);
+                store.active.push(notif.clone());
+            }
+
+            store.history.insert(0, notif.clone());
+            if store.history.len() > 100 {
+                store.history.truncate(100);
             }
         }
 
@@ -117,7 +152,27 @@ pub async fn dismiss(state: &AppState, id: u32) {
     state.emit(Event::NotificationClosed { id });
 }
 
-/// Background worker — registers D-Bus service
+pub async fn dismiss_all(state: &AppState) {
+    let mut store = state.inner.notifications.write().await;
+    store.active.clear();
+    state.emit(Event::NotificationClosed { id: 0 });
+}
+
+pub async fn get_history(state: &AppState) -> Vec<Notification> {
+    let store = state.inner.notifications.read().await;
+    store.history.clone()
+}
+
+pub async fn get_active(state: &AppState) -> Vec<Notification> {
+    let store = state.inner.notifications.read().await;
+    store.active.clone()
+}
+
+pub async fn clear_history(state: &AppState) {
+    let mut store = state.inner.notifications.write().await;
+    store.history.clear();
+}
+
 pub async fn worker(state: AppState) {
     info!("notifications: registering org.freedesktop.Notifications");
 
@@ -134,7 +189,6 @@ pub async fn worker(state: AppState) {
     {
         Ok(_conn) => {
             info!("notifications: D-Bus server active");
-            // Keep alive forever
             std::future::pending::<()>().await;
         }
         Err(e) => {

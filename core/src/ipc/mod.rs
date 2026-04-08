@@ -1,17 +1,18 @@
 pub mod handlers;
 pub mod server;
 
+use std::sync::Arc;
+
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
-use std::sync::Arc;
 use tokio::sync::{broadcast, RwLock};
+use tokio_stream::wrappers::BroadcastStream;
 
 use crate::niri::NiriState;
 use crate::notify::NotificationStore;
 use crate::sysmon::SysmonSnapshot;
 use crate::weather::WeatherSnapshot;
 
-/// Shared daemon state — cloned cheaply via Arc
 #[derive(Clone)]
 pub struct AppState {
     pub inner: Arc<Inner>,
@@ -22,7 +23,11 @@ pub struct Inner {
     pub weather: RwLock<Option<WeatherSnapshot>>,
     pub niri: RwLock<NiriState>,
     pub notifications: RwLock<NotificationStore>,
-    /// Broadcast channel — QML subscribers receive pushed events
+    pub network: crate::network::NetworkManager,
+    pub bluetooth: crate::bluetooth::BluetoothManager,
+    pub clipboard: crate::clipboard::ClipboardManager,
+    pub brightness: crate::brightness::BrightnessManager,
+    pub media: crate::media::MediaManager,
     pub events: broadcast::Sender<Event>,
 }
 
@@ -35,13 +40,18 @@ impl AppState {
                 weather: RwLock::new(None),
                 niri: RwLock::new(NiriState::default()),
                 notifications: RwLock::new(NotificationStore::default()),
+                network: crate::network::NetworkManager::new(),
+                bluetooth: crate::bluetooth::BluetoothManager::new(),
+                clipboard: crate::clipboard::ClipboardManager::new(),
+                brightness: crate::brightness::BrightnessManager::new(),
+                media: crate::media::MediaManager::new(),
                 events: tx,
             }),
         })
     }
 
-    pub fn subscribe(&self) -> broadcast::Receiver<Event> {
-        self.inner.events.subscribe()
+    pub fn subscribe(&self) -> BroadcastStream<Event> {
+        BroadcastStream::new(self.inner.events.subscribe())
     }
 
     pub fn emit(&self, event: Event) {
@@ -49,7 +59,6 @@ impl AppState {
     }
 }
 
-/// Events pushed to QML over the event stream
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Event {
@@ -74,51 +83,46 @@ pub enum Event {
     NotificationClosed {
         id: u32,
     },
+    ClipboardUpdated,
+    BrightnessUpdated,
+    NetworkUpdated,
+    BluetoothUpdated,
+    MediaPlayerChanged {
+        name: String,
+    },
 }
 
-/// Request envelope from QML
-#[derive(Debug, Deserialize)]
-#[serde(tag = "cmd", rename_all = "snake_case")]
-pub enum Request {
-    Ping,
-    Sysmon,
-    Weather,
-    Search {
-        query: String,
-        #[serde(default = "default_limit")]
-        limit: usize,
-    },
-    NiriWorkspaces,
-    NiriWindows,
-    NiriActivateWorkspace {
-        id: u64,
-    },
-    NiriFocusWindow {
-        id: u64,
-    },
-    Launch {
-        app_id: String,
-    },
-    DismissNotification {
-        id: u32,
-    },
-    Subscribe, // Upgrades connection to SSE event stream
+impl Event {
+    pub fn event_type(&self) -> EventType {
+        match self {
+            Event::SysmonUpdated => EventType::SysmonUpdated,
+            Event::WeatherUpdated => EventType::WeatherUpdated,
+            Event::NiriWindowFocus { .. } => EventType::NiriWindowFocus,
+            Event::NiriWorkspaceChanged { .. } => EventType::NiriWorkspaceChanged,
+            Event::NiriWindowsChanged => EventType::NiriWindowsChanged,
+            Event::Notification { .. } => EventType::Notification,
+            Event::NotificationClosed { .. } => EventType::NotificationClosed,
+            Event::ClipboardUpdated => EventType::ClipboardUpdated,
+            Event::BrightnessUpdated => EventType::BrightnessUpdated,
+            Event::NetworkUpdated => EventType::NetworkUpdated,
+            Event::BluetoothUpdated => EventType::BluetoothUpdated,
+            Event::MediaPlayerChanged { .. } => EventType::MediaPlayerChanged,
+        }
+    }
 }
 
-fn default_limit() -> usize {
-    20
-}
-
-/// Response envelope to QML
-#[derive(Debug, Serialize)]
-#[serde(tag = "ok", rename_all = "snake_case")]
-pub enum Response {
-    Pong,
-    Sysmon(crate::sysmon::SysmonSnapshot),
-    Weather(Option<crate::weather::WeatherSnapshot>),
-    SearchResults(crate::search::SearchResults),
-    NiriWorkspaces(Vec<crate::niri::Workspace>),
-    NiriWindows(Vec<crate::niri::Window>),
-    Done,
-    Error { message: String },
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum EventType {
+    SysmonUpdated,
+    WeatherUpdated,
+    NiriWindowFocus,
+    NiriWorkspaceChanged,
+    NiriWindowsChanged,
+    Notification,
+    NotificationClosed,
+    ClipboardUpdated,
+    BrightnessUpdated,
+    NetworkUpdated,
+    BluetoothUpdated,
+    MediaPlayerChanged,
 }

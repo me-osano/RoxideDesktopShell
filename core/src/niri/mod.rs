@@ -52,14 +52,14 @@ async fn niri_request(req: serde_json::Value) -> Result<serde_json::Value> {
     Ok(serde_json::from_str(&line)?)
 }
 
-pub async fn activate_workspace(state: &AppState, id: u64) -> Result<()> {
+pub async fn activate_workspace(_state: &AppState, id: u64) -> Result<()> {
     niri_request(serde_json::json!({
         "Action": { "FocusWorkspace": { "reference": { "Id": id } } }
     })).await?;
     Ok(())
 }
 
-pub async fn focus_window(state: &AppState, id: u64) -> Result<()> {
+pub async fn focus_window(_state: &AppState, id: u64) -> Result<()> {
     niri_request(serde_json::json!({
         "Action": { "FocusWindow": { "id": id } }
     })).await?;

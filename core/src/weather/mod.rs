@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use tokio::time::{Duration, interval};
 use tracing::{debug, warn};
 
+use crate::geolocation::{GeoManager, IpApiProvider};
 use crate::ipc::{AppState, Event};
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -41,13 +42,7 @@ pub struct HourlyForecast {
     pub precipitation_mm: f32,
 }
 
-#[derive(Deserialize)]
-struct IpApiResponse {
-    city: String,
-    country: String,
-    lat: f64,
-    lon: f64,
-}
+// IpApiResponse is now in geolocation module
 
 /// WMO weather code → (description, icon name)
 fn weather_code_info(code: u16, is_day: bool) -> (&'static str, &'static str) {
@@ -66,21 +61,13 @@ fn weather_code_info(code: u16, is_day: bool) -> (&'static str, &'static str) {
     }
 }
 
-async fn fetch_location() -> Result<Location> {
-    let client = reqwest::Client::new();
-    let resp: IpApiResponse = client
-        .get("http://ip-api.com/json/?fields=city,country,lat,lon")
-        .timeout(Duration::from_secs(5))
-        .send()
-        .await?
-        .json()
-        .await?;
-
+async fn fetch_location(geo: &GeoManager<IpApiProvider>) -> Result<Location> {
+    let geo_loc = geo.get_location().await.map_err(|e| anyhow::anyhow!("{e}"))?;
     Ok(Location {
-        city: resp.city,
-        country: resp.country,
-        latitude: resp.lat,
-        longitude: resp.lon,
+        city: geo_loc.city,
+        country: geo_loc.country,
+        latitude: geo_loc.latitude,
+        longitude: geo_loc.longitude,
     })
 }
 
@@ -150,8 +137,11 @@ async fn fetch_weather(loc: &Location) -> Result<WeatherSnapshot> {
 pub async fn worker(state: AppState) {
     let mut ticker = interval(Duration::from_secs(900)); // 15 min
 
+    // Initialize geolocation manager
+    let geo = GeoManager::new(IpApiProvider::new());
+
     // Fetch location once
-    let location = match fetch_location().await {
+    let location = match fetch_location(&geo).await {
         Ok(loc) => {
             debug!("weather: located at {}, {}", loc.city, loc.country);
             loc

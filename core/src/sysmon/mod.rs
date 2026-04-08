@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use sysinfo::{CpuExt, DiskExt, NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
+use sysinfo::{Disks, Networks, System};
 use tokio::time::{Duration, interval};
 use tracing::debug;
 
@@ -63,16 +63,19 @@ pub struct ProcessInfo {
     pub status: String,
 }
 
-/// Background worker — refreshes snapshot every 2 seconds
 pub async fn worker(state: AppState) {
     let mut sys = System::new_all();
+    let mut networks = Networks::new_with_refreshed_list();
+    let mut disks = Disks::new_with_refreshed_list();
     let mut ticker = interval(Duration::from_secs(2));
 
     loop {
         ticker.tick().await;
         sys.refresh_all();
+        networks.refresh_list();
+        disks.refresh_list();
 
-        let snap = build_snapshot(&sys);
+        let snap = build_snapshot(&sys, &networks, &disks);
         debug!("sysmon: cpu={:.1}% mem={:.1}%", snap.cpu.usage_percent, snap.memory.used_percent);
 
         *state.inner.sysmon.write().await = snap;
@@ -80,10 +83,10 @@ pub async fn worker(state: AppState) {
     }
 }
 
-fn build_snapshot(sys: &System) -> SysmonSnapshot {
-    // CPU
+fn build_snapshot(sys: &System, networks: &Networks, disks: &Disks) -> SysmonSnapshot {
     let cpus = sys.cpus();
     let usage = cpus.iter().map(|c| c.cpu_usage()).sum::<f32>() / cpus.len() as f32;
+
     let cpu = CpuInfo {
         usage_percent: usage,
         per_core: cpus.iter().map(|c| c.cpu_usage()).collect(),
@@ -92,7 +95,6 @@ fn build_snapshot(sys: &System) -> SysmonSnapshot {
         core_count: cpus.len(),
     };
 
-    // Memory
     let mem = MemInfo {
         total_kb: sys.total_memory() / 1024,
         used_kb: sys.used_memory() / 1024,
@@ -102,8 +104,7 @@ fn build_snapshot(sys: &System) -> SysmonSnapshot {
         used_percent: sys.used_memory() as f32 / sys.total_memory() as f32 * 100.0,
     };
 
-    // Network
-    let network: Vec<NetIface> = sys.networks()
+    let network: Vec<NetIface> = networks
         .iter()
         .map(|(name, data)| NetIface {
             name: name.clone(),
@@ -115,8 +116,7 @@ fn build_snapshot(sys: &System) -> SysmonSnapshot {
         .filter(|n| !n.name.starts_with("lo"))
         .collect();
 
-    // Disks
-    let disks: Vec<DiskInfo> = sys.disks()
+    let disk_list: Vec<DiskInfo> = disks
         .iter()
         .map(|d| DiskInfo {
             name: d.name().to_string_lossy().to_string(),
@@ -128,7 +128,6 @@ fn build_snapshot(sys: &System) -> SysmonSnapshot {
         })
         .collect();
 
-    // Top 20 processes by CPU
     let mut procs: Vec<ProcessInfo> = sys.processes()
         .values()
         .map(|p| ProcessInfo {
@@ -142,15 +141,15 @@ fn build_snapshot(sys: &System) -> SysmonSnapshot {
     procs.sort_by(|a, b| b.cpu_percent.partial_cmp(&a.cpu_percent).unwrap());
     procs.truncate(20);
 
-    let load = sys.load_average();
+    let load = System::load_average();
 
     SysmonSnapshot {
         cpu,
         memory: mem,
         network,
-        disks,
+        disks: disk_list,
         processes: procs,
-        uptime_secs: sys.uptime(),
+        uptime_secs: System::uptime(),
         load_avg: [load.one, load.five, load.fifteen],
     }
 }

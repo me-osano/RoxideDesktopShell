@@ -6,7 +6,7 @@ use axum::{
 };
 use serde::Deserialize;
 
-use crate::ipc::{AppState, Response};
+use crate::ipc::AppState;
 
 pub async fn ping() -> impl IntoResponse {
     Json(serde_json::json!({ "pong": true, "version": env!("CARGO_PKG_VERSION") }))
@@ -78,7 +78,6 @@ pub struct LaunchParams {
 pub async fn launch(
     Json(params): Json<LaunchParams>,
 ) -> impl IntoResponse {
-    // Launch via systemd-run for clean process lifecycle
     let status = tokio::process::Command::new("systemd-run")
         .args(["--user", "--scope", &params.app_id])
         .status()
@@ -87,7 +86,6 @@ pub async fn launch(
     match status {
         Ok(s) if s.success() => StatusCode::OK.into_response(),
         _ => {
-            // Fallback: direct spawn
             let _ = tokio::process::Command::new(&params.app_id).spawn();
             StatusCode::OK.into_response()
         }
@@ -99,10 +97,233 @@ pub async fn notifications(State(state): State<AppState>) -> impl IntoResponse {
     Json(store.active.clone())
 }
 
+pub async fn notification_history(State(state): State<AppState>) -> impl IntoResponse {
+    let store = state.inner.notifications.read().await;
+    Json(store.history.clone())
+}
+
 pub async fn dismiss_notification(
     State(state): State<AppState>,
     Path(id): Path<u32>,
 ) -> impl IntoResponse {
     crate::notify::dismiss(&state, id).await;
     StatusCode::OK
+}
+
+pub async fn dismiss_all_notifications(State(state): State<AppState>) -> impl IntoResponse {
+    crate::notify::dismiss_all(&state).await;
+    StatusCode::OK
+}
+
+pub async fn clear_notification_history(State(state): State<AppState>) -> impl IntoResponse {
+    crate::notify::clear_history(&state).await;
+    StatusCode::OK
+}
+
+pub async fn network(State(state): State<AppState>) -> impl IntoResponse {
+    let snap = state.inner.network.get_state().await;
+    Json(snap)
+}
+
+#[derive(Deserialize)]
+pub struct WifiParams {
+    pub enabled: bool,
+}
+
+pub async fn network_wifi(
+    State(state): State<AppState>,
+    Json(params): Json<WifiParams>,
+) -> impl IntoResponse {
+    match state.inner.network.set_wifi_enabled(params.enabled).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e).into_response(),
+    }
+}
+
+pub async fn bluetooth(State(state): State<AppState>) -> impl IntoResponse {
+    let snap = state.inner.bluetooth.get_state().await;
+    Json(snap)
+}
+
+#[derive(Deserialize)]
+pub struct BluetoothParams {
+    pub enabled: bool,
+}
+
+pub async fn bluetooth_set(
+    State(state): State<AppState>,
+    Json(params): Json<BluetoothParams>,
+) -> impl IntoResponse {
+    match state.inner.bluetooth.set_enabled(params.enabled).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e).into_response(),
+    }
+}
+
+pub async fn clipboard_list(State(state): State<AppState>) -> impl IntoResponse {
+    match state.inner.clipboard.list(100).await {
+        Ok(items) => Json::<Vec<crate::clipboard::ClipboardItem>>(items).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+#[derive(Deserialize)]
+pub struct ClipboardParams {
+    pub id: String,
+}
+
+pub async fn clipboard_copy(
+    State(state): State<AppState>,
+    Path(id): Path<String>,
+) -> impl IntoResponse {
+    match state.inner.clipboard.copy(&id).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn clipboard_delete(
+    State(state): State<AppState>,
+    Path(id): Path<String>,
+) -> impl IntoResponse {
+    match state.inner.clipboard.delete(&id).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn clipboard_wipe(State(state): State<AppState>) -> impl IntoResponse {
+    match state.inner.clipboard.wipe().await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn clipboard_decode(
+    State(state): State<AppState>,
+    Path(id): Path<String>,
+) -> impl IntoResponse {
+    match state.inner.clipboard.decode(&id).await {
+        Ok(content) => Json(serde_json::json!({ "content": content })).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn brightness(State(state): State<AppState>) -> impl IntoResponse {
+    let snap = state.inner.brightness.get_state().await;
+    Json(snap)
+}
+
+#[derive(Deserialize)]
+pub struct BrightnessParams {
+    pub value: Option<f32>,
+}
+
+pub async fn brightness_set(
+    State(state): State<AppState>,
+    Json(params): Json<BrightnessParams>,
+) -> impl IntoResponse {
+    if let Some(value) = params.value {
+        match state.inner.brightness.set_brightness(value).await {
+            Ok(_) => StatusCode::OK.into_response(),
+            Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+        }
+    } else {
+        (StatusCode::BAD_REQUEST, "value required".to_string()).into_response()
+    }
+}
+
+#[derive(Deserialize)]
+pub struct BrightnessDeltaParams {
+    pub delta: f32,
+}
+
+pub async fn brightness_increase(
+    State(state): State<AppState>,
+    Json(params): Json<BrightnessDeltaParams>,
+) -> impl IntoResponse {
+    match state.inner.brightness.increase(params.delta).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn brightness_decrease(
+    State(state): State<AppState>,
+    Json(params): Json<BrightnessDeltaParams>,
+) -> impl IntoResponse {
+    match state.inner.brightness.decrease(params.delta).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn media(State(state): State<AppState>) -> impl IntoResponse {
+    let snap = state.inner.media.get_state().await;
+    Json(snap)
+}
+
+#[derive(Deserialize)]
+pub struct MediaParams {
+    pub player: String,
+}
+
+pub async fn media_play(
+    State(state): State<AppState>,
+    Path(player): Path<String>,
+) -> impl IntoResponse {
+    match state.inner.media.play(&player).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn media_pause(
+    State(state): State<AppState>,
+    Path(player): Path<String>,
+) -> impl IntoResponse {
+    match state.inner.media.pause(&player).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn media_play_pause(
+    State(state): State<AppState>,
+    Path(player): Path<String>,
+) -> impl IntoResponse {
+    match state.inner.media.play_pause(&player).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn media_stop(
+    State(state): State<AppState>,
+    Path(player): Path<String>,
+) -> impl IntoResponse {
+    match state.inner.media.stop(&player).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn media_next(
+    State(state): State<AppState>,
+    Path(player): Path<String>,
+) -> impl IntoResponse {
+    match state.inner.media.next(&player).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn media_previous(
+    State(state): State<AppState>,
+    Path(player): Path<String>,
+) -> impl IntoResponse {
+    match state.inner.media.previous(&player).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
 }

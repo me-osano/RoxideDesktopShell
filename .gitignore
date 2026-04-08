@@ -1,4 +1,5 @@
 core/target/
+target/
 *.lock
 !flake.lock
 .direnv/
@@ -7,3 +8,5 @@ result-*
 *.swp
 *.swo
 .DS_Store
+TODOLIST.md
+ROADMAP.md

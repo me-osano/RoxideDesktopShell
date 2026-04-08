@@ -76,7 +76,7 @@ fn index_roots() -> Vec<PathBuf> {
     ]
 }
 
-pub async fn query(state: &AppState, q: &str, limit: usize) -> Result<SearchResults> {
+pub async fn query(_state: &AppState, q: &str, limit: usize) -> Result<SearchResults> {
     let index_path = index_dir();
     if !index_path.exists() {
         return Ok(SearchResults { query: q.to_string(), hits: vec![], total: 0 });

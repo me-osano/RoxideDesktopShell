@@ -1,5 +1,11 @@
+mod bluetooth;
+mod brightness;
+mod clipboard;
 mod cli;
+mod geolocation;
 mod ipc;
+mod media;
+mod network;
 mod niri;
 mod notify;
 mod search;
@@ -14,7 +20,6 @@ use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    // Init logging — RUSTIQ_LOG=debug rustiq daemon
     tracing_subscriber::fmt()
         .with_env_filter(EnvFilter::from_env("RUSTIQ_LOG"))
         .init();
@@ -34,10 +39,8 @@ async fn main() -> Result<()> {
 async fn run_daemon() -> Result<()> {
     info!("Starting RUSTIQ daemon v{}", env!("CARGO_PKG_VERSION"));
 
-    // Shared app state
     let state = ipc::AppState::new().await?;
 
-    // Spawn background workers
     let sysmon_state = state.clone();
     tokio::spawn(async move {
         sysmon::worker(sysmon_state).await;
@@ -63,7 +66,26 @@ async fn run_daemon() -> Result<()> {
         notify::worker(notify_state).await;
     });
 
-    // Start IPC server (blocks until shutdown)
+    let clipboard_state = state.clone();
+    tokio::spawn(async move {
+        clipboard::ClipboardManager::worker(clipboard_state).await;
+    });
+
+    let brightness_state = state.clone();
+    tokio::spawn(async move {
+        brightness::BrightnessManager::worker(brightness_state).await;
+    });
+
+    let network_state = state.clone();
+    tokio::spawn(async move {
+        network::worker(network_state).await;
+    });
+
+    let bluetooth_state = state.clone();
+    tokio::spawn(async move {
+        bluetooth::worker(bluetooth_state).await;
+    });
+
     ipc::server::serve(state).await?;
 
     Ok(())

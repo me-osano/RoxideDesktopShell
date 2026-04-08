@@ -1,21 +1,27 @@
-// RUSTIQ Shell — entrypoint
-// Launch with: quickshell -p ~/.config/rustiq/quickshell
-
-import Quickshell
 import QtQuick
+import Quickshell
 
 ShellRoot {
-    // Bar on every screen
-    Variants {
-        model: Quickshell.screens
+    id: entrypoint
 
-        Bar {
-            screen: modelData
-        }
+    readonly property bool runGreeter: Quickshell.env("RUSTIQ_RUN_GREETER") === "1" || Quickshell.env("RUSTIQ_RUN_GREETER") === "true"
+    readonly property bool disableHotReload: Quickshell.env("RUSTIQ_DISABLE_HOT_RELOAD") === "1" || Quickshell.env("RUSTIQ_DISABLE_HOT_RELOAD") === "true"
+
+    Component.onCompleted: {
+        Quickshell.watchFiles = !disableHotReload;
     }
 
-    // Overlays (one instance, not per-screen)
-    Launcher {}
-    NotificationCenter {}
-    OsdOverlay {}
+    Loader {
+        id: rustiqShellLoader
+        asynchronous: false
+        sourceComponent: rustiqShell {}
+        active: !entrypoint.runGreeter
+    }
+
+    Loader {
+        id: rustiqGreeterLoader
+        asynchronous: false
+        sourceComponent: rustiqGreeter {}
+        active: entrypoint.runGreeter
+    }
 }
