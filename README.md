@@ -1,4 +1,4 @@
-# RUSTIQSHELL
+# RUSTIQ-SHELL
 
 > A handcrafted Wayland desktop shell for [niri](https://github.com/YaLTeR/niri), built with Quickshell/QML and a Rust backend.
 
@@ -86,5 +86,5 @@ rustiq niri windows     # window list
 
 ## License
 
-
+RustiqShell Core is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
