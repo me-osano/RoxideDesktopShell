@@ -1,10 +1,9 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
-import qs.Services.Compositor
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.services
+import qs.widgets
 
 // Generic full-screen popup window for menus and context menus
 // This is a top-level PanelWindow (sibling to MainScreen, not nested inside it)
@@ -37,7 +36,7 @@ PanelWindow {
   // However, when a dialog is open, always use Top so dialogs appear above apps.
   WlrLayershell.layer: (CompositorService.isLabwc && !hasDialog) ? WlrLayer.Bottom : WlrLayer.Top
   WlrLayershell.keyboardFocus: hasDialog ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
-  WlrLayershell.namespace: "nocturnal-" + windowType + "-" + (screen?.name || "unknown")
+  WlrLayershell.namespace: "rustiq-" + windowType + "-" + (screen?.name || "unknown")
   WlrLayershell.exclusionMode: ExclusionMode.Ignore
 
   // Track if a dialog is currently open (needed for keyboard focus)

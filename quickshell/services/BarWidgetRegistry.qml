@@ -26,7 +26,6 @@ Singleton {
                            "Microphone": microphoneComponent,
                            "Network": networkComponent,
                            "NightLight": nightLightComponent,
-                           "NocturnalPerformance": nocturnalPerformanceComponent,
                            "NotificationHistory": notificationHistoryComponent,
                            "PowerProfile": powerProfileComponent,
                            "SessionMenu": sessionMenuComponent,
@@ -58,7 +57,6 @@ Singleton {
                                      "Microphone": "WidgetSettings/MicrophoneSettings.qml",
                                      "Network": "WidgetSettings/NetworkSettings.qml",
                                      "NightLight": "WidgetSettings/NightLightSettings.qml",
-                                     "NocturnalPerformance": "WidgetSettings/NocturnalPerformanceSettings.qml",
                                      "NotificationHistory": "WidgetSettings/NotificationHistorySettings.qml",
                                      "PowerProfile": "WidgetSettings/PowerProfileSettings.qml",
                                      "SessionMenu": "WidgetSettings/SessionMenuSettings.qml",
@@ -92,7 +90,6 @@ Singleton {
                                     "displayMode": "graphic-clean",
                                     "deviceNativePath": "__default__",
                                     "showPowerProfiles": false,
-                                    "showNocturnalPerformance": false,
                                     "hideIfNotDetected": true,
                                     "hideIfIdle": false
                                   },
@@ -121,7 +118,7 @@ Singleton {
                                     "showBluetoothIcon": true,
                                     "showNotificationIcon": true,
                                     "useDistroLogo": false,
-                                    "icon": "nocturnal",
+                                    "icon": "rustiq",
                                     "customIconPath": "",
                                     "colorizeDistroLogo": false,
                                     "colorizeSystemIcon": "none",
@@ -280,9 +277,6 @@ Singleton {
                                   "NightLight": {
                                     "iconColor": "none"
                                   },
-                                  "NocturnalPerformance": {
-                                    "iconColor": "none"
-                                  },
                                   "PowerProfile": {
                                     "iconColor": "none"
                                   },
@@ -357,9 +351,6 @@ Singleton {
   }
   property Component nightLightComponent: Component {
     NightLight {}
-  }
-  property Component nocturnalPerformanceComponent: Component {
-    NocturnalPerformance {}
   }
   property Component notificationHistoryComponent: Component {
     NotificationHistory {}
@@ -440,7 +431,6 @@ Singleton {
                                       "Microphone": "Microphone",
                                       "Network": "Network",
                                       "NightLight": "Night Light",
-                                      "NocturnalPerformance": "Nocturnal Performance",
                                       "NotificationHistory": "Notifications",
                                       "PowerProfile": "Power Profile",
                                       "SessionMenu": "Session Menu",

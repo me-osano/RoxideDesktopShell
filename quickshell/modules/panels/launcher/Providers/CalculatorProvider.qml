@@ -1,9 +1,8 @@
 import QtQuick
 import Quickshell
-import "../../../../Helpers/AdvancedMath.js" as AdvancedMath
-import qs.Commons
-import qs.Services.Keyboard
-import qs.Services.UI
+import "../../../../common/helpers/AdvancedMath.js" as AdvancedMath
+import qs.common.theme
+import qs.services
 
 Item {
   id: root

@@ -3,10 +3,10 @@ import QtQuick.Shapes
 import Quickshell
 import Quickshell.Wayland
 
-import qs.Commons
-import qs.Modules.MainScreen.Backgrounds
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.mainScreen.backgrounds
+import qs.services
+import qs.widgets
 
 // Standalone launcher window for Overlay layer mode.
 // This window appears above fullscreen windows and does not attach to the bar.
@@ -35,7 +35,7 @@ Variants {
 
       color: "transparent"
 
-      WlrLayershell.namespace: "nocturnal-launcher-overlay-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "rustiq-launcher-overlay-" + (screen?.name || "unknown")
       WlrLayershell.keyboardFocus: WlrKeyboardFocus.Exclusive
       WlrLayershell.layer: WlrLayer.Overlay
       WlrLayershell.exclusionMode: ExclusionMode.Ignore

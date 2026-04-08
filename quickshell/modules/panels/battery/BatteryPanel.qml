@@ -3,13 +3,10 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.UPower
-import qs.Commons
-import qs.Modules.MainScreen
-import qs.Services.Hardware
-import qs.Services.Networking
-import qs.Services.Power
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.mainScreen
+import qs.services
+import qs.widgets
 
 SmartPanel {
   id: root
@@ -30,7 +27,6 @@ SmartPanel {
     readonly property bool profilesAvailable: PowerProfileService.available
     property int profileIndex: profileToIndex(PowerProfileService.profile)
     readonly property bool showPowerProfiles: panelID ? panelID.showPowerProfiles : resolveWidgetSetting("showPowerProfiles", false)
-    readonly property bool showNocturnalPerformance: panelID ? panelID.showNocturnalPerformance : resolveWidgetSetting("showNocturnalPerformance", false)
     readonly property bool isLowBattery: BatteryService.isLowBattery
     readonly property bool isCriticalBattery: BatteryService.isCriticalBattery
     readonly property var primaryDevice: BatteryService.primaryDevice
@@ -293,7 +289,7 @@ SmartPanel {
       RBox {
         Layout.fillWidth: true
         height: controlsLayout.implicitHeight + Style.margin2L
-        visible: showPowerProfiles || showNocturnalPerformance
+        visible: showPowerProfiles
 
         ColumnLayout {
           id: controlsLayout
@@ -367,33 +363,14 @@ SmartPanel {
 
           RDivider {
             Layout.fillWidth: true
-            visible: showPowerProfiles && PowerProfileService.available && showNocturnalPerformance
+            visible: showPowerProfiles && PowerProfileService.available
           }
-
           RowLayout {
-            Layout.fillWidth: true
-            spacing: Style.marginS
-            visible: showNocturnalPerformance
 
-            RText {
-              text: "Nocturnal Performance"
-              pointSize: Style.fontSizeM
-              font.weight: Style.fontWeightBold
               color: Color.mOnSurface
               Layout.fillWidth: true
             }
 
-            RIcon {
-              icon: PowerProfileService.nocturnalPerformanceMode ? "rocket" : "rocket-off"
-              pointSize: Style.fontSizeL
-              color: PowerProfileService.nocturnalPerformanceMode ? Color.mPrimary : Color.mOnSurfaceVariant
-            }
-
-            RToggle {
-              checked: PowerProfileService.nocturnalPerformanceMode
-              onToggled: checked => PowerProfileService.nocturnalPerformanceMode = checked
-            }
-          }
         }
       }
     }

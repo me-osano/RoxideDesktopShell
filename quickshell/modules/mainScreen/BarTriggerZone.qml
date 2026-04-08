@@ -1,8 +1,8 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
-import qs.Services.UI
+import qs.common.theme
+import qs.services
 
 /**
 * BarTriggerZone - Thin invisible window at screen edge to reveal hidden bar
@@ -25,7 +25,7 @@ PanelWindow {
   color: "transparent"
   focusable: false
 
-  WlrLayershell.namespace: "nocturnal-bar-trigger-" + (screen?.name || "unknown")
+  WlrLayershell.namespace: "rustiq-bar-trigger-" + (screen?.name || "unknown")
   WlrLayershell.layer: WlrLayer.Top
   WlrLayershell.exclusionMode: ExclusionMode.Ignore
 

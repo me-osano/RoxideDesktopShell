@@ -4,7 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
-import "../../Helpers/sha256.js" as Checksum
+import "../common/helpers/sha256.js" as Checksum
 import qs.common.theme
 
 Singleton {
@@ -541,7 +541,7 @@ Singleton {
     implicitWidth: 0
     implicitHeight: 0
     WlrLayershell.exclusionMode: ExclusionMode.Ignore
-    WlrLayershell.namespace: "nocturnal-image-cache-renderer"
+    WlrLayershell.namespace: "rustiq-image-cache-renderer"
     color: "transparent"
     mask: Region {}
 

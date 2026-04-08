@@ -4,10 +4,10 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.Pipewire
 import Quickshell.Widgets
-import qs.Commons
-import qs.Modules.MainScreen
-import qs.Services.Media
-import qs.Widgets
+import qs.common.theme
+import qs.modules.mainScreen
+import qs.services
+import qs.widgets
 
 SmartPanel {
   id: root

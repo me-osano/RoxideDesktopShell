@@ -1,7 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
+import qs.common.theme
 
 /**
 * BarExclusionZone - Invisible PanelWindow that reserves exclusive space for the bar
@@ -26,7 +26,7 @@ PanelWindow {
 
   // Wayland layer shell configuration
   WlrLayershell.layer: WlrLayer.Top
-  WlrLayershell.namespace: "nocturnal-bar-exclusion-" + (screen?.name || "unknown")
+  WlrLayershell.namespace: "rustiq-bar-exclusion-" + (screen?.name || "unknown")
   WlrLayershell.exclusionMode: ExclusionMode.Auto
 
   // Anchor based on bar position

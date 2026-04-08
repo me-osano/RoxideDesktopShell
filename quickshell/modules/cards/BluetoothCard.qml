@@ -3,13 +3,11 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Bluetooth
-import qs.Commons
-import qs.Modules.Panels.Settings
-import "../Panels/Settings/Tabs/Connections" as BluetoothPrefs
-import qs.Services.Hardware
-import qs.Services.Networking
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.panels.settings
+import "../panels/settings/tabs/connections" as BluetoothPrefs
+import qs.services
+import qs.widgets
 
 // Bluetooth card: inline expandable bluetooth panel for control center
 RBox {

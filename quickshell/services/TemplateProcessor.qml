@@ -205,9 +205,9 @@ Singleton {
 
   function addWallpaperTheming(lines, mode) {
     const homeDir = Quickshell.env("HOME");
-    // Nocturnal colors JSON
-    lines.push("[templates.nocturnal]");
-    lines.push('input_path = "' + Quickshell.shellDir + '/Assets/Templates/nocturnal.json"');
+    // Rustiq colors JSON
+    lines.push("[templates.rustiq]");
+    lines.push('input_path = "' + Quickshell.shellDir + '/Assets/Templates/rustiq.json"');
     lines.push('output_path = "' + Settings.configDir + 'colors.json"');
 
     // Terminal templates
@@ -238,7 +238,7 @@ Singleton {
                                                                                          lines.push(`\n[templates.discord_${themeSuffix}_${client.name}]`);
                                                                                          lines.push(`input_path = "${Quickshell.shellDir}/Assets/Templates/${inputFile}"`);
                                                                                          // First input uses legacy name for backward compatibility
-                                                                                         const outputFile = idx === 0 ? "nocturnal.theme.css" : `nocturnal-${themeSuffix}.theme.css`;
+                                                                                         const outputFile = idx === 0 ? "rustiq.theme.css" : `rustiq-${themeSuffix}.theme.css`;
                                                                                          const outputPath = client.path.replace("~", homeDir) + `/themes/${outputFile}`;
                                                                                          lines.push(`output_path = "${outputPath}"`);
                                                                                        }
@@ -266,7 +266,7 @@ Singleton {
                                                 ProgramCheckerService.availableEmacsClients.forEach(client => {
                                                                                                       lines.push(`\n[templates.emacs_${client.name}]`);
                                                                                                       lines.push(`input_path = "${Quickshell.shellDir}/Assets/Templates/${app.input}"`);
-                                                                                                      const expandedPath = client.path.replace("~", homeDir) + "/themes/nocturnal-theme.el";
+                                                                                                      const expandedPath = client.path.replace("~", homeDir) + "/themes/rustiq-theme.el";
                                                                                                       lines.push(`output_path = "${expandedPath}"`);
                                                                                                     });
                                               }
@@ -443,8 +443,8 @@ Singleton {
 
   function getTerminalColorsTemplate(terminal, mode) {
     const schemeNameMap = ({
-                             "Nocturnal (default)": "Nocturnal-default",
-                             "Nocturnal (legacy)": "Nocturnal-legacy",
+                             "Rustiq (default)": "Rustiq-default",
+                             "Rustiq (legacy)": "Rustiq-legacy",
                              "Tokyo Night": "Tokyo-Night",
                              "Rose Pine": "Rosepine"
                            });

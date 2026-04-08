@@ -5,9 +5,9 @@ import Quickshell
 import Quickshell.Services.Notifications
 import Quickshell.Wayland
 import Quickshell.Widgets
-import qs.Commons
-import qs.Services.System
-import qs.Widgets
+import qs.common.theme
+import qs.services
+import qs.widgets
 
 // Simple notification popup - displays multiple notifications
 Variants {
@@ -44,7 +44,7 @@ Variants {
       id: notifWindow
       screen: modelData
 
-      WlrLayershell.namespace: "nocturnal-notifications-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "rustiq-notifications-" + (screen?.name || "unknown")
       WlrLayershell.layer: (Settings.data.notifications?.overlayLayer) ? WlrLayer.Overlay : WlrLayer.Top
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
 

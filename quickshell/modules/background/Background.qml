@@ -1,9 +1,8 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
-import qs.Services.Compositor
-import qs.Services.UI
+import qs.common.theme
+import qs.services
 
 Variants {
   id: backgroundVariants
@@ -125,7 +124,7 @@ Variants {
       screen: modelData
       WlrLayershell.layer: WlrLayer.Background
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
-      WlrLayershell.namespace: "nocturnal-wallpaper-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "rustiq-wallpaper-" + (screen?.name || "unknown")
 
       anchors {
         bottom: true

@@ -2,10 +2,8 @@ import QtQuick
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
-import qs.Services.Compositor
-import qs.Services.Power
-import qs.Services.UI
+import qs.common.theme
+import qs.services
 
 Loader {
   active: CompositorService.isNiri && Settings.data.wallpaper.enabled && Settings.data.wallpaper.overviewEnabled
@@ -67,7 +65,7 @@ Loader {
       screen: modelData
       WlrLayershell.layer: WlrLayer.Background
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
-      WlrLayershell.namespace: "nocturnal-overview-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "rustiq-overview-" + (screen?.name || "unknown")
 
       anchors {
         top: true
@@ -104,7 +102,7 @@ Loader {
         layer.enabled: true
         layer.smooth: false
         layer.effect: MultiEffect {
-          blurEnabled: !PowerProfileService.nocturnalPerformanceMode && (Settings.data.wallpaper.overviewBlur > 0)
+          blurEnabled: (Settings.data.wallpaper.overviewBlur > 0)
           blur: Settings.data.wallpaper.overviewBlur
           blurMax: 48
         }

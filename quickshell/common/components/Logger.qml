@@ -1,7 +1,7 @@
 pragma Singleton
 
 import Quickshell
-import qs.Commons
+import qs.common.theme
 
 Singleton {
   id: root
@@ -13,7 +13,7 @@ Singleton {
       var module = args.shift().substring(0, maxLength).padStart(maxLength, " ");
       return `\x1b[36m[${t}]\x1b[0m \x1b[35m${module}\x1b[0m ` + args.join(" ");
     } else {
-      return `[\x1b[36m[${t}]\x1b[0m ` + args.join(" ");
+      return `\x1b[36m[${t}]\x1b[0m ` + args.join(" ");
     }
   }
 

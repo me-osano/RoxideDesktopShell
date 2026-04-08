@@ -1,7 +1,7 @@
 import QtQuick
 import Quickshell
-import qs.Commons
-import qs.Services.UI
+import qs.common.theme
+import qs.services
 
 /**
 * SmartPanel for use within MainScreen

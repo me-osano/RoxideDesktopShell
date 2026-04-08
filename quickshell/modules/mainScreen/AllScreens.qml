@@ -2,9 +2,9 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 
-import qs.Commons
-import qs.Modules.MainScreen
-import qs.Services.UI
+import qs.common.theme
+import qs.modules.mainScreen
+import qs.services
 
 // Single screen mode - simplified for single-display setups
 // Creates MainScreen and related components only for the primary screen

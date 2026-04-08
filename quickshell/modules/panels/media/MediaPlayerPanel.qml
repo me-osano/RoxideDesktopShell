@@ -3,12 +3,11 @@ import QtQuick.Controls
 import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
-import qs.Commons
-import qs.Modules.MainScreen
-import qs.Services.Media
-import qs.Services.UI
-import qs.Widgets
-import qs.Widgets.AudioSpectrum
+import qs.common.theme
+import qs.modules.mainScreen
+import qs.services
+import qs.widgets
+import qs.widgets.audioSpectrum
 
 SmartPanel {
   id: root

@@ -2,14 +2,10 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
-import qs.Commons
-import qs.Services.Compositor
-import qs.Services.Hardware
-import qs.Services.Keyboard
-import qs.Services
-import qs.Services.Media
-import qs.Widgets
-import qs.Widgets.AudioSpectrum
+import qs.common.theme
+import qs.services
+import qs.widgets
+import qs.widgets.audioSpectrum
 
 Item {
   id: root

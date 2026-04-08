@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Services.Mpris
 import qs.common.theme
+import qs.services
 
 Singleton {
   id: root
@@ -47,6 +48,19 @@ Singleton {
 
   Component.onCompleted: {
     updateCurrentPlayer();
+    // Connect to Rust daemon for real-time updates
+    RustiqIntegration.connect("MediaService", ["media_player_changed"], function(event) {
+      if (event.type === "media_player_changed" && event.data) {
+        root._handleRustMediaUpdate(event.data)
+      }
+    })
+  }
+
+  function _handleRustMediaUpdate(data) {
+    if (data.players) {
+      // Update player state from Rust data
+      // The Rust daemon uses playerctl internally, so this is supplementary
+    }
   }
 
   function getAvailablePlayers() {

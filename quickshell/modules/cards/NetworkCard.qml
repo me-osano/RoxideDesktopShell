@@ -2,12 +2,11 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
-import qs.Commons
-import qs.Modules.Panels.Network
-import qs.Modules.Panels.Settings
-import qs.Services.Networking
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.panels.network
+import qs.modules.panels.settings
+import qs.services
+import qs.widgets
 
 // Network card: inline expandable network panel for control center
 RBox {

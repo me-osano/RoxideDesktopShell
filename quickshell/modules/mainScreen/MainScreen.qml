@@ -5,29 +5,27 @@ import Quickshell
 import Quickshell.Wayland
 import "Backgrounds" as Backgrounds
 
-import qs.Commons
+import qs.common.theme
 
 // All panels
-import qs.Modules.Bar
-import qs.Modules.Bar.Extras
-import qs.Modules.Panels.Audio
-import qs.Modules.Panels.Battery
-import qs.Modules.Panels.Bluetooth
-import qs.Modules.Panels.Brightness
-import qs.Modules.Panels.Clock
-import qs.Modules.Panels.ControlCenter
-import qs.Modules.Panels.Dock
-import qs.Modules.Panels.Launcher
-import qs.Modules.Panels.Media
-import qs.Modules.Panels.Network
-import qs.Modules.Panels.SessionMenu
-import qs.Modules.Panels.Settings
-import qs.Modules.Panels.SystemStats
-import qs.Modules.Panels.Tray
-import qs.Modules.Panels.Wallpaper
-import qs.Services.Compositor
-import qs.Services.Power
-import qs.Services.UI
+import qs.modules.bar
+import qs.modules.bar.extras
+import qs.modules.panels.audio
+import qs.modules.panels.battery
+import qs.modules.panels.bluetooth
+import qs.modules.panels.brightness
+import qs.modules.panels.clock
+import qs.modules.panels.controlcenter
+import qs.modules.panels.dock
+import qs.modules.panels.launcher
+import qs.modules.panels.media
+import qs.modules.panels.network
+import qs.modules.panels.sessionmenu
+import qs.modules.panels.settings
+import qs.modules.panels.systemstats
+import qs.modules.panels.tray
+import qs.modules.panels.wallpaper
+import qs.services
 
 /**
 * MainScreen - Single PanelWindow per screen that manages all panels and the bar
@@ -41,7 +39,7 @@ PanelWindow {
 
   // Wayland
   WlrLayershell.layer: WlrLayer.Top
-  WlrLayershell.namespace: "nocturnal-background-" + (screen?.name || "unknown")
+  WlrLayershell.namespace: "rustiq-background-" + (screen?.name || "unknown")
   WlrLayershell.exclusionMode: ExclusionMode.Ignore // Don't reserve space - BarExclusionZone handles that
   WlrLayershell.keyboardFocus: {
     // No panel open anywhere: no keyboard focus needed

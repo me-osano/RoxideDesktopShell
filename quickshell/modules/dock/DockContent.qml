@@ -5,11 +5,9 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Widgets
-import qs.Commons
-import qs.Services.Compositor
-import qs.Services.System
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.services
+import qs.widgets
 
 Item {
   required property var dockRoot

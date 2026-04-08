@@ -3,30 +3,28 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
-import qs.Commons
-import qs.Modules.Panels.Settings.Tabs
-import qs.Modules.Panels.Settings.Tabs.About
-import qs.Modules.Panels.Settings.Tabs.Audio
-import qs.Modules.Panels.Settings.Tabs.Bar
-import qs.Modules.Panels.Settings.Tabs.ColorScheme
-import qs.Modules.Panels.Settings.Tabs.Connections
-import qs.Modules.Panels.Settings.Tabs.ControlCenter
-import qs.Modules.Panels.Settings.Tabs.Display
-import qs.Modules.Panels.Settings.Tabs.Dock
-import qs.Modules.Panels.Settings.Tabs.Hooks
-import qs.Modules.Panels.Settings.Tabs.Launcher
-import qs.Modules.Panels.Settings.Tabs.LockScreen
-import qs.Modules.Panels.Settings.Tabs.Notifications
-import qs.Modules.Panels.Settings.Tabs.Osd
+import qs.common.theme
+import qs.modules.panels.settings.tabs
+import qs.modules.panels.settings.tabs.about
+import qs.modules.panels.settings.tabs.audio
+import qs.modules.panels.settings.tabs.bar
+import qs.modules.panels.settings.tabs.colorScheme
+import qs.modules.panels.settings.tabs.connections
+import qs.modules.panels.settings.tabs.controlCenter
+import qs.modules.panels.settings.tabs.display
+import qs.modules.panels.settings.tabs.dock
+import qs.modules.panels.settings.tabs.launcher
+import qs.modules.panels.settings.tabs.lockScreen
+import qs.modules.panels.settings.tabs.notifications
+import qs.modules.panels.settings.tabs.osd
 
-import qs.Modules.Panels.Settings.Tabs.Region
-import qs.Modules.Panels.Settings.Tabs.SessionMenu
-import qs.Modules.Panels.Settings.Tabs.SystemMonitor
-import qs.Modules.Panels.Settings.Tabs.UserInterface
-import qs.Modules.Panels.Settings.Tabs.Wallpaper
-import qs.Services.System
-import qs.Services.UI
-import qs.Widgets
+import qs.modules.panels.settings.tabs.region
+import qs.modules.panels.settings.tabs.sessionMenu
+import qs.modules.panels.settings.tabs.systemMonitor
+import qs.modules.panels.settings.tabs.userInterface
+import qs.modules.panels.settings.tabs.wallpaper
+import qs.services
+import qs.widgets
 
 Item {
   id: root
@@ -457,10 +455,6 @@ Item {
     AboutTab {}
   }
   Component {
-    id: hooksTab
-    HooksTab {}
-  }
-  Component {
     id: dockTab
     DockTab {}
   }
@@ -602,12 +596,6 @@ Item {
             "label": "System Monitor",
             "icon": "settings-system-monitor",
             "source": systemMonitorTab
-          },
-          {
-            "id": SettingsPanel.Tab.Hooks,
-            "label": "Hooks",
-            "icon": "settings-hooks",
-            "source": hooksTab
           },
           {
             "id": SettingsPanel.Tab.About,

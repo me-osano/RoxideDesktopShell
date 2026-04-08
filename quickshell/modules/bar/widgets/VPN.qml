@@ -1,11 +1,10 @@
 import QtQuick
 import QtQuick.Controls
 import Quickshell
-import qs.Commons
-import qs.Modules.Bar.Extras
-import qs.Services.Networking
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.bar.extras
+import qs.services
+import qs.widgets
 
 Item {
   id: root

@@ -1,9 +1,9 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
-import qs.Modules.Dock
-import qs.Modules.MainScreen
+import qs.common.theme
+import qs.modules.dock
+import qs.modules.mainScreen
 
 SmartPanel {
   id: root

@@ -154,7 +154,7 @@ Item {
                         implicitHeight: 0
                         color: "transparent"
                         WlrLayershell.exclusionMode: ExclusionMode.Ignore
-                        WlrLayershell.namespace: "nocturnal-screen-detector"
+                        WlrLayershell.namespace: "rustiq-screen-detector"
                         mask: Region {}
 
                         onScreenChanged: root.screenDetected(screen)

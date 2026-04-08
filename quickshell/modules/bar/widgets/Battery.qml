@@ -3,12 +3,10 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.UPower
-import qs.Commons
-import qs.Modules.Bar.Extras
-import qs.Services.Hardware
-import qs.Services.Networking
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.bar.extras
+import qs.services
+import qs.widgets
 
 Item {
   id: root
@@ -251,7 +249,6 @@ Item {
     if (panel) {
       panel.panelID = {
         showPowerProfiles: widgetSettings.showPowerProfiles !== undefined ? widgetSettings.showPowerProfiles : widgetMetadata.showPowerProfiles,
-        showNocturnalPerformance: widgetSettings.showNocturnalPerformance !== undefined ? widgetSettings.showNocturnalPerformance : widgetMetadata.showNocturnalPerformance
       };
       panel.toggle(root);
     }

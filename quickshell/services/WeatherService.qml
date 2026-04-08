@@ -1,4 +1,4 @@
-// WeatherService - Uses Rust daemon for weather data via RustiqClient
+// WeatherService - Uses Rust daemon for weather data via RustiqClientService
 // Falls back to LocationService if Rust is unavailable
 
 pragma Singleton
@@ -50,7 +50,7 @@ Singleton {
     }
 
     function refreshFromRust() {
-        RustiqClient.weather(function(data, err) {
+        RustiqClientService.weather(function(data, err) {
             if (err) {
                 Logger.w("WeatherService", "Rust weather fetch failed:", err)
                 return
@@ -64,7 +64,7 @@ Singleton {
         if (_subscribed) return
         _subscribed = true
 
-        RustiqClient.subscribe(function(event) {
+        RustiqClientService.subscribe(function(event) {
             if (event.type === "weather_updated") {
                 refreshFromRust()
             }

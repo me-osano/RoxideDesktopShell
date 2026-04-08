@@ -4,11 +4,11 @@ import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.UPower
 import Quickshell.Wayland
-import qs.Commons
-import qs.Modules.Bar.Extras
-import qs.Modules.Notification
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.services
+import qs.modules.bar.extras
+import qs.modules.notification
+import qs.widgets
 
 // Bar Component
 Item {

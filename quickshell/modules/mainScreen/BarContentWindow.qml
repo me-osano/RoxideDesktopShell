@@ -1,9 +1,9 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
-import qs.Modules.Bar
-import qs.Services.UI
+import qs.common.theme
+import qs.modules.bar
+import qs.services
 
 /**
 * BarContentWindow - Separate transparent PanelWindow for bar content
@@ -28,7 +28,7 @@ PanelWindow {
   }
 
   // Wayland layer configuration
-  WlrLayershell.namespace: "nocturnal-bar-content-" + (barWindow.screen?.name || "unknown")
+  WlrLayershell.namespace: "rustiq-bar-content-" + (barWindow.screen?.name || "unknown")
   // Keep bar widgets above MainScreen's background Shape window when enabled.
   // This prevents bar background opacity changes from visually covering capsules/widgets.
   WlrLayershell.layer: (Settings.data.bar.forceContentOverlay !== false) ? WlrLayer.Overlay : WlrLayer.Top

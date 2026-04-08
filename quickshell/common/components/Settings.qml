@@ -4,9 +4,10 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import "../helpers/QtObj2JS.js" as QtObj2JS
-import qs.common
+import qs.common.theme
+import qs.common.components
 import qs.modules.osd
-import qs.services.UI
+import qs.services
 
 Singleton {
   id: root
@@ -23,10 +24,10 @@ Singleton {
   */
   readonly property alias data: adapter  // Used to access via Settings.data.xxx.yyy
   readonly property int settingsVersion: 53
-  property bool isDebug: Quickshell.env("NOCTURNAL_DEBUG") === "1"
-  readonly property string shellName: "nocturnal"
-  readonly property string configDir: Quickshell.env("NOCTURNAL_CONFIG_DIR") || (Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config") + "/" + shellName + "/"
-  readonly property string cacheDir: Quickshell.env("NOCTURNAL_CACHE_DIR") || (Quickshell.env("XDG_CACHE_HOME") || Quickshell.env("HOME") + "/.cache") + "/" + shellName + "/"
+  property bool isDebug: Quickshell.env("RUSTIQ_DEBUG") === "1"
+  readonly property string shellName: "rustiq"
+  readonly property string configDir: Quickshell.env("RUSTIQ_CONFIG_DIR") || (Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config") + "/" + shellName + "/"
+  readonly property string cacheDir: Quickshell.env("RUSTIQ_CACHE_DIR") || (Quickshell.env("XDG_CACHE_HOME") || Quickshell.env("HOME") + "/.cache") + "/" + shellName + "/"
   readonly property string settingsFile: Quickshell.env("NOCTURNAL_SETTINGS_FILE") || (configDir + "settings.json")
   readonly property string defaultLocation: "Tokyo"
   readonly property string defaultAvatar: Quickshell.env("HOME") + "/.face"
@@ -437,9 +438,6 @@ Singleton {
           },
           {
             "id": "WallpaperSelector"
-          },
-          {
-            "id": "NocturnalPerformance"
           }
         ]
         property list<var> right: [
@@ -671,7 +669,7 @@ Singleton {
 
     property JsonObject colorSchemes: JsonObject {
       property bool useWallpaperColors: false
-      property string predefinedScheme: "Nocturnal (default)"
+      property string predefinedScheme: "Rustiq (default)"
       property bool darkMode: true
       property string schedulingMode: "off"
       property string manualSunrise: "06:30"
@@ -696,19 +694,6 @@ Singleton {
       property string dayTemp: "6500"
       property string manualSunrise: "06:30"
       property string manualSunset: "18:30"
-    }
-
-    // hooks
-    property JsonObject hooks: JsonObject {
-      property bool enabled: false
-      property string wallpaperChange: ""
-      property string darkModeChange: ""
-      property string screenLock: ""
-      property string screenUnlock: ""
-      property string performanceModeEnabled: ""
-      property string performanceModeDisabled: ""
-      property string startup: ""
-      property string session: ""
     }
 
     // plugins

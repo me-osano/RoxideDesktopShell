@@ -2,10 +2,10 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
-import qs.Commons
-import qs.Modules.Panels.ControlCenter
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.panels.controlCenter
+import qs.services
+import qs.widgets
 
 RowLayout {
   id: shortcutsRoot

@@ -1,8 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 import Quickshell
-import qs.Commons
-import qs.Widgets
+import qs.common.theme
+import qs.widgets
 
 Item {
   id: root

@@ -14,9 +14,6 @@ Singleton {
   readonly property bool available: powerProfiles && (powerProfiles.hasPerformanceProfile || powerProfiles.profile !== undefined)
   property int profile: powerProfiles ? powerProfiles.profile : PowerProfile.Balanced
 
-  // Not a power profile but a volatile property to quickly disable shadows, animations, etc..
-  property bool nocturnalPerformanceMode: false
-
   // Track if service has been initialized (to suppress startup notification)
   property bool initialized: false
 
@@ -135,26 +132,6 @@ Singleton {
           ToastService.showNotice(profileName, "Power profile changed", profileName.toLowerCase().replace(" ", ""));
         }
       }
-    }
-  }
-
-  // Nocturnal Performance Mode
-  // - Turning shadow off
-  // - Turning animation off
-  // - Do Not Disturb
-  function toggleNocturnalPerformance() {
-    nocturnalPerformanceMode = !nocturnalPerformanceMode;
-  }
-
-  function setNocturnalPerformance(value) {
-    nocturnalPerformanceMode = value;
-  }
-
-  onNocturnalPerformanceModeChanged: {
-    if (nocturnalPerformanceMode) {
-      ToastService.showNotice("Nocturnal Performance", "Performance mode enabled", "rocket");
-    } else {
-      ToastService.showNotice("Nocturnal Performance", "Performance mode disabled", "rocket-off");
     }
   }
 }

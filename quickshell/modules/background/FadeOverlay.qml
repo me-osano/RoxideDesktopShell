@@ -1,8 +1,8 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
-import qs.Services.Power
+import qs.common.theme
+import qs.services
 
 /**
 * IdleFadeOverlay — full-screen fade-to-black shown before each idle action.

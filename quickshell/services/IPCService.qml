@@ -83,7 +83,6 @@ Singleton {
                                             "display": SettingsPanel.Tab.Display,
                                             "dock": SettingsPanel.Tab.Dock,
                                             "general": SettingsPanel.Tab.General,
-                                            "hooks": SettingsPanel.Tab.Hooks,
                                             "launcher": SettingsPanel.Tab.Launcher,
                                             "location": SettingsPanel.Tab.Location,
                                             "connections": SettingsPanel.Tab.Connections,
@@ -627,18 +626,6 @@ Singleton {
         PowerProfileService.setProfile(0);
         break;
       }
-    }
-
-    function toggleNocturnalPerformance() {
-      PowerProfileService.toggleNocturnalPerformance();
-    }
-
-    function enableNocturnalPerformance() {
-      PowerProfileService.setNocturnalPerformance(true);
-    }
-
-    function disableNocturnalPerformance() {
-      PowerProfileService.setNocturnalPerformance(false);
     }
   }
 

@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import qs.common.theme
+import qs.services
 
 Singleton {
   id: root
@@ -153,6 +154,23 @@ Singleton {
     scanBacklightDevices();
     if (Settings.data.brightness.enableDdcSupport) {
       ddcProc.running = true;
+    }
+    // Connect to Rust daemon for real-time updates
+    RustiqIntegration.connect("BrightnessService", ["brightness_updated"], function(event) {
+      if (event.type === "brightness_updated" && event.data) {
+        root._handleRustBrightnessUpdate(event.data)
+      }
+    })
+  }
+
+  function _handleRustBrightnessUpdate(data) {
+    if (data.monitors && data.monitors.length > 0) {
+      data.monitors.forEach(function(m) {
+        var mon = monitors.find(function(x) { return x.name === m.name })
+        if (mon) {
+          mon.brightness = m.brightness
+        }
+      })
     }
   }
 

@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Shapes
-import qs.Commons
+import qs.common.theme
 
 /**
 * ScreenCorners - Shape component for rendering screen corners

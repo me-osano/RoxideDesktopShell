@@ -1,8 +1,8 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
-import qs.Services.UI
+import qs.common.theme
+import qs.services
 
 Item {
   id: root
@@ -199,7 +199,7 @@ Item {
       color: "transparent"
 
       WlrLayershell.layer: (Settings.data.notifications && Settings.data.notifications.overlayLayer) ? WlrLayer.Overlay : WlrLayer.Top
-      WlrLayershell.namespace: "nocturnal-toast-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "rustiq-toast-" + (screen?.name || "unknown")
       WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
 

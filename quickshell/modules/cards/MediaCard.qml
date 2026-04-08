@@ -3,11 +3,10 @@ import QtQuick.Controls
 import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
-import qs.Commons
-import qs.Services.Media
-import qs.Services.UI
-import qs.Widgets
-import qs.Widgets.AudioSpectrum
+import qs.common.theme
+import qs.services
+import qs.widgets
+import qs.widgets.audioSpectrum
 
 RBox {
   id: root

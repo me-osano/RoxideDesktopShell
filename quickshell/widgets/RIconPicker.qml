@@ -76,7 +76,7 @@ Popup {
         id: searchInput
         Layout.fillWidth: true
         label: "Search"
-        placeholderText: "e.g. nocturnal, niri, battery, cloud"
+        placeholderText: "e.g. rustiq, niri, battery, cloud"
         text: root.query
         onTextChanged: root.query = text.trim().toLowerCase()
       }

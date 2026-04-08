@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import qs.Commons
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.services
+import qs.widgets
 
 Item {
   id: root

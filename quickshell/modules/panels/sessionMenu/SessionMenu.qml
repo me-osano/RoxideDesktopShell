@@ -6,11 +6,10 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Widgets
-import qs.Commons
-import qs.Modules.MainScreen
-import qs.Services.Compositor
-import qs.Services.UI
-import qs.Widgets
+import qs.modules.mainScreen
+import qs.common.theme
+import qs.services
+import qs.widgets
 
 SmartPanel {
   id: root

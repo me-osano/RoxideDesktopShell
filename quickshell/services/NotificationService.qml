@@ -6,7 +6,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Notifications
 import Quickshell.Wayland
-import "../../Helpers/sha256.js" as Checksum
+import "../common/helpers/sha256.js" as Checksum
 import qs.common.theme
 import qs.services
 
@@ -20,7 +20,6 @@ Singleton {
 
   // State
   property real lastSeenTs: 0
-  // Volatile property that doesn't persist to settings (similar to nocturnalPerformanceMode)
   property bool doNotDisturb: false
 
   // Models
@@ -159,7 +158,7 @@ Singleton {
       addToHistory(data);
     }
 
-    if (root.doNotDisturb || PowerProfileService.nocturnalPerformanceMode)
+    if (root.doNotDisturb)
       return;
 
     // Check if this is a replacement notification
@@ -1117,7 +1116,7 @@ Singleton {
     if (!Settings.data.notifications.enableMediaToast || !mediaToastInitialized)
       return;
 
-    if (doNotDisturb || PowerProfileService.nocturnalPerformanceMode)
+    if (doNotDisturb)
       return;
 
     // Re-evaluate player identity here to handle race conditions where

@@ -1,9 +1,9 @@
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
-import qs.Commons
-import qs.Services.Media
-import qs.Widgets
+import qs.common.theme
+import qs.services
+import qs.widgets
 
 // Audio controls card: output and input volume controls
 RBox {

@@ -55,6 +55,19 @@ Singleton {
   // Check if cliphist is available
   Component.onCompleted: {
     checkCliphistAvailability();
+    // Connect to Rust daemon for real-time updates
+    RustiqIntegration.connect("ClipboardService", ["clipboard_updated"], function(event) {
+      if (event.type === "clipboard_updated" && event.data) {
+        root._handleRustClipboardUpdate(event.data)
+      }
+    })
+  }
+
+  function _handleRustClipboardUpdate(data) {
+    if (data.items) {
+      root.items = data.items
+      root.revision++
+    }
   }
 
   // Check dependency availability

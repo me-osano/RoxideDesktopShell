@@ -50,9 +50,9 @@
     ) // {
       # Home Manager module
       homeModules.default = { config, lib, pkgs, ... }:
-        let cfg = config.programs.rustiq;
+        let cfg = config.programs.rustiq-shell;
         in {
-          options.programs.rustiq = {
+          options.programs.rustiq-shell = {
             enable = lib.mkEnableOption "RUSTIQ desktop shell";
 
             package = lib.mkOption {
@@ -70,17 +70,17 @@
             home.packages = [ cfg.package ];
 
             # Shell config symlink
-            xdg.configFile."rustiq/quickshell".source = ./quickshell;
+            xdg.configFile."rustiq-shell/quickshell".source = ./quickshell;
 
             # Systemd user service
-            systemd.user.services.rustiq = {
+            systemd.user.services.rustiq-shell = {
               Unit = {
                 Description = "RUSTIQ desktop shell daemon";
                 After = [ "graphical-session.target" ];
                 PartOf = [ "graphical-session.target" ];
               };
               Service = {
-                ExecStart = "${cfg.package}/bin/rustiq daemon";
+                ExecStart = "${cfg.package}/bin/rustiq-shell daemon";
                 Restart = "on-failure";
                 RestartSec = "3s";
                 Environment = [ "RUSTIQ_LOG=${cfg.logLevel}" ];

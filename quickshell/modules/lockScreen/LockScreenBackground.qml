@@ -1,10 +1,8 @@
 import QtQuick
 import QtQuick.Effects
 import Quickshell
-import qs.Commons
-import qs.Services.Compositor
-import qs.Services.Power
-import qs.Services.UI
+import qs.common.theme
+import qs.services
 
 Item {
   id: root
@@ -123,7 +121,7 @@ Item {
     layer.enabled: true
     layer.smooth: false
     layer.effect: MultiEffect {
-      blurEnabled: !PowerProfileService.nocturnalPerformanceMode && (Settings.data.general.lockScreenBlur > 0)
+      blurEnabled: (Settings.data.general.lockScreenBlur > 0)
       blur: Settings.data.general.lockScreenBlur
       blurMax: 48
     }

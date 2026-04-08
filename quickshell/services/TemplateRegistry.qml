@@ -12,7 +12,7 @@ Singleton {
   readonly property string gtkRefreshScript: Quickshell.shellDir + '/Scripts/python/src/theming/gtk-refresh.py'
   readonly property string vscodeHelperScript: Quickshell.shellDir + '/Scripts/python/src/theming/vscode-helper.py'
 
-  // Dynamically resolved VSCode extension theme paths (all matching nocturnal extensions)
+  // Dynamically resolved VSCode extension theme paths (all matching rustiq extensions)
   property var resolvedCodePaths: []
   property var resolvedCodiumPaths: []
 
@@ -23,35 +23,35 @@ Singleton {
       "id": "foot",
       "name": "Foot",
       "templatePath": "terminal/foot",
-      "outputPath": "~/.config/foot/themes/nocturnal",
+      "outputPath": "~/.config/foot/themes/rustiq",
       "postHook": `${templateApplyScript} foot`
     },
     {
       "id": "ghostty",
       "name": "Ghostty",
       "templatePath": "terminal/ghostty",
-      "outputPath": "~/.config/ghostty/themes/nocturnal",
+      "outputPath": "~/.config/ghostty/themes/rustiq",
       "postHook": `${templateApplyScript} ghostty`
     },
     {
       "id": "kitty",
       "name": "Kitty",
       "templatePath": "terminal/kitty.conf",
-      "outputPath": "~/.config/kitty/themes/nocturnal.conf",
+      "outputPath": "~/.config/kitty/themes/rustiq.conf",
       "postHook": `${templateApplyScript} kitty`
     },
     {
       "id": "alacritty",
       "name": "Alacritty",
       "templatePath": "terminal/alacritty.toml",
-      "outputPath": "~/.config/alacritty/themes/nocturnal.toml",
+      "outputPath": "~/.config/alacritty/themes/rustiq.toml",
       "postHook": `${templateApplyScript} alacritty`
     },
     {
       "id": "wezterm",
       "name": "Wezterm",
       "templatePath": "terminal/wezterm.toml",
-      "outputPath": "~/.config/wezterm/colors/Nocturnal.toml",
+      "outputPath": "~/.config/wezterm/colors/Rustiq.toml",
       "postHook": `${templateApplyScript} wezterm`
     }
   ]
@@ -65,11 +65,11 @@ Singleton {
       "input": "gtk4.css",
       "outputs": [
         {
-          "path": "~/.config/gtk-3.0/nocturnal.css",
+          "path": "~/.config/gtk-3.0/rustiq.css",
           "input": "gtk3.css"
         },
         {
-          "path": "~/.config/gtk-4.0/nocturnal.css",
+          "path": "~/.config/gtk-4.0/rustiq.css",
           "input": "gtk4.css"
         }
       ],
@@ -82,10 +82,10 @@ Singleton {
       "input": "qtct.conf",
       "outputs": [
         {
-          "path": "~/.config/qt5ct/colors/nocturnal.conf"
+          "path": "~/.config/qt5ct/colors/rustiq.conf"
         },
         {
-          "path": "~/.config/qt6ct/colors/nocturnal.conf"
+          "path": "~/.config/qt6ct/colors/rustiq.conf"
         }
       ]
     },
@@ -96,10 +96,10 @@ Singleton {
       "input": "kcolorscheme.colors",
       "outputs": [
         {
-          "path": "~/.local/share/color-schemes/nocturnal.colors"
+          "path": "~/.local/share/color-schemes/rustiq.colors"
         }
       ],
-      "postProcess": () => "if command -v plasma-apply-colorscheme >/dev/null 2>&1; then plasma-apply-colorscheme BreezeDark; sleep 0.5; plasma-apply-colorscheme nocturnal; fi"
+      "postProcess": () => "if command -v plasma-apply-colorscheme >/dev/null 2>&1; then plasma-apply-colorscheme BreezeDark; sleep 0.5; plasma-apply-colorscheme rustiq; fi"
     },
     {
       "id": "fuzzel",
@@ -108,7 +108,7 @@ Singleton {
       "input": "fuzzel.conf",
       "outputs": [
         {
-          "path": "~/.config/fuzzel/themes/nocturnal"
+          "path": "~/.config/fuzzel/themes/rustiq"
         }
       ],
       "postProcess": () => `${templateApplyScript} fuzzel`
@@ -120,10 +120,10 @@ Singleton {
       "input": "vicinae.toml",
       "outputs": [
         {
-          "path": "~/.local/share/vicinae/themes/nocturnal.toml"
+          "path": "~/.local/share/vicinae/themes/rustiq.toml"
         }
       ],
-      "postProcess": () => `cp --update=none ${Quickshell.shellDir}/Assets/nocturnal.svg ~/.local/share/vicinae/themes/nocturnal.svg && ${templateApplyScript} vicinae`
+      "postProcess": () => `cp --update=none ${Quickshell.shellDir}/Assets/rustiq.svg ~/.local/share/vicinae/themes/rustiq.svg && ${templateApplyScript} vicinae`
     },
     {
       "id": "walker",
@@ -132,7 +132,7 @@ Singleton {
       "input": "walker.css",
       "outputs": [
         {
-          "path": "~/.config/walker/themes/nocturnal/style.css"
+          "path": "~/.config/walker/themes/rustiq/style.css"
         }
       ],
       "postProcess": () => `${templateApplyScript} walker`,
@@ -203,11 +203,11 @@ Singleton {
       "clients": [
         {
           "name": "code",
-          "path": "~/.vscode/extensions/nocturnal.nocturnaltheme-0.0.5/themes/NocturnalTheme-color-theme.json"
+          "path": "~/.vscode/extensions/rustiq.nocturnaltheme-0.0.5/themes/NocturnalTheme-color-theme.json"
         },
         {
           "name": "codium",
-          "path": "~/.vscode-oss/extensions/nocturnal.nocturnaltheme-0.0.5-universal/themes/NocturnalTheme-color-theme.json"
+          "path": "~/.vscode-oss/extensions/rustiq.nocturnaltheme-0.0.5-universal/themes/NocturnalTheme-color-theme.json"
         }
       ]
     },
@@ -218,7 +218,7 @@ Singleton {
       "input": "zed.json",
       "outputs": [
         {
-          "path": "~/.config/zed/themes/nocturnal.json"
+          "path": "~/.config/zed/themes/rustiq.json"
         }
       ],
       "dualMode": true // Template contains both dark and light theme patterns
@@ -230,7 +230,7 @@ Singleton {
       "input": "helix.toml",
       "outputs": [
         {
-          "path": "~/.config/helix/themes/nocturnal.toml"
+          "path": "~/.config/helix/themes/rustiq.toml"
         }
       ]
     },
@@ -253,7 +253,7 @@ Singleton {
       "input": "telegram.tdesktop-theme",
       "outputs": [
         {
-          "path": "~/.config/telegram-desktop/themes/nocturnal.tdesktop-theme"
+          "path": "~/.config/telegram-desktop/themes/rustiq.tdesktop-theme"
         }
       ]
     },
@@ -264,15 +264,15 @@ Singleton {
       "input": "zen-browser/zen-userChrome.css",
       "outputs": [
         {
-          "path": "~/.cache/nocturnal/zen-browser/zen-userChrome.css"
+          "path": "~/.cache/rustiq/zen-browser/zen-userChrome.css"
         },
         {
-          "path": "~/.cache/nocturnal/zen-browser/zen-userContent.css",
+          "path": "~/.cache/rustiq/zen-browser/zen-userContent.css",
           "input": "zen-browser/zen-userContent.css"
         }
       ],
       "postProcess": ()
-                     => "sh -c 'CSS_CHROME=\"$HOME/.cache/nocturnal/zen-browser/zen-userChrome.css\"; CSS_CONTENT=\"$HOME/.cache/nocturnal/zen-browser/zen-userContent.css\"; LINE_CHROME=\"@import \\\"$CSS_CHROME\\\";\"; LINE_CONTENT=\"@import \\\"$CSS_CONTENT\\\";\"; find \"$HOME/.config/zen\" \"$HOME/.zen\" -mindepth 2 -maxdepth 2 -type d -name chrome -print0 2>/dev/null | while IFS= read -r -d \"\" dir; do USER_CHROME=\"$dir/userChrome.css\"; USER_CONTENT=\"$dir/userContent.css\"; mkdir -p \"$dir\"; touch \"$USER_CHROME\" \"$USER_CONTENT\"; sed -i \"/zen-browser\\/zen-userChrome\\.css/d\" \"$USER_CHROME\"; sed -i \"/zen-browser\\/zen-userContent\\.css/d\" \"$USER_CONTENT\"; if ! grep -Fq \"$LINE_CHROME\" \"$USER_CHROME\"; then printf \"%s\\n\" \"$LINE_CHROME\" >> \"$USER_CHROME\"; fi; if ! grep -Fq \"$LINE_CONTENT\" \"$USER_CONTENT\"; then printf \"%s\\n\" \"$LINE_CONTENT\" >> \"$USER_CONTENT\"; fi; done'"
+                     => "sh -c 'CSS_CHROME=\"$HOME/.cache/rustiq/zen-browser/zen-userChrome.css\"; CSS_CONTENT=\"$HOME/.cache/rustiq/zen-browser/zen-userContent.css\"; LINE_CHROME=\"@import \\\"$CSS_CHROME\\\";\"; LINE_CONTENT=\"@import \\\"$CSS_CONTENT\\\";\"; find \"$HOME/.config/zen\" \"$HOME/.zen\" -mindepth 2 -maxdepth 2 -type d -name chrome -print0 2>/dev/null | while IFS= read -r -d \"\" dir; do USER_CHROME=\"$dir/userChrome.css\"; USER_CONTENT=\"$dir/userContent.css\"; mkdir -p \"$dir\"; touch \"$USER_CHROME\" \"$USER_CONTENT\"; sed -i \"/zen-browser\\/zen-userChrome\\.css/d\" \"$USER_CHROME\"; sed -i \"/zen-browser\\/zen-userContent\\.css/d\" \"$USER_CONTENT\"; if ! grep -Fq \"$LINE_CHROME\" \"$USER_CHROME\"; then printf \"%s\\n\" \"$LINE_CHROME\" >> \"$USER_CHROME\"; fi; if ! grep -Fq \"$LINE_CONTENT\" \"$USER_CONTENT\"; then printf \"%s\\n\" \"$LINE_CONTENT\" >> \"$USER_CONTENT\"; fi; done'"
     },
     {
       "id": "cava",
@@ -281,7 +281,7 @@ Singleton {
       "input": "cava.ini",
       "outputs": [
         {
-          "path": "~/.config/cava/themes/nocturnal"
+          "path": "~/.config/cava/themes/rustiq"
         }
       ],
       "postProcess": () => `${templateApplyScript} cava`
@@ -293,7 +293,7 @@ Singleton {
       "input": "yazi.toml",
       "outputs": [
         {
-          "path": "~/.config/yazi/flavors/nocturnal.yazi/flavor.toml"
+          "path": "~/.config/yazi/flavors/rustiq.yazi/flavor.toml"
         }
       ],
       "postProcess": () => `${templateApplyScript} yazi`
@@ -323,7 +323,7 @@ Singleton {
       "input": "niri.kdl",
       "outputs": [
         {
-          "path": "~/.config/niri/nocturnal.kdl"
+          "path": "~/.config/niri/rustiq.kdl"
         }
       ],
       "postProcess": () => `${templateApplyScript} niri`
@@ -335,7 +335,7 @@ Singleton {
       "input": "sway",
       "outputs": [
         {
-          "path": "~/.config/sway/nocturnal"
+          "path": "~/.config/sway/rustiq"
         }
       ],
       "postProcess": () => `${templateApplyScript} sway`
@@ -347,7 +347,7 @@ Singleton {
       "input": "sway",
       "outputs": [
         {
-          "path": "~/.config/scroll/nocturnal"
+          "path": "~/.config/scroll/rustiq"
         }
       ],
       "postProcess": () => `${templateApplyScript} scroll`
@@ -359,7 +359,7 @@ Singleton {
       "input": "hyprland.conf",
       "outputs": [
         {
-          "path": "~/.config/hypr/nocturnal/nocturnal-colors.conf"
+          "path": "~/.config/hypr/rustiq/rustiq-colors.conf"
         }
       ],
       "postProcess": () => `${templateApplyScript} hyprland`
@@ -382,7 +382,7 @@ Singleton {
       "input": "mango.conf",
       "outputs": [
         {
-          "path": "~/.config/mango/nocturnal.conf"
+          "path": "~/.config/mango/rustiq.conf"
         }
       ],
       "postProcess": () => `${templateApplyScript} mango`
@@ -394,7 +394,7 @@ Singleton {
       "input": "btop.theme",
       "outputs": [
         {
-          "path": "~/.config/btop/themes/nocturnal.theme"
+          "path": "~/.config/btop/themes/rustiq.theme"
         }
       ],
       "postProcess": () => `${templateApplyScript} btop`
@@ -433,7 +433,7 @@ Singleton {
                                    clients.push({
                                                   "name": client.name,
                                                   "configPath": client.path,
-                                                  "themePath": `${client.path}/themes/nocturnal.theme.css`
+                                                  "themePath": `${client.path}/themes/rustiq.theme.css`
                                                 });
                                  });
     }
@@ -520,13 +520,13 @@ Singleton {
     lines.push("# Add your custom templates below");
     lines.push("# Example:");
     lines.push("# [templates.myapp]");
-    lines.push("# input_path = \"~/.config/nocturnal/templates/myapp.css\"");
+    lines.push("# input_path = \"~/.config/rustiq/templates/myapp.css\"");
     lines.push("# output_path = \"~/.config/myapp/theme.css\"");
     lines.push("# post_hook = \"myapp --reload-theme\"");
     lines.push("");
     lines.push("# Remove this section and add your own templates");
     lines.push("#[templates.placeholder]");
-    lines.push("#input_path = \"" + Quickshell.shellDir + "/Assets/Templates/nocturnal.json\"");
+    lines.push("#input_path = \"" + Quickshell.shellDir + "/Assets/Templates/rustiq.json\"");
     lines.push("#output_path = \"" + Settings.cacheDir + "placeholder.json\"");
     lines.push("");
 

@@ -348,7 +348,7 @@ Singleton {
   ]
 
   // --------------------------------
-  // Default colors: Nocturnal (default) dark — must match Assets/ColorScheme/Nocturnal-default
+  // Default colors: Rustiq (default) dark — must match Assets/ColorScheme/Rustiq-default
   QtObject {
     id: defaultColors
 

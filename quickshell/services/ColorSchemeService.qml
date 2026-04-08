@@ -60,10 +60,10 @@ Singleton {
     var filename = chunks[chunks.length - 1];
     var schemeName = filename.replace(".json", "");
     // Convert back to display names for special cases
-    if (schemeName === "Nocturnal-default") {
-      return "Nocturnal (default)";
-    } else if (schemeName === "Nocturnal-legacy") {
-      return "Nocturnal (legacy)";
+    if (schemeName === "Rustiq-default") {
+      return "Rustiq (default)";
+    } else if (schemeName === "Rustiq-legacy") {
+      return "Rustiq (legacy)";
     } else if (schemeName === "Tokyo-Night") {
       return "Tokyo Night";
     } else if (schemeName === "Rosepine") {
@@ -78,12 +78,12 @@ Singleton {
     if (nameOrPath.indexOf("/") !== -1) {
       return nameOrPath;
     }
-    // Handle special cases for Nocturnal schemes
+    // Handle special cases for Rustiq schemes
     var schemeName = nameOrPath.replace(".json", "");
-    if (schemeName === "Nocturnal (default)") {
-      schemeName = "Nocturnal-default";
-    } else if (schemeName === "Nocturnal (legacy)") {
-      schemeName = "Nocturnal-legacy";
+    if (schemeName === "Rustiq (default)") {
+      schemeName = "Rustiq-default";
+    } else if (schemeName === "Rustiq (legacy)") {
+      schemeName = "Rustiq-legacy";
     } else if (schemeName === "Tokyo Night") {
       schemeName = "Tokyo-Night";
     } else if (schemeName === "Rose Pine") {

@@ -37,7 +37,7 @@ Singleton {
   property string wallpaperCacheFile: ""
 
   readonly property bool scanning: (scanningCount > 0)
-  readonly property string nocturnalDefaultWallpaper: Quickshell.shellDir + "/Assets/Wallpaper/nocturnal.png"
+  readonly property string nocturnalDefaultWallpaper: Quickshell.shellDir + "/Assets/Wallpaper/rustiq.png"
   property string defaultWallpaper: nocturnalDefaultWallpaper
 
   // Signals for reactive UI updates
@@ -1091,13 +1091,13 @@ Singleton {
       root.currentWallpapers = wallpaperCacheAdapter.wallpapers || {};
       root.usedRandomWallpapers = wallpaperCacheAdapter.usedRandomWallpapers || {};
 
-      // Load default wallpaper from cache if it exists, otherwise use Nocturnal default
+      // Load default wallpaper from cache if it exists, otherwise use Rustiq default
       if (wallpaperCacheAdapter.defaultWallpaper && wallpaperCacheAdapter.defaultWallpaper !== "") {
         root.defaultWallpaper = wallpaperCacheAdapter.defaultWallpaper;
         Logger.d("Wallpaper", "Loaded default wallpaper from cache:", wallpaperCacheAdapter.defaultWallpaper);
       } else {
         root.defaultWallpaper = root.nocturnalDefaultWallpaper;
-        Logger.d("Wallpaper", "Using Nocturnal default wallpaper");
+        Logger.d("Wallpaper", "Using Rustiq default wallpaper");
       }
 
       Logger.d("Wallpaper", "Loaded wallpapers from cache file:", Object.keys(root.currentWallpapers).length, "screens");

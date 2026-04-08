@@ -19,7 +19,6 @@ Singleton {
                            "PowerProfile": powerProfileComponent,
                            "WiFi": networkComponent,
                            "Network": networkComponent,
-                           "NocturnalPerformance": nocturnalPerformanceComponent,
                            "WallpaperSelector": wallpaperSelectorComponent
                          })
 
@@ -62,9 +61,6 @@ Singleton {
   }
   property Component networkComponent: Component {
     Network {}
-  }
-  property Component nocturnalPerformanceComponent: Component {
-    NocturnalPerformance {}
   }
   property Component wallpaperSelectorComponent: Component {
     WallpaperSelector {}

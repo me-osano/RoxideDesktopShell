@@ -2,12 +2,11 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
-import qs.Commons
-import qs.Modules.Cards
-import qs.Modules.MainScreen
-import qs.Services.Media
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.cards
+import qs.modules.mainScreen
+import qs.services
+import qs.widgets
 
 SmartPanel {
   id: root

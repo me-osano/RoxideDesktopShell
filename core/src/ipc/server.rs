@@ -23,14 +23,15 @@ pub fn socket_path() -> PathBuf {
 
 pub async fn serve(state: AppState) -> Result<()> {
     let path = socket_path();
-    let addr = "127.0.0.1:18972";
+    let addr = format!("127.0.0.1:{}", std::env::var("RUSTIQ_PORT").unwrap_or_else(|_| "8765".to_string()));
+    let addr_display = &addr;
 
     if path.exists() {
         std::fs::remove_file(&path)?;
     }
 
     let listener = TcpListener::bind(addr).await?;
-    info!("RUSTIQ IPC listening on {} (-> {})", addr, path.display());
+    info!("RUSTIQ IPC listening on {} (-> {})", addr_display, path.display());
 
     let router = Router::new()
         .route("/events", get(sse_handler))

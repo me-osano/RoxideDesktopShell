@@ -3,12 +3,9 @@ import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
-import qs.Commons
-import qs.Services.Hardware
-import qs.Services.Keyboard
-import qs.Services.Media
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.services
+import qs.widgets
 
 // Unified OSD component that displays volume, input volume, and brightness changes
 Variants {
@@ -493,7 +490,7 @@ Variants {
       implicitHeight: verticalMode ? (isShortMode ? lockKeyVHeight : longVHeight) : longHHeight
       color: "transparent"
 
-      WlrLayershell.namespace: "nocturnal-osd-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "rustiq-osd-" + (screen?.name || "unknown")
       WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
       WlrLayershell.layer: Settings.data.osd?.overlayLayer ? WlrLayer.Overlay : WlrLayer.Top
       WlrLayershell.exclusionMode: ExclusionMode.Ignore

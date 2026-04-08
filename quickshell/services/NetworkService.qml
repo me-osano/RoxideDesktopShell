@@ -118,6 +118,21 @@ Singleton {
       refreshActiveWifiDetails();
       refreshActiveEthernetDetails();
     }
+    // Connect to Rust daemon for real-time updates (falls back gracefully)
+    RustiqIntegration.connect("NetworkService", ["network_updated"], function(event) {
+      if (event.type === "network_updated" && event.data) {
+        root._handleRustNetworkUpdate(event.data)
+      }
+    })
+  }
+
+  function _handleRustNetworkUpdate(data) {
+    if (data.state) {
+      var state = data.state
+      if (state.wifi_enabled !== undefined) {
+        Settings.data.network.wifiEnabled = state.wifi_enabled
+      }
+    }
   }
 
   // Start initial checks when nmcli becomes available

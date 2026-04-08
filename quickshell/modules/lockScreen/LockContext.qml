@@ -2,8 +2,8 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pam
-import qs.Commons
-import qs.Services.System
+import qs.common.theme
+import qs.services
 
 Scope {
   id: root

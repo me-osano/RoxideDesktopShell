@@ -3,7 +3,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import qs.common.theme
-import qs.modules.widgets.desktopWidgets
+import qs.modules.desktopWidgets.widgets
 
 Singleton {
   id: root

@@ -1,6 +1,6 @@
 import QtQuick
 import Quickshell
-import qs.Commons
+import qs.common.theme
 
 Item {
   property var launcher: null

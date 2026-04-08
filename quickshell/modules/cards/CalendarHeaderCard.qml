@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
-import qs.Commons
-import qs.Services
-import qs.Widgets
+import qs.common.theme
+import qs.services
+import qs.widgets
 
 // Calendar header with date, month/year, location, and clock
 Rectangle {

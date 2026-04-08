@@ -3,14 +3,12 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Bluetooth
-import "../Settings/Tabs/Connections" as BluetoothPrefs
-import qs.Commons
-import qs.Modules.MainScreen
-import qs.Modules.Panels.Settings
-import qs.Services.Hardware
-import qs.Services.Networking
-import qs.Services.UI
-import qs.Widgets
+import "../settings/tabs/connections" as BluetoothPrefs
+import qs.common.theme
+import qs.modules.mainScreen
+import qs.modules.panels.settings
+import qs.services
+import qs.widgets
 
 SmartPanel {
   id: root

@@ -4,13 +4,11 @@ import QtQuick.Effects
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Widgets
-import qs.Commons
-import qs.Modules.Bar.Extras
-import qs.Modules.Panels.Settings
-import qs.Services.Networking
-import qs.Services.System
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.bar.extras
+import qs.modules.panels.settings
+import qs.services
+import qs.widgets
 
 Item {
   id: root

@@ -6,11 +6,10 @@ import QtQuick.Window
 import Quickshell
 import Quickshell.Io
 import Quickshell.Widgets
-import qs.Commons
-import qs.Modules.Bar.Extras
-import qs.Services.Compositor
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.modules.bar.extras
+import qs.services
+import qs.widgets
 
 Item {
   id: root

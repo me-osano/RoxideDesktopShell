@@ -1,7 +1,7 @@
 import QtQuick
 import Quickshell
-import qs.Commons
-import qs.Services.Compositor
+import qs.common.theme
+import qs.services
 
 Item {
   id: root

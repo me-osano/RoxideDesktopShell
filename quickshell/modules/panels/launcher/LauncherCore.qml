@@ -5,10 +5,9 @@ import Quickshell
 import Quickshell.Widgets
 
 import "Providers"
-import qs.Commons
-import qs.Services.Keyboard
-import qs.Services.UI
-import qs.Widgets
+import qs.common.theme
+import qs.services
+import qs.widgets
 
 // Core launcher logic and UI - shared between SmartPanel (Launcher.qml) and overlay (LauncherOverlayWindow.qml)
 Rectangle {
