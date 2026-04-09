@@ -44,19 +44,20 @@ cargo build --release
 ## Running
 
 ```bash
-# Start daemon
-rustiq daemon
+# Process management (like DMS)
+rustiq daemon          # Start only the daemon
+rustiq run-rqs         # Run full shell (daemon + Quickshell UI)
+rustiq run-rqs -d      # Run in daemon mode (background)
+rustiq restart        # Restart RUSTIQ
+rustiq kill           # Stop RUSTIQ
 
-# Or via CLI
+# CLI utilities
 rustiq status
 rustiq sysmon
 rustiq search "query"
 rustiq weather
 rustiq niri workspaces
-
-# Start quickshell
-rustiq-shell run
-````
+```
 
 ## IPC API
 

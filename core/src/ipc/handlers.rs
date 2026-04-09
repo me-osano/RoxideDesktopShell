@@ -12,9 +12,18 @@ pub async fn ping() -> impl IntoResponse {
     Json(serde_json::json!({ "pong": true, "version": env!("CARGO_PKG_VERSION") }))
 }
 
+pub async fn shutdown() -> impl IntoResponse {
+    std::process::exit(0);
+}
+
 pub async fn sysmon(State(state): State<AppState>) -> impl IntoResponse {
     let snap = state.inner.sysmon.read().await.clone();
     Json(snap)
+}
+
+pub async fn sysmon_processes(State(state): State<AppState>) -> impl IntoResponse {
+    let procs = state.inner.sysmon_processes.read().await.clone();
+    Json(procs)
 }
 
 pub async fn weather(State(state): State<AppState>) -> impl IntoResponse {

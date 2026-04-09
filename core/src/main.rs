@@ -29,12 +29,14 @@ async fn main() -> Result<()> {
     match cmd.command {
         Command::Daemon => run_daemon().await,
         Command::Status => cmd::status().await,
-        Command::Sysmon => cmd::sysmon_snapshot().await,
+        Command::RunRqs { daemon, session } => cmd::run_rqs(daemon, session).await,
+        Command::Restart => cmd::restart_rqs().await,
+        Command::Kill => cmd::kill_rqs().await,
+        Command::Sysmon { verbose, json } => cmd::sysmon_snapshot(verbose, json).await,
         Command::Search { query, limit } => cmd::search(query, limit).await,
         Command::Weather => cmd::weather_snapshot().await,
         Command::Niri { subcommand } => cmd::niri_cmd(subcommand).await,
         Command::Brightness { subcommand } => cmd::brightness_cmd(subcommand).await,
-        Command::Doctor => cmd::doctor().await,
     }
 }
 
@@ -46,6 +48,11 @@ async fn run_daemon() -> Result<()> {
     let sysmon_state = state.clone();
     tokio::spawn(async move {
         sysmon::worker(sysmon_state).await;
+    });
+
+    let sysmon_procs_state = state.clone();
+    tokio::spawn(async move {
+        sysmon::processes_worker(sysmon_procs_state).await;
     });
 
     let niri_state = state.clone();

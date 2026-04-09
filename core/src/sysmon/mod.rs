@@ -1,12 +1,12 @@
 use serde::{Deserialize, Serialize};
-use sysinfo::{Disks, Networks, System};
+use sysinfo::{Disks, Networks, ProcessStatus, System};
 use tokio::time::{Duration, interval};
 use tracing::debug;
 
 use crate::ipc::{AppState, Event};
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
-pub struct SysmonSnapshot {
+pub struct SystemMonitor {
     pub cpu: CpuInfo,
     pub memory: MemInfo,
     pub network: Vec<NetIface>,
@@ -14,6 +14,34 @@ pub struct SysmonSnapshot {
     pub processes: Vec<ProcessInfo>,
     pub uptime_secs: u64,
     pub load_avg: [f64; 3],
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct SystemProcesses {
+    pub total: usize,
+    pub running: usize,
+    pub sleeping: usize,
+    pub stopped: usize,
+    pub zombie: usize,
+    pub processes: Vec<ProcessDetail>,
+}
+
+#[derive(Clone, Debug, Default, Serialize, Deserialize)]
+pub struct ProcessDetail {
+    pub pid: u32,
+    pub name: String,
+    pub cmd: Vec<String>,
+    pub exe: String,
+    pub cpu_percent: f32,
+    pub mem_percent: f32,
+    pub mem_kb: u64,
+    pub virtual_mem_kb: u64,
+    pub status: String,
+    pub user: String,
+    pub start_time: u64,
+    pub cpu_usage: f32,
+    pub num_threads: usize,
+    pub root: String,
 }
 
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -83,7 +111,20 @@ pub async fn worker(state: AppState) {
     }
 }
 
-fn build_snapshot(sys: &System, networks: &Networks, disks: &Disks) -> SysmonSnapshot {
+pub async fn processes_worker(state: AppState) {
+    let mut sys = System::new_all();
+    let mut ticker = interval(Duration::from_secs(5));
+
+    loop {
+        ticker.tick().await;
+        sys.refresh_processes();
+
+        let procs = build_processes(&sys);
+        *state.inner.sysmon_processes.write().await = procs;
+    }
+}
+
+fn build_snapshot(sys: &System, networks: &Networks, disks: &Disks) -> SystemMonitor {
     let cpus = sys.cpus();
     let usage = cpus.iter().map(|c| c.cpu_usage()).sum::<f32>() / cpus.len() as f32;
 
@@ -143,7 +184,7 @@ fn build_snapshot(sys: &System, networks: &Networks, disks: &Disks) -> SysmonSna
 
     let load = System::load_average();
 
-    SysmonSnapshot {
+    SystemMonitor {
         cpu,
         memory: mem,
         network,
@@ -151,5 +192,68 @@ fn build_snapshot(sys: &System, networks: &Networks, disks: &Disks) -> SysmonSna
         processes: procs,
         uptime_secs: System::uptime(),
         load_avg: [load.one, load.five, load.fifteen],
+    }
+}
+
+pub fn build_processes(sys: &System) -> SystemProcesses {
+    let processes = sys.processes();
+    let total = processes.len();
+    
+    let mut running = 0;
+    let mut sleeping = 0;
+    let mut stopped = 0;
+    let mut zombie = 0;
+    
+    let mut process_details: Vec<ProcessDetail> = processes
+        .iter()
+        .map(|(pid, p)| {
+            let status = match p.status() {
+                ProcessStatus::Run => {
+                    running += 1;
+                    "running"
+                }
+                ProcessStatus::Sleep => {
+                    sleeping += 1;
+                    "sleeping"
+                }
+                ProcessStatus::Stop => {
+                    stopped += 1;
+                    "stopped"
+                }
+                ProcessStatus::Zombie => {
+                    zombie += 1;
+                    "zombie"
+                }
+                _ => "unknown",
+            };
+            
+            ProcessDetail {
+                pid: pid.as_u32(),
+                name: p.name().to_string(),
+                cmd: p.cmd().iter().map(|s| s.to_string()).collect(),
+                exe: p.exe().map(|s| s.to_string_lossy().to_string()).unwrap_or_default(),
+                cpu_percent: p.cpu_usage(),
+                mem_percent: p.memory() as f32 / sys.total_memory() as f32 * 100.0,
+                mem_kb: p.memory() / 1024,
+                virtual_mem_kb: p.virtual_memory() / 1024,
+                status: status.to_string(),
+                user: String::new(),
+                start_time: p.start_time(),
+                cpu_usage: p.cpu_usage(),
+                num_threads: 1,
+                root: String::new(),
+            }
+        })
+        .collect();
+    
+    process_details.sort_by(|a, b| b.cpu_percent.partial_cmp(&a.cpu_percent).unwrap());
+    
+    SystemProcesses {
+        total,
+        running,
+        sleeping,
+        stopped,
+        zombie,
+        processes: process_details,
     }
 }

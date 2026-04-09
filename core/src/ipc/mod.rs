@@ -10,7 +10,7 @@ use tokio_stream::wrappers::BroadcastStream;
 
 use crate::niri::NiriState;
 use crate::notify::NotificationStore;
-use crate::sysmon::SysmonSnapshot;
+use crate::sysmon::{SystemMonitor, SystemProcesses};
 use crate::weather::WeatherSnapshot;
 
 #[derive(Clone)]
@@ -19,7 +19,8 @@ pub struct AppState {
 }
 
 pub struct Inner {
-    pub sysmon: RwLock<SysmonSnapshot>,
+    pub sysmon: RwLock<SystemMonitor>,
+    pub sysmon_processes: RwLock<SystemProcesses>,
     pub weather: RwLock<Option<WeatherSnapshot>>,
     pub niri: RwLock<NiriState>,
     pub notifications: RwLock<NotificationStore>,
@@ -36,7 +37,8 @@ impl AppState {
         let (tx, _) = broadcast::channel(256);
         Ok(Self {
             inner: Arc::new(Inner {
-                sysmon: RwLock::new(SysmonSnapshot::default()),
+                sysmon: RwLock::new(SystemMonitor::default()),
+                sysmon_processes: RwLock::new(SystemProcesses::default()),
                 weather: RwLock::new(None),
                 niri: RwLock::new(NiriState::default()),
                 notifications: RwLock::new(NotificationStore::default()),

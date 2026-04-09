@@ -10,35 +10,51 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, rust-overlay }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ rust-overlay.overlays.default ];
-        };
-
-        rustToolchain = pkgs.rust-bin.stable.latest.default;
-
-        rustiqCore = pkgs.rustPlatform.buildRustPackage {
-          pname = "rustiq";
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      rust-overlay,
+    }:
+    let
+      coreSrc = ./core;
+      cargoHash = "sha256-6f30c75cf061b51ba17b3cb8dc9486346ff2f8fb40ae2b4d2856e70c387c81f0";
+      overlay = final: prev: {
+        rustiq-shell = final.pkgsStatic.rustPlatform.buildRustPackage {
+          pname = "rustiq-shell";
           version = "0.1.0";
-          src = ./core;
-          cargoLock.lockFile = ./core/Cargo.lock;
+          src = coreSrc;
+          inherit cargoHash;
 
-          nativeBuildInputs = with pkgs; [ pkg-config ];
-          buildInputs = with pkgs; [
+          nativeBuildInputs = with final.pkgs; [ pkg-config ];
+          buildInputs = with final.pkgs; [
             openssl
             dbus
           ];
         };
+      };
+    in
+    flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            rust-overlay.overlays.default
+            overlay
+          ];
+        };
       in
       {
-        packages.default = rustiqCore;
+        packages.default = pkgs.rustiq-shell;
+        packages.x86_64-linux = pkgs.rustiq-shell;
 
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            rustToolchain
+            (pkgs.rust-bin.stable.latest.default.override {
+              targets = [ pkgs.rust-bin.stable.latest.default.RustTarget.x86_64-unknown-linux-gnu ];
+            })
             pkg-config
             openssl
             dbus
@@ -47,11 +63,20 @@
           ];
         };
       }
-    ) // {
+    )
+    // {
       # Home Manager module
-      homeModules.default = { config, lib, pkgs, ... }:
-        let cfg = config.programs.rustiq-shell;
-        in {
+      homeModules.default =
+        {
+          config,
+          lib,
+          pkgs,
+          ...
+        }:
+        let
+          cfg = config.programs.rustiq-shell;
+        in
+        {
           options.programs.rustiq-shell = {
             enable = lib.mkEnableOption "RUSTIQ desktop shell";
 
@@ -69,10 +94,8 @@
           config = lib.mkIf cfg.enable {
             home.packages = [ cfg.package ];
 
-            # Shell config symlink
             xdg.configFile."rustiq-shell/quickshell".source = ./quickshell;
 
-            # Systemd user service
             systemd.user.services.rustiq-shell = {
               Unit = {
                 Description = "RUSTIQ desktop shell daemon";

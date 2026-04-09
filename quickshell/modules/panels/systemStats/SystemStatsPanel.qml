@@ -6,6 +6,7 @@ import qs.modules.mainScreen
 import qs.common.theme
 import qs.services
 import qs.widgets
+import "views"
 
 SmartPanel {
   id: root
@@ -20,7 +21,6 @@ SmartPanel {
     property real contentPreferredHeight: mainColumn.implicitHeight + Style.margin2L
     readonly property real cardHeight: 90 * Style.uiScaleRatio
 
-    // Get diskPath from bar's SystemMonitor widget if available, otherwise use "/"
     readonly property string diskPath: {
       const sysMonWidget = BarService.lookupWidget("SystemMonitor");
       if (sysMonWidget && sysMonWidget.diskPath) {
@@ -28,6 +28,35 @@ SmartPanel {
       }
       return "/";
     }
+
+    property int currentTab: 0
+
+    // Kernel and architecture info
+    readonly property string kernelText: {
+        const parts = procVersionText.split(" ");
+        if (parts.length >= 3) {
+            return parts[2];
+        }
+        return procVersionText;
+    }
+    readonly property string archText: {
+        if (SysmonService.cpuModel && SystemStatService.nproc > 0) {
+            const arch = SysmonService.cpuModel.includes("ARM") ? "aarch64" : "x86_64";
+            return arch;
+        }
+        return "--";
+    }
+
+    // FileView for kernel version
+    FileView {
+        id: procVersionFile
+        path: "/proc/version"
+        printErrors: false
+        onLoaded: {
+            procVersionText = text().trim();
+        }
+    }
+    property string procVersionText: ""
 
     ColumnLayout {
       id: mainColumn
@@ -71,327 +100,70 @@ SmartPanel {
         }
       }
 
-      // CPU Card (dual-line: usage % + temperature °C)
+      // TAB BAR
       RBox {
         Layout.fillWidth: true
-        Layout.preferredHeight: panelContent.cardHeight
+        implicitHeight: tabRow.implicitHeight + Style.marginS
 
-        ColumnLayout {
+        RowLayout {
+          id: tabRow
           anchors.fill: parent
           anchors.margins: Style.marginS
-          anchors.bottomMargin: Style.radiusM * 0.5
           spacing: Style.marginXS
 
-          RowLayout {
+          TabButton {
+            text: "Performance"
+            checked: panelContent.currentTab === 0
+            onCheckedChanged: if (checked) panelContent.currentTab = 0
             Layout.fillWidth: true
-            spacing: Style.marginXS
-
-            RIcon {
-              icon: "cpu-usage"
-              pointSize: Style.fontSizeXS
-              color: Color.mPrimary
-            }
-
-            RText {
-              text: `${Math.round(SystemStatService.cpuUsage)}% (${SystemStatService.cpuFreq.replace(/[^0-9.]/g, "")} GHz)`
-              pointSize: Style.fontSizeXS
-              color: Color.mPrimary
-              font.family: Settings.data.ui.fontFixed
-            }
-
-            RIcon {
-              icon: "cpu-temperature"
-              pointSize: Style.fontSizeXS
-              color: Color.mSecondary
-            }
-
-            RText {
-              text: `${Math.round(SystemStatService.cpuTemp)}°C`
-              pointSize: Style.fontSizeXS
-              color: Color.mSecondary
-              font.family: Settings.data.ui.fontFixed
-              Layout.rightMargin: Style.marginS
-            }
-
-            Item {
-              Layout.fillWidth: true
-            }
-
-            RText {
-              text: "CPU usage"
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurfaceVariant
-            }
           }
 
-          RGraph {
+          TabButton {
+            text: "Processes"
+            checked: panelContent.currentTab === 1
+            onCheckedChanged: if (checked) panelContent.currentTab = 1
             Layout.fillWidth: true
-            Layout.fillHeight: true
-            values: SystemStatService.cpuHistory
-            values2: SystemStatService.cpuTempHistory
-            minValue: 0
-            maxValue: 100
-            minValue2: Math.max(SystemStatService.cpuTempHistoryMin - 5, 0)
-            maxValue2: Math.max(SystemStatService.cpuTempHistoryMax + 5, 1)
-            color: Color.mPrimary
-            color2: Color.mSecondary
-            fill: true
-            fillOpacity: 0.15
-            updateInterval: SystemStatService.cpuUsageIntervalMs
+          }
+
+          TabButton {
+            text: "System"
+            checked: panelContent.currentTab === 2
+            onCheckedChanged: if (checked) panelContent.currentTab = 2
+            Layout.fillWidth: true
+          }
+
+          TabButton {
+            text: "Disks"
+            checked: panelContent.currentTab === 3
+            onCheckedChanged: if (checked) panelContent.currentTab = 3
+            Layout.fillWidth: true
           }
         }
       }
 
-      // Memory Card (single-line + optional swap indicator)
-      RBox {
+      // TAB CONTENT
+      Item {
         Layout.fillWidth: true
-        Layout.preferredHeight: panelContent.cardHeight
+        Layout.fillHeight: true
 
-        ColumnLayout {
-          anchors.fill: parent
-          anchors.margins: Style.marginS
-          anchors.bottomMargin: Style.radiusM * 0.5
-          spacing: Style.marginXS
-
-          RowLayout {
-            Layout.fillWidth: true
-            spacing: Style.marginXS
-
-            RIcon {
-              icon: "memory"
-              pointSize: Style.fontSizeXS
-              color: Color.mPrimary
-            }
-
-            RText {
-              text: `${Math.round(SystemStatService.memPercent)}% (${SystemStatService.formatGigabytes(SystemStatService.memGb).replace(/[^0-9.]/g, "")} GB)`
-              pointSize: Style.fontSizeXS
-              color: Color.mPrimary
-              font.family: Settings.data.ui.fontFixed
-            }
-
-            Item {
-              Layout.fillWidth: true
-            }
-
-            RText {
-              text: "Memory"
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurfaceVariant
-            }
-          }
-
-          RGraph {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            values: SystemStatService.memHistory
-            minValue: 0
-            maxValue: 100
-            color: Color.mPrimary
-            fill: true
-            fillOpacity: 0.15
-            updateInterval: SystemStatService.memIntervalMs
-          }
+        PerformanceView {
+            anchors.fill: parent
+            visible: panelContent.currentTab === 0
         }
-      }
 
-      // Network Card (dual-line: RX + TX speeds)
-      RBox {
-        Layout.fillWidth: true
-        Layout.preferredHeight: panelContent.cardHeight
-
-        ColumnLayout {
-          anchors.fill: parent
-          anchors.margins: Style.marginS
-          anchors.bottomMargin: Style.radiusM * 0.5
-          spacing: Style.marginXS
-
-          RowLayout {
-            Layout.fillWidth: true
-            spacing: Style.marginXS
-
-            RIcon {
-              icon: "download-speed"
-              pointSize: Style.fontSizeXS
-              color: Color.mPrimary
-            }
-
-            RText {
-              text: SystemStatService.formatSpeed(SystemStatService.rxSpeed).replace(/([0-9.]+)([A-Za-z]+)/, "$1 $2") + "/s"
-              pointSize: Style.fontSizeXS
-              color: Color.mPrimary
-              font.family: Settings.data.ui.fontFixed
-              Layout.rightMargin: Style.marginS
-            }
-
-            RIcon {
-              icon: "upload-speed"
-              pointSize: Style.fontSizeXS
-              color: Color.mSecondary
-            }
-
-            RText {
-              text: SystemStatService.formatSpeed(SystemStatService.txSpeed).replace(/([0-9.]+)([A-Za-z]+)/, "$1 $2") + "/s"
-              pointSize: Style.fontSizeXS
-              color: Color.mSecondary
-              font.family: Settings.data.ui.fontFixed
-            }
-
-            Item {
-              Layout.fillWidth: true
-            }
-
-            RText {
-              text: "Network"
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurfaceVariant
-            }
-          }
-
-          RGraph {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            values: SystemStatService.rxSpeedHistory
-            values2: SystemStatService.txSpeedHistory
-            minValue: 0
-            maxValue: SystemStatService.rxMaxSpeed
-            minValue2: 0
-            maxValue2: SystemStatService.txMaxSpeed
-            color: Color.mPrimary
-            color2: Color.mSecondary
-            fill: true
-            fillOpacity: 0.15
-            updateInterval: SystemStatService.networkIntervalMs
-            animateScale: true
-          }
+        ProcessesView {
+            anchors.fill: parent
+            visible: panelContent.currentTab === 1
         }
-      }
 
-      // Detailed Stats section
-      RBox {
-        Layout.fillWidth: true
-        implicitHeight: detailsColumn.implicitHeight + Style.margin2M
+        SystemView {
+            anchors.fill: parent
+            visible: panelContent.currentTab === 2
+        }
 
-        ColumnLayout {
-          id: detailsColumn
-          anchors.left: parent.left
-          anchors.right: parent.right
-          anchors.top: parent.top
-          anchors.margins: Style.marginM
-          spacing: Style.marginXS
-
-          // Load Average
-          RowLayout {
-            Layout.fillWidth: true
-            spacing: Style.marginS
-            visible: SystemStatService.nproc > 0
-
-            RIcon {
-              icon: "cpu-usage"
-              pointSize: Style.fontSizeM
-              color: Color.mPrimary
-            }
-
-            RText {
-              text: "Load average" + ":"
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurfaceVariant
-            }
-
-            RText {
-              text: `${SystemStatService.loadAvg1.toFixed(2)} • ${SystemStatService.loadAvg5.toFixed(2)} • ${SystemStatService.loadAvg15.toFixed(2)}`
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurface
-              Layout.fillWidth: true
-              horizontalAlignment: Text.AlignRight
-            }
-          }
-
-          // GPU Temperature (only if available)
-          RowLayout {
-            Layout.fillWidth: true
-            spacing: Style.marginS
-            visible: SystemStatService.gpuAvailable
-
-            RIcon {
-              icon: "gpu-temperature"
-              pointSize: Style.fontSizeM
-              color: Color.mPrimary
-            }
-
-            RText {
-              text: "GPU temp" + ":"
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurfaceVariant
-            }
-
-            RText {
-              text: `${Math.round(SystemStatService.gpuTemp)}°C`
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurface
-              Layout.fillWidth: true
-              horizontalAlignment: Text.AlignRight
-            }
-          }
-
-          // Disk usage
-          RowLayout {
-            Layout.fillWidth: true
-            spacing: Style.marginS
-
-            RIcon {
-              icon: "storage"
-              pointSize: Style.fontSizeM
-              color: Color.mPrimary
-            }
-
-            RText {
-              text: "Disk" + ":"
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurfaceVariant
-            }
-
-            RText {
-              text: {
-                const usedGb = SystemStatService.diskUsedGb[panelContent.diskPath] || 0;
-                const sizeGb = SystemStatService.diskSizeGb[panelContent.diskPath] || 0;
-                const percent = SystemStatService.diskPercents[panelContent.diskPath] || 0;
-                return `${percent}% (${usedGb.toFixed(1)} / ${sizeGb.toFixed(1)} GB)`;
-              }
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurface
-              Layout.fillWidth: true
-              horizontalAlignment: Text.AlignRight
-              elide: Text.ElideMiddle
-            }
-          }
-
-          // Swap details (only visible if swap is enabled)
-          RowLayout {
-            Layout.fillWidth: true
-            spacing: Style.marginS
-            visible: SystemStatService.swapTotalGb > 0
-
-            RIcon {
-              icon: "exchange"
-              pointSize: Style.fontSizeM
-              color: Color.mPrimary
-            }
-
-            RText {
-              text: "Swap usage" + ":"
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurfaceVariant
-            }
-
-            RText {
-              text: `${SystemStatService.formatGigabytes(SystemStatService.swapGb).replace(/[^0-9.]/g, "")} / ${SystemStatService.formatGigabytes(SystemStatService.swapTotalGb).replace(/[^0-9.]/g, "")} GB`
-              pointSize: Style.fontSizeXS
-              color: Color.mOnSurface
-              Layout.fillWidth: true
-              horizontalAlignment: Text.AlignRight
-            }
-          }
+        DisksView {
+            anchors.fill: parent
+            visible: panelContent.currentTab === 3
         }
       }
     }
