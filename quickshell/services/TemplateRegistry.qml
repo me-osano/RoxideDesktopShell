@@ -123,7 +123,7 @@ Singleton {
           "path": "~/.local/share/vicinae/themes/rustiq.toml"
         }
       ],
-      "postProcess": () => `cp --update=none ${Quickshell.shellDir}/Assets/rustiq.svg ~/.local/share/vicinae/themes/rustiq.svg && ${templateApplyScript} vicinae`
+      "postProcess": () => `cp --update=none ${Quickshell.shellDir}/assets/rustiqlogo.svg ~/.local/share/vicinae/themes/rustiqlogo.svg && ${templateApplyScript} vicinae`
     },
     {
       "id": "walker",
@@ -203,11 +203,11 @@ Singleton {
       "clients": [
         {
           "name": "code",
-          "path": "~/.vscode/extensions/rustiq.nocturnaltheme-0.0.5/themes/NocturnalTheme-color-theme.json"
+          "path": "~/.vscode/extensions/rustiq.rustiqtheme-0.0.5/themes/RustiqTheme-color-theme.json"
         },
         {
           "name": "codium",
-          "path": "~/.vscode-oss/extensions/rustiq.nocturnaltheme-0.0.5-universal/themes/NocturnalTheme-color-theme.json"
+          "path": "~/.vscode-oss/extensions/rustiq.rustiqtheme-0.0.5-universal/themes/RustiqTheme-color-theme.json"
         }
       ]
     },
@@ -406,7 +406,7 @@ Singleton {
       "input": "zathurarc",
       "outputs": [
         {
-          "path": "~/.config/zathura/nocturnalrc"
+          "path": "~/.config/zathura/rustiqrc"
         }
       ],
       "postProcess": () => `${templateApplyScript} zathura`
@@ -526,7 +526,7 @@ Singleton {
     lines.push("");
     lines.push("# Remove this section and add your own templates");
     lines.push("#[templates.placeholder]");
-    lines.push("#input_path = \"" + Quickshell.shellDir + "/Assets/Templates/rustiq.json\"");
+    lines.push("#input_path = \"" + Quickshell.shellDir + "/assets/Templates/rustiq.json\"");
     lines.push("#output_path = \"" + Settings.cacheDir + "placeholder.json\"");
     lines.push("");
 

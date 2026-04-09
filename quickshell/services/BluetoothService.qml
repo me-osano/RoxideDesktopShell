@@ -4,8 +4,9 @@ import QtQuick
 import Quickshell
 import Quickshell.Bluetooth
 import Quickshell.Io
-import "../../common/helpers/BluetoothUtils.js" as BluetoothUtils
+import "../common/helpers/BluetoothUtils.js" as BluetoothUtils
 import qs.common.theme
+import qs.common.components
 import qs.services
 
 Singleton {

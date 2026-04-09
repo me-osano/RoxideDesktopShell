@@ -197,7 +197,7 @@ ColumnLayout {
           }
 
           // Settings button (cogwheel)
-          NIconButton {
+          RIconButton {
             icon: "settings"
             tooltipText: "Configure command"
             baseSize: Style.baseWidgetSize * 0.8

@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Effects
 import QtQuick.Layouts
 import qs.common.theme
+import qs.common.components
 import qs.services
 
 Rectangle {

@@ -7,7 +7,7 @@
 - [Usage](#usage)
 - [Commands](#commands)
   - [daemon](#daemon)
-  - [run-rqs](#run-rqs)
+  - [run-rds](#run-rds)
   - [restart](#restart)
   - [kill](#kill)
   - [status](#status)
@@ -38,12 +38,12 @@ rustiq daemon
 
 ---
 
-### run-rqs
+### run-rds
 
 > Run RUSTIQ (daemon + Quickshell UI). This is the main command to launch the full shell.
 
 ```bash
-rustiq run-rqs [--daemon] [--session]
+rustiq run-rds [--daemon] [--session]
 ```
 
 | Argument | Description |
@@ -55,13 +55,13 @@ rustiq run-rqs [--daemon] [--session]
 
 ```bash
 # Run attached to terminal (for testing)
-rustiq run-rqs
+rustiq run-rds
 
 # Run in daemon mode (background)
-rustiq run-rqs --daemon
+rustiq run-rds --daemon
 
 # Run for systemd session management
-rustiq run-rqs --session
+rustiq run-rds --session
 ```
 
 ---

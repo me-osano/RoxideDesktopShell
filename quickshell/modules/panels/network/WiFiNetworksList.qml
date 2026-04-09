@@ -243,7 +243,7 @@ RBox {
               }
 
               // Info toggle for connected network
-              NIconButton {
+              RIconButton {
                 visible: modelData.connected && NetworkService.disconnectingFrom !== modelData.ssid
                 icon: "info"
                 tooltipText: "Info"
@@ -258,7 +258,7 @@ RBox {
                 }
               }
 
-              NIconButton {
+              RIconButton {
                 visible: (modelData.existing || modelData.cached) && !modelData.connected && NetworkService.connectingTo !== modelData.ssid && NetworkService.forgettingNetwork !== modelData.ssid && NetworkService.disconnectingFrom !== modelData.ssid
                 icon: "trash"
                 tooltipText: "Forget network"
@@ -317,7 +317,7 @@ RBox {
             }
 
             // Grid/List toggle moved here to the top-right corner of the info box
-            NIconButton {
+            RIconButton {
               id: detailsToggle
               anchors.top: parent.top
               anchors.right: parent.right
@@ -647,7 +647,7 @@ RBox {
                 onClicked: root.passwordSubmitted(modelData.ssid, pwdInput.text)
               }
 
-              NIconButton {
+              RIconButton {
                 icon: "close"
                 baseSize: Style.baseWidgetSize * 0.8
                 onClicked: root.passwordCancelled()
@@ -695,7 +695,7 @@ RBox {
                 onClicked: root.forgetConfirmed(modelData.ssid)
               }
 
-              NIconButton {
+              RIconButton {
                 icon: "close"
                 baseSize: Style.baseWidgetSize * 0.8
                 onClicked: root.forgetCancelled()

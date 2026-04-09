@@ -523,7 +523,7 @@ Popup {
     var downloadProcess = Qt.createQmlObject(`
                                              import QtQuick
                                              import Quickshell.Io
-                                             import qs.Commons
+                                             import qs.common.theme
                                              Process {
                                              id: downloadProcess
                                              command: ["sh", "-c", ` + JSON.stringify(downloadScript) + `]
@@ -740,7 +740,7 @@ Popup {
         Layout.fillWidth: true
       }
 
-      NIconButton {
+      RIconButton {
         icon: "refresh"
         tooltipText: "Refresh"
         enabled: !fetching && !downloading
@@ -757,7 +757,7 @@ Popup {
         }
       }
 
-      NIconButton {
+      RIconButton {
         icon: "close"
         tooltipText: "Close"
         onClicked: root.close()
@@ -901,7 +901,7 @@ Popup {
               }
 
               // Download/Delete button
-              NIconButton {
+              RIconButton {
                 property bool isDownloading: downloading && downloadingScheme === schemeRow.schemeName
                 property bool isInstalled: root.isSchemeInstalled(schemeRow.schemeName)
                 property bool isDownloaded: root.isSchemeDownloaded(schemeRow.schemeName)

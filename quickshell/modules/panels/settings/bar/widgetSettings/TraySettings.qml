@@ -159,7 +159,7 @@ ColumnLayout {
           elide: Text.ElideRight
         }
 
-        NIconButton {
+        RIconButton {
           anchors.verticalCenter: parent.verticalCenter
           icon: "close"
           baseSize: 12 * Style.uiScaleRatio

@@ -427,19 +427,19 @@ RBox {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignHCenter
 
-            NIconButton {
+            RIconButton {
               icon: "media-prev"
               visible: MediaService.canGoPrevious
               onClicked: MediaService.canGoPrevious ? MediaService.previous() : {}
             }
 
-            NIconButton {
+            RIconButton {
               icon: MediaService.isPlaying ? "media-pause" : "media-play"
               visible: (MediaService.canPlay || MediaService.canPause)
               onClicked: (MediaService.canPlay || MediaService.canPause) ? MediaService.playPause() : {}
             }
 
-            NIconButton {
+            RIconButton {
               icon: "media-next"
               visible: MediaService.canGoNext
               onClicked: MediaService.canGoNext ? MediaService.next() : {}

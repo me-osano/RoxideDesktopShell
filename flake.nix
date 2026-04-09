@@ -1,11 +1,10 @@
 {
-  description = "RUSTIQ desktop shell";
+  description = "RUSTIQ desktop shell (RDS) - a Wayland desktop shell built with Quickshell";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/quickshell/quickshell?rev=41828c4180fb921df7992a5405f5ff05d2ac2fff";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -14,103 +13,167 @@
     {
       self,
       nixpkgs,
-      flake-utils,
-      rust-overlay,
+      quickshell,
+      ...
     }:
     let
-      coreSrc = ./core;
-      cargoHash = "sha256-6f30c75cf061b51ba17b3cb8dc9486346ff2f8fb40ae2b4d2856e70c387c81f0";
-      overlay = final: prev: {
-        rustiq-shell = final.pkgsStatic.rustPlatform.buildRustPackage {
-          pname = "rustiq-shell";
-          version = "0.1.0";
-          src = coreSrc;
-          inherit cargoHash;
+      forEachSystem =
+        fn:
+        nixpkgs.lib.genAttrs nixpkgs.lib.platforms.linux (
+          system: fn system nixpkgs.legacyPackages.${system}
+        );
 
-          nativeBuildInputs = with final.pkgs; [ pkg-config ];
-          buildInputs = with final.pkgs; [
-            openssl
-            dbus
-          ];
-        };
+      buildRustiqPkgs = pkgs: {
+        rustiq-shell = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        quickshell = quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
       };
-    in
-    flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [
-            rust-overlay.overlays.default
-            overlay
-          ];
-        };
-      in
-      {
-        packages.default = pkgs.rustiq-shell;
-        packages.x86_64-linux = pkgs.rustiq-shell;
 
-        devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            (pkgs.rust-bin.stable.latest.default.override {
-              targets = [ pkgs.rust-bin.stable.latest.default.RustTarget.x86_64-unknown-linux-gnu ];
-            })
-            pkg-config
-            openssl
-            dbus
-            quickshell
-            cargo-watch
+      mkModuleWithRustiqPkgs =
+        modulePath:
+        args@{ pkgs, ... }:
+        {
+          imports = [
+            (import modulePath (args // { rustiqPkgs = buildRustiqPkgs pkgs; }))
           ];
         };
-      }
-    )
-    // {
-      # Home Manager module
-      homeModules.default =
-        {
-          config,
-          lib,
-          pkgs,
-          ...
-        }:
+
+      mkQmlImportPath =
+        pkgs: qmlPkgs:
+        pkgs.lib.concatStringsSep ":" (map (o: "${o}/${pkgs.qt6.qtbase.qtQmlPrefix}") qmlPkgs);
+
+      mkQtPluginPath =
+        pkgs: qtPkgs:
+        pkgs.lib.concatStringsSep ":" (map (o: "${o}/${pkgs.qt6.qtbase.qtPluginPrefix}") qtPkgs);
+
+      qmlPkgs =
+        pkgs: with pkgs.kdePackages; [
+          kirigami.unwrapped
+          sonnet
+          qtmultimedia
+          qtimageformats
+          kimageformats
+        ];
+    in
+    {
+      packages = forEachSystem (
+        system: pkgs:
         let
-          cfg = config.programs.rustiq-shell;
+          mkDate =
+            longDate:
+            pkgs.lib.concatStringsSep "-" [
+              (builtins.substring 0 4 longDate)
+              (builtins.substring 4 2 longDate)
+              (builtins.substring 6 2 longDate)
+            ];
+          version =
+            let
+              rawVersion = pkgs.lib.removePrefix "v" (pkgs.lib.trim (builtins.readFile ./quickshell/VERSION));
+              cleanVersion = builtins.replaceStrings [ " " ] [ "" ] rawVersion;
+              dateSuffix = "+date=" + mkDate (self.lastModifiedDate or "19700101");
+              revSuffix = "_" + (self.shortRev or "dirty");
+            in
+            "${cleanVersion}${dateSuffix}${revSuffix}";
+
+          coreSrc = ./core;
+          cargoHash = "sha256-6f30c75cf061b51ba17b3cb8dc9486346ff2f8fb40ae2b4d2856e70c387c81f0";
+
+          qtPackages = qmlPkgs pkgs;
         in
         {
-          options.programs.rustiq-shell = {
-            enable = lib.mkEnableOption "RUSTIQ desktop shell";
+          rustiq-shell = pkgs.lib.makeOverridable (
+            {
+              extraQtPackages ? [ ],
+            }:
+            (pkgs.rustPlatform.buildRustPackage.override { }) (
+              let
+                rustPkgs = pkgs;
+              in
+              {
+                inherit version;
+                pname = "rustiq-shell";
+                src = coreSrc;
+                inherit cargoHash;
 
-            package = lib.mkOption {
-              type = lib.types.package;
-              default = self.packages.${pkgs.system}.default;
-            };
+                nativeBuildInputs = with rustPkgs; [
+                  pkg-config
+                  makeWrapper
+                ];
 
-            logLevel = lib.mkOption {
-              type = lib.types.str;
-              default = "info";
-            };
+                buildInputs = with rustPkgs; [
+                  openssl
+                  dbus
+                  libdbus
+                ];
+
+                postInstall = ''
+                  mkdir -p $out/share/quickshell/rustiq-shell
+                  cp -r ${./quickshell}/. $out/share/quickshell/rustiq-shell/
+
+                  wrapProgram $out/bin/rustiq \
+                    --add-flags "-c $out/share/quickshell/rustiq-shell" \
+                    --prefix "NIXPKGS_QT6_QML_IMPORT_PATH" ":" "${
+                      mkQmlImportPath rustPkgs (qtPackages ++ extraQtPackages)
+                    }" \
+                    --prefix "QT_PLUGIN_PATH" ":" "${mkQtPluginPath rustPkgs (qtPackages ++ extraQtPackages)}"
+                '';
+
+                meta = {
+                  description = "Wayland desktop shell built with Quickshell";
+                  homepage = "https://github.com/me-osano/rustiq-shell";
+                  license = pkgs.lib.licenses.mit;
+                  mainProgram = "rustiq";
+                  platforms = pkgs.lib.platforms.linux;
+                };
+              }
+            )
+          ) { };
+
+          quickshell = quickshell.packages.${system}.default;
+
+          default = self.packages.${system}.rustiq-shell;
+        }
+      );
+
+      homeModules.default = mkModuleWithRustiqPkgs ./distro/nixos/home-module.nix;
+
+      devShells = forEachSystem (
+        system: pkgs:
+        let
+          devQmlPkgs = [
+            quickshell.packages.${system}.default
+            pkgs.kdePackages.qtdeclarative
+          ]
+          ++ (qmlPkgs pkgs);
+        in
+        {
+          default = pkgs.mkShell {
+            buildInputs =
+              with pkgs;
+              [
+                (pkgs.rust-bin.stable.latest.default)
+                pkgs.rust-analyzer
+                pkgs.cargo-audit
+                pkgs.cargo-outdated
+
+                pkgs.systemd
+                pkg-config
+
+                nixfmt-rfc-style
+                statix
+                deadnix
+
+                lefthook
+              ]
+              ++ devQmlPkgs;
+
+            shellHook = ''
+              touch quickshell/.qmlls.ini 2>/dev/null
+            '';
+
+            NIXPKGS_QT6_QML_IMPORT_PATH = mkQmlImportPath pkgs devQmlPkgs;
+            QT_PLUGIN_PATH = mkQtPluginPath pkgs devQmlPkgs;
           };
-
-          config = lib.mkIf cfg.enable {
-            home.packages = [ cfg.package ];
-
-            xdg.configFile."rustiq-shell/quickshell".source = ./quickshell;
-
-            systemd.user.services.rustiq-shell = {
-              Unit = {
-                Description = "RUSTIQ desktop shell daemon";
-                After = [ "graphical-session.target" ];
-                PartOf = [ "graphical-session.target" ];
-              };
-              Service = {
-                ExecStart = "${cfg.package}/bin/rustiq-shell daemon";
-                Restart = "on-failure";
-                RestartSec = "3s";
-                Environment = [ "RUSTIQ_LOG=${cfg.logLevel}" ];
-              };
-              Install.WantedBy = [ "graphical-session.target" ];
-            };
-          };
-        };
+        }
+      );
     };
 }

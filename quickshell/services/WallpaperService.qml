@@ -37,8 +37,8 @@ Singleton {
   property string wallpaperCacheFile: ""
 
   readonly property bool scanning: (scanningCount > 0)
-  readonly property string nocturnalDefaultWallpaper: Quickshell.shellDir + "/Assets/Wallpaper/rustiq.png"
-  property string defaultWallpaper: nocturnalDefaultWallpaper
+  readonly property string rustiqDefaultWallpaper: Quickshell.shellDir + "/assets/Wallpaper/rustiq.png"
+  property string defaultWallpaper: rustiqDefaultWallpaper
 
   // Signals for reactive UI updates
   signal wallpaperChanged(string screenName, string path)
@@ -1082,7 +1082,7 @@ Singleton {
     adapter: JsonAdapter {
       id: wallpaperCacheAdapter
       property var wallpapers: ({})
-      property string defaultWallpaper: root.nocturnalDefaultWallpaper
+      property string defaultWallpaper: root.rustiqDefaultWallpaper
       property var usedRandomWallpapers: ({})
     }
 
@@ -1096,7 +1096,7 @@ Singleton {
         root.defaultWallpaper = wallpaperCacheAdapter.defaultWallpaper;
         Logger.d("Wallpaper", "Loaded default wallpaper from cache:", wallpaperCacheAdapter.defaultWallpaper);
       } else {
-        root.defaultWallpaper = root.nocturnalDefaultWallpaper;
+        root.defaultWallpaper = root.rustiqDefaultWallpaper;
         Logger.d("Wallpaper", "Using Rustiq default wallpaper");
       }
 

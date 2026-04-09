@@ -100,14 +100,14 @@ RBox {
 
       // Bluetooth settings icon button
             // Settings button
-      NIconButton {
+      RIconButton {
         icon: "settings"
         baseSize: Style.baseWidgetSize * 0.8
         tooltipText: "Bluetooth Settings"
         onClicked: SettingsPanelService.openToTab(SettingsPanel.Tab.Connections, 0, screen)
       }
 
-      // NIconButton {
+      // RIconButton {
       //   //baseSize: Style.fontSizeM * 2
       //   icon: "settings"
       //   colorBg: "transparent"
@@ -228,7 +228,7 @@ RBox {
                 }
               }
 
-              NIconButton {
+              RIconButton {
                 icon: "bluetooth-off"
                 baseSize: Style.baseWidgetSize * 0.7
                 tooltipText: "Disconnect"
@@ -301,7 +301,7 @@ RBox {
                 }
               }
 
-              NIconButton {
+              RIconButton {
                 icon: "bluetooth-connected"
                 baseSize: Style.baseWidgetSize * 0.7
                 tooltipText: "Connect"

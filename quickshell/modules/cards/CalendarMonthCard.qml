@@ -107,12 +107,12 @@ RBox {
         Layout.fillWidth: true
       }
 
-      NIconButton {
+      RIconButton {
         icon: "chevron-left"
         onClicked: root.navigateToPreviousMonth()
       }
 
-      NIconButton {
+      RIconButton {
         icon: "calendar"
         onClicked: {
           root.calendarMonth = root.now.getMonth();
@@ -121,7 +121,7 @@ RBox {
         }
       }
 
-      NIconButton {
+      RIconButton {
         icon: "chevron-right"
         onClicked: root.navigateToNextMonth()
       }

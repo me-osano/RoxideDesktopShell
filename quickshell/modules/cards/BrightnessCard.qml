@@ -81,7 +81,7 @@ RBox {
         Layout.fillWidth: true
         spacing: Style.marginXS
 
-        NIconButton {
+        RIconButton {
           icon: {
             if (!brightnessMonitor)
               return "brightness-low";

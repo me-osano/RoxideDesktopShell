@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import "../../../../common/helpers/QtObj2JS.js" as QtObj2JS
-import "General"
+import "general"
 import qs.common.theme
 import qs.services
 import qs.widgets

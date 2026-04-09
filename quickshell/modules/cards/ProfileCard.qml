@@ -53,7 +53,7 @@ RBox {
       Item {
         Layout.fillWidth: true
       }
-      NIconButton {
+      RIconButton {
         icon: "settings"
         tooltipText: "Settings"
         onClicked: {
@@ -66,7 +66,7 @@ RBox {
         }
       }
 
-      NIconButton {
+      RIconButton {
         icon: "power"
         tooltipText: "Session menu"
         onClicked: {
@@ -75,7 +75,7 @@ RBox {
         }
       }
 
-      NIconButton {
+      RIconButton {
         icon: "close"
         tooltipText: "Close"
         onClicked: {

@@ -12,7 +12,7 @@ Singleton {
 
   property var schemes: []
   property bool scanning: false
-  property string schemesDirectory: Quickshell.shellDir + "/Assets/ColorScheme"
+  property string schemesDirectory: Quickshell.shellDir + "/assets/ColorScheme"
   property string downloadedSchemesDirectory: Settings.configDir + "colorschemes"
   property string colorsJsonFilePath: Settings.configDir + "colors.json"
 

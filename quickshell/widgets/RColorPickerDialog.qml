@@ -5,7 +5,7 @@ import QtQuick.Layouts
 import "../common/helpers/ColorList.js" as ColorList
 import qs.common.theme
 import qs.services
-import qs.Widgets
+import qs.widgets
 
 Popup {
   id: root

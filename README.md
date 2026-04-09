@@ -48,6 +48,21 @@ Quickshell connects to it over a Unix socket at `$XDG_RUNTIME_DIR/rustiq.sock`.
 
 ## Building
 
+### Nix Flake (Recommended)
+
+```bash
+# Enter dev shell
+nix develop
+
+# Build the package
+nix build
+
+# Run the shell
+./result/bin/rustiq -c ./quickshell
+```
+
+### Manual Build
+
 ```bash
 # Build Rust core
 cd core && cargo build --release
@@ -74,13 +89,13 @@ rustiq niri workspaces  # workspace list
 rustiq niri windows     # window list
 ```
 
-## NixOS
+## NixOS / Home Manager
 
 ```nix
 {
-  inputs.rustiq.url = "github:yourname/rustiq";
-  imports = [ inputs.rustiq.homeModules.default ];
-  programs.rustiq.enable = true;
+  inputs.rustiq-shell.url = "github:rustiq/rustiq-shell";
+  imports = [ inputs.rustiq-shell.homeModules.default ];
+  programs.rustiq-shell.enable = true;
 }
 ```
 

@@ -46,8 +46,8 @@ cargo build --release
 ```bash
 # Process management (like DMS)
 rustiq daemon          # Start only the daemon
-rustiq run-rqs         # Run full shell (daemon + Quickshell UI)
-rustiq run-rqs -d      # Run in daemon mode (background)
+rustiq run-rds         # Run full shell (daemon + Quickshell UI)
+rustiq run-rds -d      # Run in daemon mode (background)
 rustiq restart        # Restart RUSTIQ
 rustiq kill           # Stop RUSTIQ
 

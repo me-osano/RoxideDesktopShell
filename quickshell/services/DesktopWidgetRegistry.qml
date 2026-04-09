@@ -266,7 +266,7 @@ Singleton {
       popupMenuWindow.hideDynamicMenu();
     }
 
-    var component = Qt.createComponent(Quickshell.shellDir + "/Modules/Panels/Settings/DesktopWidgets/DesktopWidgetSettingsDialog.qml");
+    var component = Qt.createComponent(Quickshell.shellDir + "/modules/panels/settings/desktopWidgets/DesktopWidgetSettingsDialog.qml");
 
     function instantiateAndOpen() {
       var dialog = component.createObject(popupMenuWindow.dialogParent, {

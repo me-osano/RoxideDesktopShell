@@ -332,7 +332,7 @@ Item {
   Component {
     id: iconButtonComponent
 
-    NIconButton {
+    RIconButton {
       id: iconButton
 
       icon: (customIconPath === "" && !useDistroLogo) ? customIcon : ""

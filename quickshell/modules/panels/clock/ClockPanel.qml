@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Wayland
-import qs.commons.theme
+import qs.common.theme
 import qs.modules.cards
 import qs.modules.mainScreen
 import qs.services

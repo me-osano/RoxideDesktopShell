@@ -13,8 +13,8 @@ rustiq [COMMAND]
 | Command | Description |
 |---------|-------------|
 | `rustiq daemon` | Start only the daemon (backend) |
-| `rustiq run-rqs` | Run full shell (daemon + Quickshell UI) |
-| `rustiq run-rqs -d` | Run in daemon mode (background) |
+| `rustiq run-rds` | Run full shell (daemon + Quickshell UI) |
+| `rustiq run-rds -d` | Run in daemon mode (background) |
 | `rustiq restart` | Kill and relaunch RUSTIQ |
 | `rustiq kill` | Kill all RUSTIQ instances |
 
@@ -33,10 +33,10 @@ rustiq [COMMAND]
 
 ```bash
 # Start daemon and shell
-rustiq run-rqs
+rustiq run-rds
 
 # Run in background
-rustiq run-rqs -d
+rustiq run-rds -d
 
 # Check status
 rustiq status

@@ -3,7 +3,7 @@ import QtQuick.Controls
 import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
-import "Backgrounds" as Backgrounds
+import "backgrounds" as Backgrounds
 
 import qs.common.theme
 
@@ -15,14 +15,15 @@ import qs.modules.panels.battery
 import qs.modules.panels.bluetooth
 import qs.modules.panels.brightness
 import qs.modules.panels.clock
-import qs.modules.panels.controlcenter
+import qs.modules.panels.controlCenter
 import qs.modules.panels.dock
 import qs.modules.panels.launcher
+import qs.modules.panels.files
 import qs.modules.panels.media
 import qs.modules.panels.network
-import qs.modules.panels.sessionmenu
+import qs.modules.panels.sessionMenu
 import qs.modules.panels.settings
-import qs.modules.panels.systemstats
+import qs.modules.panels.systemStats
 import qs.modules.panels.tray
 import qs.modules.panels.wallpaper
 import qs.services
@@ -364,6 +365,12 @@ PanelWindow {
     WallpaperPanel {
       id: wallpaperPanel
       objectName: "wallpaperPanel-" + (root.screen?.name || "unknown")
+      screen: root.screen
+    }
+
+    FilesPanel {
+      id: filesPanel
+      objectName: "filesPanel-" + (root.screen?.name || "unknown")
       screen: root.screen
     }
 

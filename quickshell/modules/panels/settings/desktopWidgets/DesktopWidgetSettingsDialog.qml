@@ -68,7 +68,7 @@ Popup {
           Layout.fillWidth: true
         }
 
-        NIconButton {
+        RIconButton {
           icon: "close"
           tooltipText: "Close"
           onClicked: saveAndClose()
@@ -199,7 +199,7 @@ Popup {
           break;
         }
       }
-      var fullPath = Qt.resolvedUrl(Quickshell.shellDir + "/Modules/Panels/Settings/DesktopWidgets/" + source);
+      var fullPath = Qt.resolvedUrl(Quickshell.shellDir + "/modules/panels/settings/desktopWidgets/" + source);
       settingsLoader.setSource(fullPath, {
                                  "widgetData": currentWidgetData,
                                  "widgetMetadata": DesktopWidgetRegistry.widgetMetadata[widgetId]

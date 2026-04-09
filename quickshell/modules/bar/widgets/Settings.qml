@@ -5,7 +5,7 @@ import qs.common.theme
 import qs.services
 import qs.widgets
 
-NIconButton {
+RIconButton {
   id: root
 
   property ShellScreen screen

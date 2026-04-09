@@ -635,7 +635,7 @@ Item {
           RowLayout {
             spacing: Style.marginS
 
-            NIconButton {
+            RIconButton {
               visible: modelData.connected
               icon: "info"
               tooltipText: "Info"
@@ -646,7 +646,7 @@ Item {
               }
             }
 
-            NIconButton {
+            RIconButton {
               visible: !root.showOnlyLists && (modelData.paired || modelData.trusted) && !modelData.connected && !isBusy && !modelData.blocked
               icon: "trash"
               tooltipText: "Unpair"
@@ -699,7 +699,7 @@ Item {
           border.color: Color.mOutline
           clip: true
 
-          NIconButton {
+          RIconButton {
             anchors.top: parent.top
             anchors.right: parent.right
             anchors.margins: Style.marginS

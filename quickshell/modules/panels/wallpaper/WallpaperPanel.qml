@@ -290,7 +290,7 @@ SmartPanel {
               Layout.fillWidth: true
             }
 
-            NIconButton {
+            RIconButton {
               icon: "palette"
               tooltipText: "Solid color background"
               baseSize: Style.baseWidgetSize * 0.8
@@ -299,7 +299,7 @@ SmartPanel {
               onClicked: solidColorPicker.open()
             }
 
-            NIconButton {
+            RIconButton {
               icon: "settings"
               tooltipText: "Wallpaper settings"
               baseSize: Style.baseWidgetSize * 0.8
@@ -310,7 +310,7 @@ SmartPanel {
               }
             }
 
-            NIconButton {
+            RIconButton {
               icon: "close"
               tooltipText: "Close"
               baseSize: Style.baseWidgetSize * 0.8
@@ -436,14 +436,14 @@ SmartPanel {
                               }
             }
 
-            NIconButton {
+            RIconButton {
               icon: Settings.data.colorSchemes.darkMode ? "moon" : "sun"
               tooltipText: Settings.data.colorSchemes.darkMode ? "Light Mode" : "Dark Mode"
               baseSize: Style.baseWidgetSize * 0.8
               onClicked: Settings.data.colorSchemes.darkMode = !Settings.data.colorSchemes.darkMode
             }
 
-            NIconButton {
+            RIconButton {
               icon: "color-swatch"
               tooltipText: Settings.data.colorSchemes.useWallpaperColors ? "Use predefined color schemes" : "Use wallpaper color extraction"
               baseSize: Style.baseWidgetSize * 0.8
@@ -573,7 +573,7 @@ SmartPanel {
             }
 
             // Settings button (only visible for Wallhaven)
-            NIconButton {
+            RIconButton {
               id: wallhavenSettingsButton
               icon: "settings"
               tooltipText: "Wallhaven Settings"
@@ -903,7 +903,7 @@ SmartPanel {
         spacing: Style.marginS
 
         // Left side: navigation (back, home, path)
-        NIconButton {
+        RIconButton {
           icon: "arrow-left"
           tooltipText: "Go to parent folder"
           enabled: isBrowseMode && currentBrowsePath !== WallpaperService.getMonitorDirectory(targetScreen?.name ?? "")
@@ -911,7 +911,7 @@ SmartPanel {
           baseSize: Style.baseWidgetSize * 0.8
         }
 
-        NIconButton {
+        RIconButton {
           icon: "home"
           tooltipText: "Go to wallpaper root"
           enabled: isBrowseMode && currentBrowsePath !== WallpaperService.getMonitorDirectory(targetScreen?.name ?? "")
@@ -934,7 +934,7 @@ SmartPanel {
         }
 
         // Right side: actions (view mode, hide filenames, refresh)
-        NIconButton {
+        RIconButton {
           property string sortOrder: Settings.data.wallpaper.sortOrder || "name"
           icon: {
             if (sortOrder === "date_desc")
@@ -984,28 +984,28 @@ SmartPanel {
           }
         }
 
-        NIconButton {
+        RIconButton {
           icon: getViewModeIcon()
           tooltipText: getViewModeTooltip()
           baseSize: Style.baseWidgetSize * 0.8
           onClicked: cycleViewMode()
         }
 
-        NIconButton {
+        RIconButton {
           icon: Settings.data.wallpaper.hideWallpaperFilenames ? "id-off" : "id"
           tooltipText: Settings.data.wallpaper.hideWallpaperFilenames ? "Show filenames" : "Hide filenames"
           baseSize: Style.baseWidgetSize * 0.8
           onClicked: Settings.data.wallpaper.hideWallpaperFilenames = !Settings.data.wallpaper.hideWallpaperFilenames
         }
 
-        NIconButton {
+        RIconButton {
           icon: Settings.data.wallpaper.showHiddenFiles ? "eye" : "eye-closed"
           tooltipText: Settings.data.wallpaper.showHiddenFiles ? "Hide hidden files" : "Show hidden files"
           baseSize: Style.baseWidgetSize * 0.8
           onClicked: Settings.data.wallpaper.showHiddenFiles = !Settings.data.wallpaper.showHiddenFiles
         }
 
-        NIconButton {
+        RIconButton {
           icon: "refresh"
           tooltipText: "Refresh wallpaper list"
           baseSize: Style.baseWidgetSize * 0.8
@@ -1787,7 +1787,7 @@ SmartPanel {
           Layout.fillWidth: true
         }
 
-        NIconButton {
+        RIconButton {
           icon: "chevron-left"
           enabled: !loading && WallhavenService.currentPage > 1 && !WallhavenService.fetching
           onClicked: WallhavenService.previousPage()
@@ -1844,7 +1844,7 @@ SmartPanel {
           }
         }
 
-        NIconButton {
+        RIconButton {
           icon: "chevron-right"
           enabled: WallhavenService.currentPage < WallhavenService.lastPage && !WallhavenService.fetching
           onClicked: WallhavenService.nextPage()

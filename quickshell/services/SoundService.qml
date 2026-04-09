@@ -44,9 +44,9 @@ Singleton {
 
     let resolvedPath = soundPath;
 
-    // If it's just a filename (no path separators), assume it's in Assets/Sounds/
+    // If it's just a filename (no path separators), assume it's in assets/Sounds/
     if (!soundPath.includes("/") && !soundPath.startsWith("file://")) {
-      resolvedPath = Quickshell.shellDir + "/Assets/Sounds/" + soundPath;
+      resolvedPath = Quickshell.shellDir + "/assets/Sounds/" + soundPath;
     } else if (!soundPath.startsWith("/") && !soundPath.startsWith("file://")) {
       // Relative path - assume it's relative to shellDir
       resolvedPath = Quickshell.shellDir + "/" + soundPath;
@@ -89,8 +89,8 @@ Singleton {
       import QtQuick
       import QtMultimedia
       import Quickshell
-      import qs.Commons
-      import qs.Services.System
+      import qs.common.theme
+      import qs.services
       MediaPlayer {
         id: mediaPlayer
         property string resolvedPath: "${escapedPath}"
@@ -104,7 +104,7 @@ Singleton {
         onErrorOccurred: {
           Logger.w("SoundService", "Error playing sound:", source, error, errorString);
           if (shouldFallback) {
-            const fallbackPath = Quickshell.shellDir + "/Assets/Sounds/notification.mp3";
+            const fallbackPath = Quickshell.shellDir + "/assets/Sounds/notification.mp3";
             if (fallbackPath !== resolvedPath) {
               SoundService.playSound(fallbackPath, {
                 volume: soundVolume,
@@ -139,7 +139,7 @@ Singleton {
         Logger.w("SoundService", "Failed to create MediaPlayer for:", resolvedPath);
         // Try fallback if requested
         if (fallback && !repeat) {
-          const defaultSound = Quickshell.shellDir + "/Assets/Sounds/notification.mp3";
+          const defaultSound = Quickshell.shellDir + "/assets/Sounds/notification.mp3";
           if (defaultSound !== resolvedPath) {
             playSound(defaultSound, {
                         volume: volume,
@@ -159,7 +159,7 @@ Singleton {
       Logger.w("SoundService", "Failed to create MediaPlayer:", e);
       // Try fallback if requested
       if (fallback && !repeat) {
-        const defaultSound = Quickshell.shellDir + "/Assets/Sounds/notification.mp3";
+        const defaultSound = Quickshell.shellDir + "/assets/Sounds/notification.mp3";
         if (defaultSound !== resolvedPath) {
           playSound(defaultSound, {
                       volume: volume,

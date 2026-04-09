@@ -18,7 +18,7 @@ Item {
 
   FileView {
     id: searchIndexFile
-    path: Quickshell.shellDir + "/Assets/settings-search-index.json"
+    path: Quickshell.shellDir + "/assets/settings-search-index.json"
     watchChanges: false
     printErrors: false
 

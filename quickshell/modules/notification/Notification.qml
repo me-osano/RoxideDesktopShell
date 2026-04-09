@@ -718,7 +718,7 @@ Variants {
               }
 
               // Close button
-              NIconButton {
+              RIconButton {
                 visible: !notifWindow.isCompact
                 icon: "close"
                 tooltipText: "Dismiss notification"

@@ -207,14 +207,14 @@ Singleton {
     const homeDir = Quickshell.env("HOME");
     // Rustiq colors JSON
     lines.push("[templates.rustiq]");
-    lines.push('input_path = "' + Quickshell.shellDir + '/Assets/Templates/rustiq.json"');
+    lines.push('input_path = "' + Quickshell.shellDir + '/assets/Templates/rustiq.json"');
     lines.push('output_path = "' + Settings.configDir + 'colors.json"');
 
     // Terminal templates
     TemplateRegistry.terminals.forEach(terminal => {
                                          if (isTemplateEnabled(terminal.id)) {
                                            lines.push(`\n[templates.${terminal.id}]`);
-                                           lines.push(`input_path = "${Quickshell.shellDir}/Assets/Templates/${terminal.templatePath}"`);
+                                           lines.push(`input_path = "${Quickshell.shellDir}/assets/Templates/${terminal.templatePath}"`);
                                            const outputPath = terminal.outputPath.replace("~", homeDir);
                                            lines.push(`output_path = "${outputPath}"`);
                                            const postHookEsc = escapeTomlString(terminal.postHook);
@@ -236,7 +236,7 @@ Singleton {
                                                                  app.clients.forEach(client => {
                                                                                        if (isDiscordClientEnabled(client.name)) {
                                                                                          lines.push(`\n[templates.discord_${themeSuffix}_${client.name}]`);
-                                                                                         lines.push(`input_path = "${Quickshell.shellDir}/Assets/Templates/${inputFile}"`);
+                                                                                         lines.push(`input_path = "${Quickshell.shellDir}/assets/Templates/${inputFile}"`);
                                                                                          // First input uses legacy name for backward compatibility
                                                                                          const outputFile = idx === 0 ? "rustiq.theme.css" : `rustiq-${themeSuffix}.theme.css`;
                                                                                          const outputPath = client.path.replace("~", homeDir) + `/themes/${outputFile}`;
@@ -255,7 +255,7 @@ Singleton {
                                                                         resolvedPaths.forEach((resolvedPath, pathIndex) => {
                                                                                                 var suffix = resolvedPaths.length > 1 ? `_${pathIndex}` : "";
                                                                                                 lines.push(`\n[templates.code_${client.name}${suffix}]`);
-                                                                                                lines.push(`input_path = "${Quickshell.shellDir}/Assets/Templates/${app.input}"`);
+                                                                                                lines.push(`input_path = "${Quickshell.shellDir}/assets/Templates/${app.input}"`);
                                                                                                 lines.push(`output_path = "${resolvedPath}"`);
                                                                                               });
                                                                       }
@@ -265,7 +265,7 @@ Singleton {
                                               if (isTemplateEnabled("emacs")) {
                                                 ProgramCheckerService.availableEmacsClients.forEach(client => {
                                                                                                       lines.push(`\n[templates.emacs_${client.name}]`);
-                                                                                                      lines.push(`input_path = "${Quickshell.shellDir}/Assets/Templates/${app.input}"`);
+                                                                                                      lines.push(`input_path = "${Quickshell.shellDir}/assets/Templates/${app.input}"`);
                                                                                                       const expandedPath = client.path.replace("~", homeDir) + "/themes/rustiq-theme.el";
                                                                                                       lines.push(`output_path = "${expandedPath}"`);
                                                                                                     });
@@ -276,7 +276,7 @@ Singleton {
                                                 app.outputs.forEach((output, idx) => {
                                                                       lines.push(`\n[templates.${app.id}_${idx}]`);
                                                                       const inputFile = output.input || app.input;
-                                                                      lines.push(`input_path = "${Quickshell.shellDir}/Assets/Templates/${inputFile}"`);
+                                                                      lines.push(`input_path = "${Quickshell.shellDir}/assets/Templates/${inputFile}"`);
                                                                       const outputPath = output.path.replace("~", homeDir);
                                                                       lines.push(`output_path = "${outputPath}"`);
                                                                       if (app.postProcess) {
@@ -323,15 +323,15 @@ Singleton {
 
     // Use heredoc for wallpaper path to avoid all escaping issues
     let script = `cat > '${pathEsc}' << '${delimiter}'\n${content}\n${delimiter}\n`;
-    script += `NOCTURNAL_WP_PATH=$(cat << '${wpDelimiter}'\n${wallpaper}\n${wpDelimiter}\n)\n`;
+    script += `RUSTIQ_WP_PATH=$(cat << '${wpDelimiter}'\n${wallpaper}\n${wpDelimiter}\n)\n`;
 
     // Use template-processor.py (Python implementation)
     // Don't pass --mode so templates get both dark and light colors (e.g., zed.json needs both)
     // Pass --default-mode so "default" in templates resolves to the current theme mode
     const schemeType = getSchemeType();
-    script += `python3 "${templateProcessorScript}" "$NOCTURNAL_WP_PATH" --scheme-type ${schemeType} --config '${pathEsc}' --default-mode ${mode} `;
+    script += `python3 "${templateProcessorScript}" "$RUSTIQ_WP_PATH" --scheme-type ${schemeType} --config '${pathEsc}' --default-mode ${mode} `;
 
-    script += buildUserTemplateCommand("$NOCTURNAL_WP_PATH", mode);
+    script += buildUserTemplateCommand("$RUSTIQ_WP_PATH", mode);
 
     return script + "\n";
   }

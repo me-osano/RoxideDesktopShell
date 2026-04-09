@@ -247,14 +247,14 @@ ColumnLayout {
               visible: model.icon !== undefined && model.icon !== ""
             }
 
-            NIconButton {
+            RIconButton {
               icon: "folder"
               tooltipText: "Browse"
               baseSize: Style?.buttonSizeS ?? 24
               onClicked: iconPickerDelegate.open()
             }
 
-            NIconButton {
+            RIconButton {
               icon: "close"
               tooltipText: "Remove"
               baseSize: Style?.buttonSizeS ?? 24

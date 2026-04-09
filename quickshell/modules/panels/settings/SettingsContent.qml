@@ -18,10 +18,10 @@ import qs.modules.panels.settings.tabs.lockScreen
 import qs.modules.panels.settings.tabs.notifications
 import qs.modules.panels.settings.tabs.osd
 
-import qs.modules.panels.settings.tabs.region
+import qs.modules.panels.settings.tabs.geolocation
 import qs.modules.panels.settings.tabs.sessionMenu
 import qs.modules.panels.settings.tabs.systemMonitor
-import qs.modules.panels.settings.tabs.userInterface
+import qs.modules.panels.settings.tabs.personalization
 import qs.modules.panels.settings.tabs.wallpaper
 import qs.services
 import qs.widgets
@@ -74,7 +74,7 @@ Item {
   // Load search index
   FileView {
     id: searchIndexFile
-    path: Quickshell.shellDir + "/Assets/settings-search-index.json"
+    path: Quickshell.shellDir + "/assets/settings-search-index.json"
     watchChanges: false
     printErrors: false
 
@@ -439,8 +439,8 @@ Item {
     ConnectionsTab {}
   }
   Component {
-    id: regionTab
-    RegionTab {}
+    id: geolocationTab
+    GeolocationTab {}
   }
   Component {
     id: colorSchemeTab
@@ -467,8 +467,8 @@ Item {
     ControlCenterTab {}
   }
   Component {
-    id: userInterfaceTab
-    UserInterfaceTab {}
+    id: personalizationTab
+    PersonalizationTab {}
   }
   Component {
     id: lockScreenTab
@@ -1169,7 +1169,7 @@ Item {
               Layout.alignment: Qt.AlignVCenter
             }
 
-            NIconButton {
+            RIconButton {
               icon: "close"
               tooltipText: "Close"
               Layout.alignment: Qt.AlignVCenter

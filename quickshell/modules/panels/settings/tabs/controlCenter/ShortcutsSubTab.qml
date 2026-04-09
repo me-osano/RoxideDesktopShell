@@ -44,7 +44,7 @@ ColumnLayout {
       RSectionEditor {
         sectionName: "Left"
         sectionId: "left"
-        settingsDialogComponent: Qt.resolvedUrl(Quickshell.shellDir + "/Modules/Panels/Settings/ControlCenter/ControlCenterWidgetSettingsDialog.qml")
+        settingsDialogComponent: Qt.resolvedUrl(Quickshell.shellDir + "/modules/panels/settings/controlCenter/ControlCenterWidgetSettingsDialog.qml")
         maxWidgets: Settings.data.controlCenter.shortcuts["right"].length > 5 ? 0 : (Settings.data.controlCenter.shortcuts["right"].length > 0 ? 5 : 10)
         widgetRegistry: ControlCenterWidgetRegistry
         widgetModel: Settings.data.controlCenter.shortcuts["left"]
@@ -63,7 +63,7 @@ ColumnLayout {
       RSectionEditor {
         sectionName: "Right"
         sectionId: "right"
-        settingsDialogComponent: Qt.resolvedUrl(Quickshell.shellDir + "/Modules/Panels/Settings/ControlCenter/ControlCenterWidgetSettingsDialog.qml")
+        settingsDialogComponent: Qt.resolvedUrl(Quickshell.shellDir + "/modules/panels/settings/controlCenter/ControlCenterWidgetSettingsDialog.qml")
         maxWidgets: Settings.data.controlCenter.shortcuts["left"].length > 5 ? 0 : (Settings.data.controlCenter.shortcuts["left"].length > 0 ? 5 : 10)
         widgetRegistry: ControlCenterWidgetRegistry
         widgetModel: Settings.data.controlCenter.shortcuts["right"]

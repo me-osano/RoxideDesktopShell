@@ -104,7 +104,7 @@ SmartPanel {
             }
           }
 
-          NIconButton {
+          RIconButton {
             icon: "close"
             tooltipText: "Close"
             baseSize: Style.baseWidgetSize * 0.8
@@ -366,8 +366,7 @@ SmartPanel {
             visible: showPowerProfiles && PowerProfileService.available
           }
           RowLayout {
-
-              color: Color.mOnSurface
+              //color: Color.mOnSurface
               Layout.fillWidth: true
             }
 

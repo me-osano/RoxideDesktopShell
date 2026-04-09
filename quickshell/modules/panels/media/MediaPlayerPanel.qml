@@ -219,7 +219,7 @@ SmartPanel {
             }
           }
 
-          NIconButton {
+          RIconButton {
             icon: "close"
             tooltipText: "Close"
             baseSize: Style.baseWidgetSize * 0.8
@@ -445,7 +445,7 @@ SmartPanel {
               Layout.alignment: Qt.AlignHCenter
               spacing: root.isSideBySide ? Style.marginL : Style.marginXL
 
-              NIconButton {
+              RIconButton {
                 icon: "media-prev"
                 baseSize: root.compactMode ? (Style.baseWidgetSize * 0.9) : (Style.baseWidgetSize * 1.2)
                 onClicked: MediaService.previous()
@@ -473,7 +473,7 @@ SmartPanel {
                 }
               }
 
-              NIconButton {
+              RIconButton {
                 icon: "media-next"
                 baseSize: root.compactMode ? (Style.baseWidgetSize * 0.9) : (Style.baseWidgetSize * 1.2)
                 onClicked: MediaService.next()

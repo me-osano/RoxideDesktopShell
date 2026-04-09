@@ -183,7 +183,7 @@ SmartPanel {
               Layout.fillWidth: true
             }
 
-            NIconButton {
+            RIconButton {
               icon: "close"
               tooltipText: "Close"
               baseSize: Style.baseWidgetSize * 0.8
@@ -297,7 +297,7 @@ SmartPanel {
                     horizontalAlignment: Text.AlignRight
                   }
 
-                  NIconButton {
+                  RIconButton {
                     icon: AudioService.getOutputIcon()
                     tooltipText: "Toggle output mute"
                     baseSize: Style.baseWidgetSize * 0.7
@@ -372,7 +372,7 @@ SmartPanel {
                     horizontalAlignment: Text.AlignRight
                   }
 
-                  NIconButton {
+                  RIconButton {
                     icon: AudioService.getInputIcon()
                     tooltipText: "Toggle input mute"
                     baseSize: Style.baseWidgetSize * 0.7
@@ -646,7 +646,7 @@ SmartPanel {
                       }
 
                       // Mute Button
-                      NIconButton {
+                      RIconButton {
                         icon: (appBox.appMuted === true) ? "volume-mute" : "volume-high"
                         tooltipText: (appBox.appMuted === true) ? "Unmute" : "Mute"
                         baseSize: Style.baseWidgetSize * 0.7

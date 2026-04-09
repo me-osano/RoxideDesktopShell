@@ -1,10 +1,11 @@
 import QtQuick.Layouts
 import qs.common.theme
+import qs.common.components
 import qs.services
 import qs.widgets
 
 RIconButtonHot {
-  property ShellScreen screen
+  //property ShellScreen screen
 
   icon: !BluetoothService.enabled ? "bluetooth-off" : ((BluetoothService.connectedDevices && BluetoothService.connectedDevices.length > 0) ? "bluetooth-connected" : "bluetooth")
   tooltipText: "Bluetooth"

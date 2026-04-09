@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Shapes
-import qs.Commons
+import qs.common.theme
 import qs.services
 
 Slider {

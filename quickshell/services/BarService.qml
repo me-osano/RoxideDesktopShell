@@ -503,7 +503,7 @@ Singleton {
       PanelService.openedPanel.close();
     }
 
-    var component = Qt.createComponent(Quickshell.shellDir + "/Modules/Panels/Settings/Bar/BarWidgetSettingsDialog.qml");
+    var component = Qt.createComponent(Quickshell.shellDir + "/modules/panels/settings/bar/BarWidgetSettingsDialog.qml");
 
     function instantiateAndOpen() {
       // Use dialogParent (Item) instead of window directly for proper Popup anchoring

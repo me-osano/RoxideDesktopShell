@@ -74,7 +74,7 @@ Popup {
           Layout.fillWidth: true
         }
 
-        NIconButton {
+        RIconButton {
           icon: "close"
           tooltipText: "Close"
           onClicked: saveAndClose()

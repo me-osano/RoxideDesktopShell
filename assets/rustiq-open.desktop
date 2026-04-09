@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=RDS
+Comment=Select an application to open links and files
+Exec=rustiq open %u
+Icon=rustiqlogo
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/rustiq;text/html;application/xhtml+xml;
+Categories=Utility;
+    

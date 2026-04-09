@@ -48,7 +48,7 @@ Variants {
 
     // Only create PanelWindow if enabled AND (screen has widgets OR in edit mode)
     // During compositor overview, show widgets only when overviewEnabled is true.
-    active: modelData && Settings.data.desktopWidgets.enabled && (screenWidgets.length > 0 || DesktopWidgetRegistry.editMode) && (!CompositorService.overviewActive || Settings.data.desktopWidgets.overviewEnabled) && !PowerProfileService.nocturnalPerformanceMode && !PanelService.lockScreen?.active
+    active: modelData && Settings.data.desktopWidgets.enabled && (screenWidgets.length > 0 || DesktopWidgetRegistry.editMode) && (!CompositorService.overviewActive || Settings.data.desktopWidgets.overviewEnabled) && !PanelService.lockScreen?.active
 
     sourceComponent: PanelWindow {
       id: window
@@ -412,7 +412,7 @@ Variants {
               Layout.alignment: Qt.AlignRight
               spacing: Style.marginS
 
-              NIconButton {
+              RIconButton {
                 id: addWidgetButton
                 icon: "layout-grid-add"
                 tooltipText: "Add widget"
@@ -438,7 +438,7 @@ Variants {
                 }
               }
 
-              NIconButton {
+              RIconButton {
                 icon: "grid-4x4"
                 tooltipText: "Grid snap"
                 colorBg: Settings.data.desktopWidgets.gridSnap ? Color.mPrimary : Color.mSurfaceVariant
@@ -446,7 +446,7 @@ Variants {
                 onClicked: Settings.data.desktopWidgets.gridSnap = !Settings.data.desktopWidgets.gridSnap
               }
 
-              NIconButton {
+              RIconButton {
                 icon: "settings"
                 tooltipText: "Open settings"
                 onClicked: {

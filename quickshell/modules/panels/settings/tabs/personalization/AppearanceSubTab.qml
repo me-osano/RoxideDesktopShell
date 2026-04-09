@@ -190,7 +190,7 @@ ColumnLayout {
           Layout.preferredWidth: 30 * Style.uiScaleRatio
           Layout.preferredHeight: 30 * Style.uiScaleRatio
 
-          NIconButton {
+          RIconButton {
             icon: "restore"
             baseSize: Style.baseWidgetSize * 0.8
             tooltipText: "Reset animation speed"

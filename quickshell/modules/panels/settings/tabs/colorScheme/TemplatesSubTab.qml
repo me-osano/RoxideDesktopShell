@@ -198,7 +198,7 @@ ColumnLayout {
       onTextChanged: root.searchText = text
     }
 
-    NIconButton {
+    RIconButton {
       icon: "filter"
       tooltipText: root.showOnlyActive ? "Show all" : "Show active only"
 

@@ -159,21 +159,21 @@ RBox {
         Layout.fillWidth: true
       }
 
-      NIconButton {
+      RIconButton {
         icon: "check"
         tooltipText: "Mark all as read"
         baseSize: Style.baseWidgetSize * 0.8
         onClicked: NotificationService.updateLastSeenTs()
       }
 
-      NIconButton {
+      RIconButton {
         icon: NotificationService.doNotDisturb ? "bell-off" : "bell"
         tooltipText: NotificationService.doNotDisturb ? "Disable Do Not Disturb" : "Enable Do Not Disturb"
         baseSize: Style.baseWidgetSize * 0.8
         onClicked: NotificationService.doNotDisturb = !NotificationService.doNotDisturb
       }
 
-      NIconButton {
+      RIconButton {
         icon: "trash"
         tooltipText: "Clear notification history"
         baseSize: Style.baseWidgetSize * 0.8
@@ -378,7 +378,7 @@ RBox {
                   }
 
                   // Dismiss button
-                  NIconButton {
+                  RIconButton {
                     icon: "close"
                     baseSize: Style.baseWidgetSize * 0.6
                     tooltipText: "Dismiss"

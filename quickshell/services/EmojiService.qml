@@ -140,7 +140,7 @@ Singleton {
 
   // File paths
   readonly property string userEmojiPath: Settings.configDir + "emoji.json"
-  readonly property string builtinEmojiPath: `${Quickshell.shellDir}/Assets/Launcher/emoji.json`
+  readonly property string builtinEmojiPath: `${Quickshell.shellDir}/assets/Launcher/emoji.json`
 
   // Internal data
   property var _userEmojiData: []

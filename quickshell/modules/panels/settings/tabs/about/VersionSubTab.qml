@@ -288,7 +288,7 @@ ColumnLayout {
 
   Process {
     id: fastfetchProcess
-    command: ["fastfetch", "--format", "json", "--config", Quickshell.shellDir + "/Assets/Services/fastfetch/system-info.jsonc"]
+    command: ["fastfetch", "--format", "json", "--config", Quickshell.shellDir + "/assets/Services/fastfetch/system-info.jsonc"]
     running: false
 
     onExited: function (exitCode) {
@@ -316,7 +316,7 @@ ColumnLayout {
 
     // Rustiq logo
     Image {
-      source: "../../../../../Assets/rustiq.svg"
+      source: "../../../../../assets/rustiqlogo.svg"
       width: 96 * Style.uiScaleRatio
       height: width
       fillMode: Image.PreserveAspectFit

@@ -152,7 +152,7 @@ SmartPanel {
               Layout.fillWidth: true
             }
 
-            NIconButton {
+            RIconButton {
               icon: "refresh"
               tooltipText: "Refresh"
               baseSize: Style.baseWidgetSize * 0.8
@@ -174,14 +174,14 @@ SmartPanel {
               baseSize: Style.baseWidgetSize * 0.7 // Slightly smaller
             }
 
-            NIconButton {
+            RIconButton {
               icon: "settings"
               tooltipText: "Settings"
               baseSize: Style.baseWidgetSize * 0.8
               onClicked: SettingsPanelService.openToTab(SettingsPanel.Tab.Connections, 0, screen)
             }
 
-            NIconButton {
+            RIconButton {
               icon: "close"
               tooltipText: "Close"
               baseSize: Style.baseWidgetSize * 0.8
@@ -254,7 +254,7 @@ SmartPanel {
               Layout.fillWidth: true
             }
 
-            NIconButton {
+            RIconButton {
               icon: "close"
               baseSize: Style.baseWidgetSize * 0.6
               onClicked: NetworkService.lastError = ""
@@ -585,7 +585,7 @@ SmartPanel {
                         }
 
                         // Info button on the right
-                        NIconButton {
+                        RIconButton {
                           icon: "info"
                           tooltipText: "Info"
                           baseSize: Style.baseWidgetSize * 0.8
@@ -636,7 +636,7 @@ SmartPanel {
                         Layout.topMargin: Style.marginXS
 
                         // Grid/List toggle
-                        NIconButton {
+                        RIconButton {
                           anchors.top: parent.top
                           anchors.right: parent.right
                           anchors.margins: Style.marginS

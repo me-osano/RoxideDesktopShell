@@ -57,14 +57,14 @@ SmartPanel {
             baseSize: Style.baseWidgetSize * 0.65
           }
 
-          NIconButton {
+          RIconButton {
             icon: "settings"
             tooltipText: "Settings"
             baseSize: Style.baseWidgetSize * 0.8
             onClicked: SettingsPanelService.openToTab(SettingsPanel.Tab.Connections, 1, screen)
           }
 
-          NIconButton {
+          RIconButton {
             icon: "close"
             tooltipText: "Close"
             baseSize: Style.baseWidgetSize * 0.8

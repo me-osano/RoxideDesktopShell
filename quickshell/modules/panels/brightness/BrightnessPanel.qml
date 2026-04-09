@@ -125,7 +125,7 @@ SmartPanel {
             Layout.fillWidth: true
           }
 
-          NIconButton {
+          RIconButton {
             icon: "close"
             tooltipText: "Close"
             baseSize: Style.baseWidgetSize * 0.8

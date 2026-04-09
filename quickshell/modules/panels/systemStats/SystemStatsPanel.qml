@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
+import Quickshell.Io           // For Process & FileView
 import qs.modules.mainScreen
 import qs.common.theme
 import qs.services
@@ -89,7 +90,7 @@ SmartPanel {
             Layout.fillWidth: true
           }
 
-          NIconButton {
+          RIconButton {
             icon: "close"
             tooltipText: "Close"
             baseSize: Style.baseWidgetSize * 0.8

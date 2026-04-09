@@ -16,7 +16,7 @@ Singleton {
 
   // User info
   readonly property string username: (Quickshell.env("USER") || "")
-  readonly property string envRealName: (Quickshell.env("NOCTURNAL_REALNAME") || "")
+  readonly property string envRealName: (Quickshell.env("RUSTIQ_REALNAME") || "")
   property string realName: ""
 
   // Machine info

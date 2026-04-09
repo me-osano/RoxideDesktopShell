@@ -1,7 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Io
-import "../../common/helpers/BluetoothUtils.js" as BluetoothUtils
+import "../common/helpers/BluetoothUtils.js" as BluetoothUtils
 
 QtObject {
   id: root

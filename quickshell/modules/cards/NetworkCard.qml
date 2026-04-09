@@ -202,7 +202,7 @@ RBox {
       }
 
       // Refresh button (top-right)
-      NIconButton {
+      RIconButton {
         visible: root.currentTab === 0
         icon: "refresh"
         baseSize: Style.baseWidgetSize * 0.8
@@ -212,7 +212,7 @@ RBox {
       }
 
       // WiFi tab button
-      NIconButton {
+      RIconButton {
         icon: "wifi"
         baseSize: Style.baseWidgetSize * 0.8
         tooltipText: "Wi-Fi"
@@ -222,7 +222,7 @@ RBox {
       }
 
       // Ethernet tab button
-      NIconButton {
+      RIconButton {
         icon: "ethernet"
         baseSize: Style.baseWidgetSize * 0.8
         tooltipText: "Ethernet"
@@ -232,7 +232,7 @@ RBox {
       }
 
       // Settings button
-      NIconButton {
+      RIconButton {
         icon: "settings"
         baseSize: Style.baseWidgetSize * 0.8
         tooltipText: "Network Settings"
@@ -284,7 +284,7 @@ RBox {
           Layout.fillWidth: true
         }
 
-        NIconButton {
+        RIconButton {
           icon: "close"
           baseSize: Style.baseWidgetSize * 0.5
           onClicked: NetworkService.lastError = ""

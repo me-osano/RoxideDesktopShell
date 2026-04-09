@@ -28,7 +28,7 @@ Singleton {
   readonly property string shellName: "rustiq"
   readonly property string configDir: Quickshell.env("RUSTIQ_CONFIG_DIR") || (Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config") + "/" + shellName + "/"
   readonly property string cacheDir: Quickshell.env("RUSTIQ_CACHE_DIR") || (Quickshell.env("XDG_CACHE_HOME") || Quickshell.env("HOME") + "/.cache") + "/" + shellName + "/"
-  readonly property string settingsFile: Quickshell.env("NOCTURNAL_SETTINGS_FILE") || (configDir + "settings.json")
+  readonly property string settingsFile: Quickshell.env("RUSTIQ_SETTINGS_FILE") || (configDir + "settings.json")
   readonly property string defaultLocation: "Tokyo"
   readonly property string defaultAvatar: Quickshell.env("HOME") + "/.face"
   readonly property string defaultVideosDirectory: Quickshell.env("HOME") + "/Videos"
@@ -140,7 +140,7 @@ Singleton {
   // FileView to load default settings for comparison
   FileView {
     id: defaultSettingsFileView
-    path: Quickshell.shellDir + "/Assets/settings-default.json"
+    path: Quickshell.shellDir + "/assets/settings-default.json"
     printErrors: false
     watchChanges: false
   }
@@ -1000,7 +1000,7 @@ Singleton {
       var plainAdapter = QtObj2JS.qtObjectToPlainObject(adapter);
       var jsonData = JSON.stringify(plainAdapter, null, 2);
 
-      var defaultPath = Quickshell.shellDir + "/Assets/settings-default.json";
+      var defaultPath = Quickshell.shellDir + "/assets/settings-default.json";
 
       // Encode transfer it has base64 to avoid any escaping issue
       var base64Data = Qt.btoa(jsonData);
@@ -1023,7 +1023,7 @@ Singleton {
       };
       var jsonData = JSON.stringify(output, null, 2);
 
-      var defaultPath = Quickshell.shellDir + "/Assets/settings-widgets-default.json";
+      var defaultPath = Quickshell.shellDir + "/assets/settings-widgets-default.json";
 
       var base64Data = Qt.btoa(jsonData);
       Quickshell.execDetached(["sh", "-c", `echo "${base64Data}" | base64 -d > "${defaultPath}"`]);

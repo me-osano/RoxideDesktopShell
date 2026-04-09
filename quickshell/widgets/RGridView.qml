@@ -204,7 +204,7 @@ Item {
 
     Qt.createQmlObject(`
       import QtQuick
-      import qs.Commons
+      import qs.common.theme
       Rectangle {
         x: 0
         y: 0
@@ -225,7 +225,7 @@ Item {
 
     Qt.createQmlObject(`
       import QtQuick
-      import qs.Commons
+      import qs.common.theme
       Rectangle {
         x: 0
         anchors.bottom: parent.bottom

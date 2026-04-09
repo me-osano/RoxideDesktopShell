@@ -9,7 +9,7 @@ import qs.modules.panels.settings
 import qs.services
 import qs.widgets
 
-NIconButton {
+RIconButton {
   id: root
 
   property ShellScreen screen

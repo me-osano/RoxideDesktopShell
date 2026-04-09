@@ -55,7 +55,7 @@ PanelWindow {
   // Load TrayMenu as the default content
   Loader {
     id: trayMenuLoader
-    source: Quickshell.shellDir + "/Modules/Bar/Extras/TrayMenu.qml"
+    source: Quickshell.shellDir + "/modules/bar/extras/TrayMenu.qml"
     onLoaded: {
       if (item) {
         item.screen = root.screen;

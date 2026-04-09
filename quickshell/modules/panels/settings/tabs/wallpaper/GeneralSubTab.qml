@@ -37,7 +37,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignTop
       }
 
-      NIconButton {
+      RIconButton {
         icon: "wallpaper-selector"
         tooltipText: "Wallpaper selector"
         onClicked: PanelService.getPanel("wallpaperPanel", root.screen)?.toggle()

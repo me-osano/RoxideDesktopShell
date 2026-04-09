@@ -1,4 +1,4 @@
-// AdvancedMath.js - Lightweight math library for Nocturnal Calculator
+// AdvancedMath.js - Lightweight math library for Rustiq Calculator
 // Provides advanced mathematical functions beyond basic arithmetic
 
 // Helper function to convert degrees to radians

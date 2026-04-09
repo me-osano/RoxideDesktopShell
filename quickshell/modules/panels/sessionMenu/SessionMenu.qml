@@ -663,7 +663,7 @@ SmartPanel {
             Layout.fillWidth: true
           }
 
-          NIconButton {
+          RIconButton {
             icon: timerActive ? "stop" : "close"
             tooltipText: timerActive ? "Cancel timer" : "Close"
             Layout.alignment: Qt.AlignVCenter

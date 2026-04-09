@@ -247,7 +247,7 @@ Loader {
                       Layout.fillWidth: true
                     }
 
-                    NIconButton {
+                    RIconButton {
                       icon: "x"
                       tooltipText: "Cancel timer"
                       baseSize: 32

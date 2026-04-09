@@ -403,14 +403,14 @@ SmartPanel {
               Layout.fillWidth: true
             }
 
-            NIconButton {
+            RIconButton {
               icon: NotificationService.doNotDisturb ? "bell-off" : "bell"
               tooltipText: NotificationService.doNotDisturb ? "Do Not Disturb" : "Do Not Disturb"
               baseSize: Style.baseWidgetSize * 0.8
               onClicked: NotificationService.doNotDisturb = !NotificationService.doNotDisturb
             }
 
-            NIconButton {
+            RIconButton {
               icon: "trash"
               tooltipText: "Clear history"
               baseSize: Style.baseWidgetSize * 0.8
@@ -421,7 +421,7 @@ SmartPanel {
               }
             }
 
-            NIconButton {
+            RIconButton {
               icon: "close"
               tooltipText: "Close"
               baseSize: Style.baseWidgetSize * 0.8
@@ -949,7 +949,7 @@ SmartPanel {
                             anchors.right: parent.right
                             spacing: Style.marginXS
 
-                            NIconButton {
+                            RIconButton {
                               id: expandButton
                               icon: notificationDelegate.isExpanded ? "chevron-up" : "chevron-down"
                               tooltipText: notificationDelegate.isExpanded ? "Click to collapse" || "Click to collapse" : "Click to expand" || "Click to expand"
@@ -969,7 +969,7 @@ SmartPanel {
                             }
 
                             // Delete button
-                            NIconButton {
+                            RIconButton {
                               icon: "trash"
                               tooltipText: "Delete notification"
                               baseSize: notificationDelegate.actionButtonSize

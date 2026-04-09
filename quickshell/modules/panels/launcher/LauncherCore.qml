@@ -719,7 +719,7 @@ Rectangle {
         }
       }
 
-      NIconButton {
+      RIconButton {
         visible: root.showLayoutToggle
         icon: Settings.data.appLauncher.viewMode === "grid" ? "layout-list" : "layout-grid"
         tooltipText: Settings.data.appLauncher.viewMode === "grid" ? "List view" : "Grid view"
@@ -1027,7 +1027,7 @@ Rectangle {
 
                 Repeater {
                   model: parent.itemActions
-                  NIconButton {
+                  RIconButton {
                     icon: modelData.icon
                     baseSize: Style.baseWidgetSize * 0.75
                     tooltipText: modelData.tooltip
@@ -1403,7 +1403,7 @@ Rectangle {
 
               Repeater {
                 model: parent.gridItemActions
-                NIconButton {
+                RIconButton {
                   icon: modelData.icon
                   baseSize: Style.baseWidgetSize * 0.75
                   tooltipText: modelData.tooltip
