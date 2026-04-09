@@ -24,13 +24,13 @@ pub fn socket_path() -> PathBuf {
 pub async fn serve(state: AppState) -> Result<()> {
     let path = socket_path();
     let addr = format!("127.0.0.1:{}", std::env::var("RUSTIQ_PORT").unwrap_or_else(|_| "8765".to_string()));
-    let addr_display = &addr;
+    let addr_display = addr.clone();
 
     if path.exists() {
         std::fs::remove_file(&path)?;
     }
 
-    let listener = TcpListener::bind(addr).await?;
+    let listener = TcpListener::bind(&addr).await?;
     info!("RUSTIQ IPC listening on {} (-> {})", addr_display, path.display());
 
     let router = Router::new()
@@ -60,6 +60,8 @@ pub async fn serve(state: AppState) -> Result<()> {
         .route("/clipboard/:id/decode", get(handlers::clipboard_decode))
         .route("/brightness", get(handlers::brightness))
         .route("/brightness", post(handlers::brightness_set))
+        .route("/brightness/devices", get(handlers::brightness_devices))
+        .route("/brightness/select", post(handlers::brightness_select))
         .route("/brightness/increase", post(handlers::brightness_increase))
         .route("/brightness/decrease", post(handlers::brightness_decrease))
         .route("/media", get(handlers::media))

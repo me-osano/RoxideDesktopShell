@@ -215,34 +215,44 @@ pub async fn brightness(State(state): State<AppState>) -> impl IntoResponse {
 }
 
 #[derive(Deserialize)]
-pub struct BrightnessParams {
-    pub value: Option<f32>,
+pub struct BrightnessSetParams {
+    pub device: Option<String>,
+    pub value: f32,
+    pub exponential: Option<bool>,
+    pub exponent: Option<f64>,
 }
 
 pub async fn brightness_set(
     State(state): State<AppState>,
-    Json(params): Json<BrightnessParams>,
+    Json(params): Json<BrightnessSetParams>,
 ) -> impl IntoResponse {
-    if let Some(value) = params.value {
-        match state.inner.brightness.set_brightness(value).await {
-            Ok(_) => StatusCode::OK.into_response(),
-            Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
-        }
-    } else {
-        (StatusCode::BAD_REQUEST, "value required".to_string()).into_response()
+    let selected = state.inner.brightness.state.read().await.selected_device.clone();
+    let device = params.device.unwrap_or_else(|| selected.unwrap_or_default());
+    let exponential = params.exponential.unwrap_or(false);
+    let exponent = params.exponent.unwrap_or(1.2);
+
+    match state.inner.brightness.set_brightness(&device, params.value, exponential, exponent).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
     }
 }
 
 #[derive(Deserialize)]
 pub struct BrightnessDeltaParams {
+    pub device: Option<String>,
     pub delta: f32,
+    pub exponential: Option<bool>,
+    pub exponent: Option<f64>,
 }
 
 pub async fn brightness_increase(
     State(state): State<AppState>,
     Json(params): Json<BrightnessDeltaParams>,
 ) -> impl IntoResponse {
-    match state.inner.brightness.increase(params.delta).await {
+    let exponential = params.exponential.unwrap_or(false);
+    let exponent = params.exponent.unwrap_or(1.2);
+
+    match state.inner.brightness.increase(params.delta, exponential, exponent).await {
         Ok(_) => StatusCode::OK.into_response(),
         Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
     }
@@ -252,9 +262,32 @@ pub async fn brightness_decrease(
     State(state): State<AppState>,
     Json(params): Json<BrightnessDeltaParams>,
 ) -> impl IntoResponse {
-    match state.inner.brightness.decrease(params.delta).await {
+    let exponential = params.exponential.unwrap_or(false);
+    let exponent = params.exponent.unwrap_or(1.2);
+
+    match state.inner.brightness.decrease(params.delta, exponential, exponent).await {
         Ok(_) => StatusCode::OK.into_response(),
         Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
+    }
+}
+
+pub async fn brightness_devices(State(state): State<AppState>) -> impl IntoResponse {
+    let devices = state.inner.brightness.get_devices().await;
+    Json(devices)
+}
+
+#[derive(Deserialize)]
+pub struct BrightnessSelectParams {
+    pub device: String,
+}
+
+pub async fn brightness_select(
+    State(state): State<AppState>,
+    Json(params): Json<BrightnessSelectParams>,
+) -> impl IntoResponse {
+    match state.inner.brightness.set_selected_device(&params.device).await {
+        Ok(_) => StatusCode::OK.into_response(),
+        Err(e) => (StatusCode::NOT_FOUND, e.to_string()).into_response(),
     }
 }
 

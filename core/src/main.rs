@@ -1,7 +1,7 @@
 mod bluetooth;
 mod brightness;
 mod clipboard;
-mod cli;
+mod cmd;
 mod geolocation;
 mod ipc;
 mod media;
@@ -14,7 +14,7 @@ mod weather;
 
 use anyhow::Result;
 use clap::Parser;
-use cli::{Cli, Command};
+use cmd::{Cmd, Command};
 use tracing::info;
 use tracing_subscriber::EnvFilter;
 
@@ -24,15 +24,17 @@ async fn main() -> Result<()> {
         .with_env_filter(EnvFilter::from_env("RUSTIQ_LOG"))
         .init();
 
-    let cli = Cli::parse();
+    let cmd = Cmd::parse();
 
-    match cli.command {
+    match cmd.command {
         Command::Daemon => run_daemon().await,
-        Command::Status => cli::status().await,
-        Command::Sysmon => cli::sysmon_snapshot().await,
-        Command::Search { query, limit } => cli::search(query, limit).await,
-        Command::Weather => cli::weather_snapshot().await,
-        Command::Niri { subcommand } => cli::niri_cmd(subcommand).await,
+        Command::Status => cmd::status().await,
+        Command::Sysmon => cmd::sysmon_snapshot().await,
+        Command::Search { query, limit } => cmd::search(query, limit).await,
+        Command::Weather => cmd::weather_snapshot().await,
+        Command::Niri { subcommand } => cmd::niri_cmd(subcommand).await,
+        Command::Brightness { subcommand } => cmd::brightness_cmd(subcommand).await,
+        Command::Doctor => cmd::doctor().await,
     }
 }
 
