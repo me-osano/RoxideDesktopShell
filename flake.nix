@@ -102,7 +102,6 @@
                 buildInputs = with rustiqPkgs; [
                   openssl
                   dbus
-                  libdbus
                 ];
 
                 postInstall = ''
