@@ -11,10 +11,9 @@ in
 {
   options.programs.rustiq-shell = {
     enable = lib.mkEnableOption "RUSTIQ desktop shell";
-
-    package = lib.mkOption {
-      type = lib.types.package;
-      description = "The rustiq-shell package to use";
+    
+    package = lib.mkPackageOption rustiqPkgs "rustiq-shell" {
+      extraDescription = "The RustiqDesktopShell package to use (defaults to be built from source)";
     };
 
     quickshell = {

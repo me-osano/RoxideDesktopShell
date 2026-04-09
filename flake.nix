@@ -86,7 +86,7 @@
             }:
             (pkgs.rustPlatform.buildRustPackage.override { }) (
               let
-                rustPkgs = pkgs;
+                rustiqPkgs = pkgs;
               in
               {
                 inherit version;
@@ -94,12 +94,12 @@
                 src = coreSrc;
                 inherit cargoHash;
 
-                nativeBuildInputs = with rustPkgs; [
+                nativeBuildInputs = with rustiqPkgs; [
                   pkg-config
                   makeWrapper
                 ];
 
-                buildInputs = with rustPkgs; [
+                buildInputs = with rustiqPkgs; [
                   openssl
                   dbus
                   libdbus
@@ -112,9 +112,9 @@
                   wrapProgram $out/bin/rustiq \
                     --add-flags "-c $out/share/quickshell/rustiq-shell" \
                     --prefix "NIXPKGS_QT6_QML_IMPORT_PATH" ":" "${
-                      mkQmlImportPath rustPkgs (qtPackages ++ extraQtPackages)
+                      mkQmlImportPath rustiqPkgs (qtPackages ++ extraQtPackages)
                     }" \
-                    --prefix "QT_PLUGIN_PATH" ":" "${mkQtPluginPath rustPkgs (qtPackages ++ extraQtPackages)}"
+                    --prefix "QT_PLUGIN_PATH" ":" "${mkQtPluginPath rustiqPkgs (qtPackages ++ extraQtPackages)}"
                 '';
 
                 meta = {
