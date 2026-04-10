@@ -161,7 +161,10 @@ RBox {
             Image {
                 id: gridPreviewImage
                 anchors.fill: parent
-                anchors.margin: 2
+                anchors.leftMargin: 2
+                anchors.rightMargin: 2
+                anchors.topMargin: 2
+                anchors.bottomMargin: 2
                 property var weExtensions: [".jpg", ".jpeg", ".png", ".webp", ".gif", ".bmp", ".tga", ".jxl", ".avif", ".heif", ".exr"]
                 property int weExtIndex: 0
                 property string imagePath: {
@@ -192,14 +195,17 @@ RBox {
 
             RImageRounded {
                 anchors.fill: parent
-                anchors.margin: 2
-                source: gridPreviewImage.status === Image.Ready && ((!delegateRoot.fileIsDir && (isImage || isVideo)) || (weMode && delegateRoot.fileIsDir)) ? gridPreviewImage.source : ""
+                anchors.leftMargin: 2
+                anchors.rightMargin: 2
+                anchors.topMargin: 2
+                anchors.bottomMargin: 2
+                imagePath: gridPreviewImage.status === Image.Ready && ((!delegateRoot.fileIsDir && (isImage || isVideo)) || (weMode && delegateRoot.fileIsDir)) ? gridPreviewImage.source : ""
                 radius: Style.radiusS
             }
 
             RIcon {
                 anchors.centerIn: parent
-                name: delegateRoot.fileIsDir ? "folder" : getIconForFile(delegateRoot.fileName)
+                icon: delegateRoot.fileIsDir ? "folder" : getIconForFile(delegateRoot.fileName)
                 pointSize: iconSizes[iconSizeIndex] * 0.45
                 color: delegateRoot.fileIsDir ? Color.mPrimary : Color.mOnSurface
                 visible: (!delegateRoot.fileIsDir && !isImage && !(isVideo && gridPreviewImage.status === Image.Ready)) || (delegateRoot.fileIsDir && !weMode)

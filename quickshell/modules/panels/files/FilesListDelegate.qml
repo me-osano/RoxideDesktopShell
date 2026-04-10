@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 import qs.common.theme
 import qs.widgets
 
@@ -182,13 +183,13 @@ RBox {
 
             RImageRounded {
                 anchors.fill: parent
-                source: listPreviewImage.status === Image.Ready && !listDelegateRoot.fileIsDir && (isImage || isVideo) ? listPreviewImage.source : ""
+                imagePath: listPreviewImage.status === Image.Ready && !listDelegateRoot.fileIsDir && (isImage || isVideo) ? listPreviewImage.source : ""
                 radius: Style.radiusS
             }
 
             RIcon {
                 anchors.centerIn: parent
-                name: listDelegateRoot.fileIsDir ? "folder" : getIconForFile(listDelegateRoot.fileName)
+                icon: listDelegateRoot.fileIsDir ? "folder" : getIconForFile(listDelegateRoot.fileName)
                 pointSize: Style.fontSizeM
                 color: listDelegateRoot.fileIsDir ? Color.mPrimary : Color.mOnSurface
                 visible: listDelegateRoot.fileIsDir || (!isImage && !(isVideo && listPreviewImage.status === Image.Ready))

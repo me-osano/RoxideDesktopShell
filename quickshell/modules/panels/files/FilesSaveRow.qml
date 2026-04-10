@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 import qs.common.theme
 import qs.widgets
 
@@ -22,10 +23,7 @@ RowLayout {
         height: Math.round(40 * Style.uiScaleRatio)
         text: defaultFileName
         placeholderText: I18n.tr("Enter filename...")
-        ignoreLeftRightKeys: false
         focus: saveMode
-        topPadding: Style.marginS
-        bottomPadding: Style.marginS
         Component.onCompleted: {
             if (saveMode)
                 Qt.callLater(() => {

@@ -1,8 +1,9 @@
 import QtQuick
+import QtQuick.Layouts
 import qs.common.theme
 import qs.widgets
 
-RowLayout {
+Row {
     id: navigation
 
     property string currentPath: ""
@@ -31,7 +32,7 @@ RowLayout {
 
         RIcon {
             anchors.centerIn: parent
-            name: "arrow_left"
+            icon: "arrow_left"
             pointSize: Style.fontSizeS
             color: Color.mOnSurface
         }
@@ -89,8 +90,8 @@ RowLayout {
             id: pathInput
             anchors.fill: parent
             visible: pathEditMode
-            topPadding: Style.marginXXS
-            bottomPadding: Style.marginXXS
+            //topPadding: Style.marginXXS
+            //bottomPadding: Style.marginXXS
             onAccepted: {
                 const newPath = text.trim()
                 if (newPath !== "") {

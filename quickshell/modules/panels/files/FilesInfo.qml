@@ -128,7 +128,7 @@ Rectangle {
             spacing: Style.marginS
 
             RIcon {
-                name: "info"
+                icon: "info"
                 pointSize: Style.fontSizeM
                 color: Color.mSecondary
             }

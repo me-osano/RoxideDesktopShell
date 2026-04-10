@@ -549,7 +549,7 @@ FocusScope {
                 spacing: Style.marginM
 
                 RIcon {
-                    name: browserIcon
+                    icon: browserIcon
                     pointSize: Style.fontSizeXXL
                     color: Color.mPrimary
                 }
@@ -625,7 +625,7 @@ FocusScope {
                 }
 
                 RDivider {
-                    orientation: Qt.Vertical
+                    vertical: true
                     visible: showSidebar
                 }
 

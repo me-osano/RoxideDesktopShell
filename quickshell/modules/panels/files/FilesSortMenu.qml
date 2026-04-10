@@ -62,7 +62,7 @@ RBox {
                     spacing: Style.marginS
 
                     RIcon {
-                        name: sortBy === modelData?.value ? "check" : ""
+                        icon: sortBy === modelData?.value ? "check" : ""
                         pointSize: Style.fontSizeS
                         color: Color.mPrimary
                         anchors.verticalCenter: parent.verticalCenter
@@ -116,7 +116,7 @@ RBox {
                 spacing: Style.marginS
 
                 RIcon {
-                    name: "arrow_up"
+                    icon: "arrow_up"
                     pointSize: Style.fontSizeS
                     color: sortAscending ? Color.mPrimary : Color.mOnSurface
                     anchors.verticalCenter: parent.verticalCenter
@@ -154,7 +154,7 @@ RBox {
                 spacing: Style.marginS
 
                 RIcon {
-                    name: "arrow_down"
+                    icon: "arrow_down"
                     pointSize: Style.fontSizeS
                     color: !sortAscending ? Color.mPrimary : Color.mOnSurface
                     anchors.verticalCenter: parent.verticalCenter

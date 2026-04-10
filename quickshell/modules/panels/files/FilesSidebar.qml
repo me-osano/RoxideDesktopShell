@@ -41,7 +41,7 @@ RBox {
                     spacing: Style.marginS
 
                     RIcon {
-                        name: modelData?.icon ?? ""
+                        icon: modelData?.icon ?? ""
                         pointSize: Style.fontSizeM
                         color: currentPath === modelData?.path ? Color.mPrimary : Color.mOnSurface
                     }
