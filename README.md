@@ -3,7 +3,7 @@
 > A handcrafted Wayland desktop shell for [niri](https://github.com/YaLTeR/niri), built with Quickshell/QML and a Rust backend.
 
 ```
-  ██████╗ ██╗   ██╗███████╗████████╗██╗ ██████╗
+  ██████╗ ██╗   ██║███████╗████████╗██╗ ██████╗
   ██╔══██╗██║   ██║██╔════╝╚══██╔══╝██║██╔═══██╗
   ██████╔╝██║   ██║███████╗   ██║   ██║██║   ██║
   ██╔══██╗██║   ██║╚════██║   ██║   ██║██║▄▄ ██║
@@ -32,26 +32,46 @@ Quickshell connects to it over a Unix socket at `$XDG_RUNTIME_DIR/rustiq.sock`.
 - **Greeter** — greetd greeter (pure QML)
 - **Theme** — Catppuccin Mocha throughout
 
-## Dependencies
+## Prerequisites
 
-### Runtime
-- `niri` — Wayland compositor
-- `quickshell` — QML shell framework
-- `pipewire` / `wireplumber` — audio
-- `networkmanager` — network management
-- `greetd` — display manager (for greeter)
+### Runtime Dependencies
 
-### Build
+| Component | Description | Required |
+|-----------|-------------|----------|
+| `niri` | Wayland compositor | Yes |
+| `quickshell` | QML shell framework | Yes |
+| `pipewire` / `wireplumber` | Audio | Yes |
+| `networkmanager` | Network management | Yes |
+| `greetd` | Display manager (for greeter) | Optional |
+| `upower` | Battery monitoring | Optional |
+| `bluez` | Bluetooth support | Optional |
+
+### Build Dependencies
+
 - `rust` 1.75+
 - `cargo`
 - `qt6` / `qt6-declarative`
+- `pkgconf`
+- `openssl` (development headers)
 
-## Building
+---
 
-### Nix Flake (Recommended)
+## Installation
+
+### Nix Flake (Recommended for NixOS)
+
+```nix
+{
+  inputs.rustiq-shell.url = "github:me-osano/rustiq-shell";
+  imports = [ inputs.rustiq-shell.homeModules.default ];
+  programs.rustiq-shell.enable = true;
+}
+```
+
+Or for standalone testing:
 
 ```bash
-# Enter dev shell
+# Enter dev shell with all dependencies
 nix develop
 
 # Build the package
@@ -61,45 +81,151 @@ nix build
 ./result/bin/rustiq -c ./quickshell
 ```
 
-### Manual Build
+---
+
+### Arch Linux
+
+#### Option 1: PKGBUILD (Stable)
 
 ```bash
-# Build Rust core
-cd core && cargo build --release
+# Clone the repository
+git clone https://github.com/me-osano/rustiq-shell.git
+cd rustiq-shell
 
-# Install daemon + CLI
-sudo install -Dm755 target/release/rustiq /usr/local/bin/rustiq
+# Build and install
+makepkg -si
 
-# Install systemd unit
-install -Dm644 distro/arch/rustiq.service ~/.config/systemd/user/
+# Or install without confirmation
+makepkg -si --noconfirm
+```
 
-# Launch shell
+#### Option 2: PKGBUILD-git (Development)
+
+```bash
+# Add to AUR helper (e.g., yay, aurman)
+yay -S rustiq-shell-git
+
+# Or build manually
+git clone https://github.com/me-osano/rustiq-shell.git
+cd rustiq-shell/distro/arch
+makepkg -si
+```
+
+#### Option 3: Manual Build
+
+```bash
+git clone https://github.com/me-osano/rustiq-shell.git
+cd rustiq-shell
+
+# Run the install script
+chmod +x distro/arch/install.sh
+sudo ./distro/arch/install.sh
+```
+
+**Post-installation (Arch):**
+
+```bash
+# Reload systemd
+systemctl --user daemon-reload
+
+# Enable and start the daemon
 systemctl --user enable --now rustiq.service
-quickshell -p ~/.config/rustiq/quickshell
+
+# Start quickshell with rustiq config
+quickshell -c ~/.config/rustiq
 ```
 
-## IPC
+---
+
+## Configuration
+
+### Qt Environment Variables
+
+Quickshell requires proper Qt paths. Add to your shell profile:
 
 ```bash
-rustiq status           # daemon health
-rustiq sysmon           # system snapshot
-rustiq search "query"   # file search
-rustiq weather          # current weather
-rustiq niri workspaces  # workspace list
-rustiq niri windows     # window list
+# For system Qt (adjust paths for your distribution)
+export QT_QML_IMPORT_PATH="${QT_QML_IMPORT_PATH:-}:/usr/lib/qt6/qml"
+export QT_PLUGIN_PATH="${QT_PLUGIN_PATH:-}:/usr/lib/qt6/plugins"
+
+# For locally built Qt (Nix)
+export QT_QML_IMPORT_PATH="${NIXPKGS_QT6_QML_IMPORT_PATH}"
+export QT_PLUGIN_PATH="${QT_PLUGIN_PATH}"
 ```
 
-## NixOS / Home Manager
+### Log Level
 
-```nix
-{
-  inputs.rustiq-shell.url = "github:rustiq/rustiq-shell";
-  imports = [ inputs.rustiq-shell.homeModules.default ];
-  programs.rustiq-shell.enable = true;
-}
+Set via environment variable:
+
+```bash
+export RUSTIQ_LOG=debug  # debug, info, warn, error
 ```
+
+### Alternative Config Location
+
+```bash
+rustiq -c /path/to/config daemon
+quickshell -c /path/to/config
+```
+
+---
+
+## Usage
+
+### CLI Commands
+
+```bash
+rustiq status           # Daemon health check
+rustiq sysmon           # System monitoring snapshot
+rustiq search "query"   # File search
+rustiq weather          # Current weather
+rustiq niri workspaces  # Workspace list
+rustiq niri windows     # Window list
+```
+
+### Systemd Service
+
+```bash
+# Enable at login
+systemctl --user enable rustiq.service
+
+# Start manually
+systemctl --user start rustiq.service
+
+# View logs
+journalctl --user -u rustiq.service -f
+```
+
+---
+
+## Troubleshooting
+
+### Quickshell Qt module not found
+
+Ensure `QT_QML_IMPORT_PATH` includes Qt6 QML paths:
+```bash
+echo $QT_QML_IMPORT_PATH  # Should include Qt6 paths
+```
+
+### Socket connection failed
+
+Check that rustiq daemon is running:
+```bash
+systemctl --user status rustiq.service
+```
+
+### Missing dependencies
+
+Install required Qt6 components:
+- `qt6-base`
+- `qt6-declarative` 
+- `qt6-multimedia`
+- `qt6-imageformats`
+- `kirigami`
+- `sonnet`
+
+---
 
 ## License
 
 RustiqShell Core is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
-

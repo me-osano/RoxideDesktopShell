@@ -92,7 +92,7 @@
                 inherit version;
                 pname = "rustiq-shell";
                 src = coreSrc;
-                cargoLock.lockFile = ./core/Cargo.lock;
+                cargoHash = "sha256-bzDHXPBhtRuhezy43JSGNG/y+PtAritNKFbnDDh8gfA=";
 
                 nativeBuildInputs = with rustiqPkgs; [
                   pkg-config

@@ -1,0 +1,64 @@
+pkgname=rustiq-shell-git
+pkgbase=rustiq-shell-git
+pkgver=0.1.0.r1.gabcdef1
+pkgrel=1
+pkgdesc="RUSTIQ - A handcrafted Wayland desktop shell for niri, built with Quickshell/QML and Rust"
+arch=('x86_64' 'aarch64')
+url="https://github.com/me-osano/rustiq-shell"
+license=('MIT')
+groups=('wayland')
+depends=(
+  'niri'
+  'quickshell'
+  'qt6-base'
+  'qt6-declarative'
+  'qt6-multimedia'
+  'qt6-imageformats'
+  'kirigami'
+  'sonnet'
+  'pipewire'
+  'wireplumber'
+  'networkmanager'
+  'greetd'
+  'systemd'
+)
+makedepends=(
+  'git'
+  'rust'
+  'cargo'
+  'pkgconf'
+  'qt6-tools'
+)
+optdepends=(
+  'greetd: for greeter functionality'
+  'upower: battery monitoring'
+  'bluez: bluetooth support'
+)
+source=("${pkgname}::git+https://github.com/me-osano/rustiq-shell.git")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$pkgname"
+  git describe --tags | sed 's/^v//'
+}
+
+build() {
+  cd "$pkgname"
+  
+  local _cargo_hash=$(sha256sum core/Cargo.lock | cut -d' ' -f1)
+  msg "Cargo.lock hash: $_cargo_hash"
+  
+  cd core
+  cargo build --release --manifest-path Cargo.toml
+}
+
+package() {
+  cd "$pkgname"
+  
+  install -Dm755 core/target/release/rustiq "$pkgdir/usr/bin/rustiq"
+  
+  install -d "$pkgdir/etc/rustiq/quickshell"
+  cp -r quickshell/* "$pkgdir/etc/rustiq/quickshell/"
+  
+  install -Dm644 distro/arch/rustiq.service "$pkgdir/usr/lib/systemd/user/rustiq.service"
+}
