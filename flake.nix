@@ -75,7 +75,7 @@
             "${cleanVersion}${dateSuffix}${revSuffix}";
 
           coreSrc = ./core;
-          #cargoHash = "sha256-WZu3zmSW8io9iJG+AiIdTLftoUy1gD6jv08gM8Ops6U=";
+          cargoHash = "sha256-bzDHXPBhtRuhezy43JSGNG/y+PtAritNKFbnDDh8gfA=";
 
           qtPackages = qmlPkgs pkgs;
         in
@@ -92,7 +92,7 @@
                 inherit version;
                 pname = "rustiq-shell";
                 src = coreSrc;
-                cargoHash = "sha256-bzDHXPBhtRuhezy43JSGNG/y+PtAritNKFbnDDh8gfA=";
+                cargoHash = cargoHash;
 
                 nativeBuildInputs = with rustiqPkgs; [
                   pkg-config

@@ -1,7 +1,5 @@
 core/target/
 target/
-*.lock
-!flake.lock
 .direnv/
 result
 result-*
