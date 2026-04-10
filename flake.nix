@@ -70,12 +70,13 @@
               rawVersion = pkgs.lib.removePrefix "v" (pkgs.lib.trim (builtins.readFile ./quickshell/VERSION));
               cleanVersion = builtins.replaceStrings [ " " ] [ "" ] rawVersion;
               dateSuffix = "+date=" + mkDate (self.lastModifiedDate or "19700101");
-              revSuffix = "_" + (self.shortRev or "dirty");
+              #revSuffix = "_" + (self.shortRev or "dirty");
             in
-            "${cleanVersion}${dateSuffix}${revSuffix}";
+            "${cleanVersion}${dateSuffix}";
 
           coreSrc = ./core;
-          cargoHash = "sha256-bzDHXPBhtRuhezy43JSGNG/y+PtAritNKFbnDDh8gfA=";
+          lock = coreSrc + "/Cargo.lock";
+          #cargoHash = "sha256-bzDHXPBhtRuhezy43JSGNG/y+PtAritNKFbnDDh8gfA=";
 
           qtPackages = qmlPkgs pkgs;
         in
@@ -92,7 +93,8 @@
                 inherit version;
                 pname = "rustiq-shell";
                 src = coreSrc;
-                cargoHash = cargoHash;
+                cargoLock = lock;
+                #cargoHash = cargoHash;
 
                 nativeBuildInputs = with rustiqPkgs; [
                   pkg-config
