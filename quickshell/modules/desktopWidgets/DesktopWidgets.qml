@@ -57,7 +57,7 @@ Variants {
 
       WlrLayershell.layer: WlrLayer.Bottom
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
-      WlrLayershell.namespace: "rustiq-desktop-widgets-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "roxide-desktop-widgets-" + (screen?.name || "unknown")
 
       anchors {
         top: true

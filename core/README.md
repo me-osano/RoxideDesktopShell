@@ -1,6 +1,6 @@
-# Rustiq Core
+# Roxide Core
 
-Backend daemon for the Rustiq desktop shell, designed for the **Niri Wayland compositor**.
+Backend daemon for the Roxide desktop shell, designed for the **Niri Wayland compositor**.
 
 ## Features
 
@@ -45,18 +45,18 @@ cargo build --release
 
 ```bash
 # Process management (like DMS)
-rustiq daemon          # Start only the daemon
-rustiq run-rds         # Run full shell (daemon + Quickshell UI)
-rustiq run-rds -d      # Run in daemon mode (background)
-rustiq restart        # Restart RUSTIQ
-rustiq kill           # Stop RUSTIQ
+roxide daemon          # Start only the daemon
+roxide run-rds         # Run full shell (daemon + Quickshell UI)
+roxide run-rds -d      # Run in daemon mode (background)
+roxide restart        # Restart ROXIDE
+roxide kill           # Stop ROXIDE
 
 # CLI utilities
-rustiq status
-rustiq sysmon
-rustiq search "query"
-rustiq weather
-rustiq niri workspaces
+roxide status
+roxide sysmon
+roxide search "query"
+roxide weather
+roxide niri workspaces
 ```
 
 ## IPC API
@@ -131,8 +131,8 @@ Event types:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `RUSTIQ_PORT` | `8765` | HTTP server port |
-| `RUSTIQ_LOG` | `info` | Log level (trace, debug, info, warn, error) |
+| `ROXIDE_PORT` | `8765` | HTTP server port |
+| `ROXIDE_LOG` | `info` | Log level (trace, debug, info, warn, error) |
 | `NIRI_SOCKET` | - | Niri IPC socket path |
 
 ## Contributing
@@ -144,4 +144,4 @@ Event types:
 
 ## License
 
-Rustiq Core is licensed under the MIT License. See the [LICENSE](../LICENSE) file for details.
+Roxide Core is licensed under the MIT License. See the [LICENSE](../LICENSE) file for details.

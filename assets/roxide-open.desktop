@@ -2,10 +2,10 @@
 Type=Application
 Name=RDS
 Comment=Select an application to open links and files
-Exec=rustiq open %u
-Icon=rustiqlogo
+Exec=roxide open %u
+Icon=roxidelogo
 Terminal=false
 NoDisplay=true
-MimeType=x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/rustiq;text/html;application/xhtml+xml;
+MimeType=x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/roxide;text/html;application/xhtml+xml;
 Categories=Utility;
     

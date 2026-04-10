@@ -124,7 +124,7 @@ Variants {
       screen: modelData
       WlrLayershell.layer: WlrLayer.Background
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
-      WlrLayershell.namespace: "rustiq-wallpaper-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "roxide-wallpaper-" + (screen?.name || "unknown")
 
       anchors {
         bottom: true

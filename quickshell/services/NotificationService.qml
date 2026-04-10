@@ -16,7 +16,7 @@ Singleton {
   // Configuration
   property int maxVisible: 5
   property int maxHistory: 100
-  property string historyFile: Quickshell.env("RUSTIQ_NOTIF_HISTORY_FILE") || (Settings.cacheDir + "notifications.json")
+  property string historyFile: Quickshell.env("ROXIDE_NOTIF_HISTORY_FILE") || (Settings.cacheDir + "notifications.json")
 
   // State
   property real lastSeenTs: 0

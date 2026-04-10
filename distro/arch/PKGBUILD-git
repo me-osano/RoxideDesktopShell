@@ -1,10 +1,10 @@
-pkgname=rustiq-shell-git
-pkgbase=rustiq-shell-git
+pkgname=RoxideDesktopShell-git
+pkgbase=RoxideDesktopShell-git
 pkgver=0.1.0.r1.gabcdef1
 pkgrel=1
-pkgdesc="RUSTIQ - A handcrafted Wayland desktop shell for niri, built with Quickshell/QML and Rust"
+pkgdesc="ROXIDE - A handcrafted Wayland desktop shell for niri, built with Quickshell/QML and Rust"
 arch=('x86_64' 'aarch64')
-url="https://github.com/me-osano/rustiq-shell"
+url="https://github.com/me-osano/RoxideDesktopShell"
 license=('MIT')
 groups=('wayland')
 depends=(
@@ -34,7 +34,7 @@ optdepends=(
   'upower: battery monitoring'
   'bluez: bluetooth support'
 )
-source=("${pkgname}::git+https://github.com/me-osano/rustiq-shell.git")
+source=("${pkgname}::git+https://github.com/me-osano/RoxideDesktopShell.git")
 sha256sums=('SKIP')
 
 pkgver() {
@@ -55,10 +55,10 @@ build() {
 package() {
   cd "$pkgname"
   
-  install -Dm755 core/target/release/rustiq "$pkgdir/usr/bin/rustiq"
+  install -Dm755 core/target/release/roxide "$pkgdir/usr/bin/roxide"
   
-  install -d "$pkgdir/etc/rustiq/quickshell"
-  cp -r quickshell/* "$pkgdir/etc/rustiq/quickshell/"
+  install -d "$pkgdir/etc/roxide/quickshell"
+  cp -r quickshell/* "$pkgdir/etc/roxide/quickshell/"
   
-  install -Dm644 distro/arch/rustiq.service "$pkgdir/usr/lib/systemd/user/rustiq.service"
+  install -Dm644 distro/arch/roxide.service "$pkgdir/usr/lib/systemd/user/roxide.service"
 }

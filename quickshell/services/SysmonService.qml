@@ -1,5 +1,5 @@
 // SysmonService — System monitoring via Rust daemon IPC
-// Fetches data from rustiq daemon (GET /sysmon, GET /sysmon/processes)
+// Fetches data from roxide daemon (GET /sysmon, GET /sysmon/processes)
 // Similar architecture to dgopService from DankMaterialShell
 
 pragma Singleton
@@ -120,7 +120,7 @@ Singleton {
         if (_daemonChecking) return;
         _daemonChecking = true;
         
-        RustiqClientService.ping(function(data, err) {
+        RoxideClientService.ping(function(data, err) {
             _daemonChecking = false;
             root.daemonAvailable = (err === null && data !== null);
             if (root.daemonAvailable) {
@@ -157,7 +157,7 @@ Singleton {
     // -------------------------------------------------------
     // Fetch sysmon data from daemon
     function _fetchSysmon() {
-        RustiqClientService.get("/sysmon", function(data, err) {
+        RoxideClientService.get("/sysmon", function(data, err) {
             if (err) {
                 Logger.w("Sysmon", "Failed to fetch sysmon:", err);
                 if (err.indexOf("http") === 0) {
@@ -246,7 +246,7 @@ Singleton {
     // -------------------------------------------------------
     // Fetch detailed process list
     function _fetchProcesses() {
-        RustiqClientService.get("/sysmon/processes", function(data, err) {
+        RoxideClientService.get("/sysmon/processes", function(data, err) {
             if (err) {
                 Logger.w("Sysmon", "Failed to fetch processes:", err);
                 return;

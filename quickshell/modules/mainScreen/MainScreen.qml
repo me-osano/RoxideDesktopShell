@@ -40,7 +40,7 @@ PanelWindow {
 
   // Wayland
   WlrLayershell.layer: WlrLayer.Top
-  WlrLayershell.namespace: "rustiq-background-" + (screen?.name || "unknown")
+  WlrLayershell.namespace: "roxide-background-" + (screen?.name || "unknown")
   WlrLayershell.exclusionMode: ExclusionMode.Ignore // Don't reserve space - BarExclusionZone handles that
   WlrLayershell.keyboardFocus: {
     // No panel open anywhere: no keyboard focus needed

@@ -16,7 +16,7 @@ ColumnLayout {
 
   RToggle {
     label: "Enable notifications"
-    description: "Enable or disable the notification daemon, requires a restart of Rustiq shell."
+    description: "Enable or disable the notification daemon, requires a restart of Roxide shell."
     checked: Settings.data.notifications.enabled !== false
     onToggled: checked => Settings.data.notifications.enabled = checked
     defaultValue: Settings.getDefaultValue("notifications.enabled")

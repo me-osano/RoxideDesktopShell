@@ -19,16 +19,16 @@ Singleton {
 
   /*
   Shell directories.
-  - Default config directory: ~/.config/rustiq
-  - Default cache directory: ~/.cache/rustiq
+  - Default config directory: ~/.config/roxide
+  - Default cache directory: ~/.cache/roxide
   */
   readonly property alias data: adapter  // Used to access via Settings.data.xxx.yyy
   readonly property int settingsVersion: 53
-  property bool isDebug: Quickshell.env("RUSTIQ_DEBUG") === "1"
-  readonly property string shellName: "rustiq"
-  readonly property string configDir: Quickshell.env("RUSTIQ_CONFIG_DIR") || (Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config") + "/" + shellName + "/"
-  readonly property string cacheDir: Quickshell.env("RUSTIQ_CACHE_DIR") || (Quickshell.env("XDG_CACHE_HOME") || Quickshell.env("HOME") + "/.cache") + "/" + shellName + "/"
-  readonly property string settingsFile: Quickshell.env("RUSTIQ_SETTINGS_FILE") || (configDir + "settings.json")
+  property bool isDebug: Quickshell.env("ROXIDE_DEBUG") === "1"
+  readonly property string shellName: "roxide"
+  readonly property string configDir: Quickshell.env("ROXIDE_CONFIG_DIR") || (Quickshell.env("XDG_CONFIG_HOME") || Quickshell.env("HOME") + "/.config") + "/" + shellName + "/"
+  readonly property string cacheDir: Quickshell.env("ROXIDE_CACHE_DIR") || (Quickshell.env("XDG_CACHE_HOME") || Quickshell.env("HOME") + "/.cache") + "/" + shellName + "/"
+  readonly property string settingsFile: Quickshell.env("ROXIDE_SETTINGS_FILE") || (configDir + "settings.json")
   readonly property string defaultLocation: "Tokyo"
   readonly property string defaultAvatar: Quickshell.env("HOME") + "/.face"
   readonly property string defaultVideosDirectory: Quickshell.env("HOME") + "/Videos"
@@ -669,7 +669,7 @@ Singleton {
 
     property JsonObject colorSchemes: JsonObject {
       property bool useWallpaperColors: false
-      property string predefinedScheme: "Rustiq (default)"
+      property string predefinedScheme: "Roxide (default)"
       property bool darkMode: true
       property string schedulingMode: "off"
       property string manualSunrise: "06:30"

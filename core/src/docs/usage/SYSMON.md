@@ -239,28 +239,28 @@ Emitted every 2 seconds when system metrics are updated.
 
 ```bash
 # Get system monitor snapshot
-rustiq sysmon
+roxide sysmon
 
 # Verbose output
-rustiq sysmon --verbose
+roxide sysmon --verbose
 
 # JSON output
-rustiq sysmon --json
+roxide sysmon --json
 ```
 
 ### IPC Socket
 
 ```bash
 # Get sysmon snapshot
-curl --unix-socket /run/user/1000/rustiq.sock http://localhost/sysmon
+curl --unix-socket /run/user/1000/roxide.sock http://localhost/sysmon
 
 # Get processes
-curl --unix-socket /run/user/1000/rustiq.sock http://localhost/sysmon/processes
+curl --unix-socket /run/user/1000/roxide.sock http://localhost/sysmon/processes
 ```
 
 ### SSE Subscription
 
 ```bash
 # Subscribe to sysmon updates
-curl -N --unix-socket /run/user/1000/rustiq.sock "http://localhost/events?filters=sysmon_updated"
+curl -N --unix-socket /run/user/1000/roxide.sock "http://localhost/events?filters=sysmon_updated"
 ```

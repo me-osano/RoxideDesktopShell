@@ -13,7 +13,7 @@ Singleton {
   readonly property string defaultIcon: IconsTabler.defaultIcon
   readonly property var icons: IconsTabler.icons
   readonly property var aliases: IconsTabler.aliases
-  readonly property string fontPath: "/assets/Fonts/tabler/rustiq-tabler-icons.ttf"
+  readonly property string fontPath: "/assets/Fonts/tabler/roxide-tabler-icons.ttf"
 
   // Current active font loader
   property FontLoader currentFontLoader: null

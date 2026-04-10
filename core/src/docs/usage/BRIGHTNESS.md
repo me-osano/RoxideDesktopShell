@@ -1,6 +1,6 @@
 # Brightness Control
 
-> RUSTIQ provides unified brightness control for backlight devices, LEDs, and DDC/I2C monitors.
+> ROXIDE provides unified brightness control for backlight devices, LEDs, and DDC/I2C monitors.
 
 ## Table of Contents
 
@@ -156,13 +156,13 @@ POST /brightness/decrease
 ### List all devices
 
 ```bash
-curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/brightness/devices
+curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/brightness/devices
 ```
 
 ### Set brightness to 50%
 
 ```bash
-curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/brightness \
+curl -X POST --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/brightness \
   -H "Content-Type: application/json" \
   -d '{"value": 50}'
 ```
@@ -170,7 +170,7 @@ curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/brightn
 ### Increase brightness by 5%
 
 ```bash
-curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/brightness/increase \
+curl -X POST --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/brightness/increase \
   -H "Content-Type: application/json" \
   -d '{"delta": 5}'
 ```
@@ -178,7 +178,7 @@ curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/brightn
 ### Select a specific device
 
 ```bash
-curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/brightness/select \
+curl -X POST --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/brightness/select \
   -H "Content-Type: application/json" \
   -d '{"device": "backlight:intel_backlight"}'
 ```

@@ -1,26 +1,28 @@
-# RUSTIQ-SHELL
+# ROXIDEDESKTOPSHELL
 
 > A handcrafted Wayland desktop shell for [niri](https://github.com/YaLTeR/niri), built with Quickshell/QML and a Rust backend.
 
 ```
-  ██████╗ ██╗   ██║███████╗████████╗██╗ ██████╗
-  ██╔══██╗██║   ██║██╔════╝╚══██╔══╝██║██╔═══██╗
-  ██████╔╝██║   ██║███████╗   ██║   ██║██║   ██║
-  ██╔══██╗██║   ██║╚════██║   ██║   ██║██║▄▄ ██║
-  ██║  ██║╚██████╔╝███████║   ██║   ██║╚██████╔╝
-  ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝ ╚══▀▀═╝
+  
+  ██████╗  ██████╗ ██╗  ██╗██╗██████╗  ███████╗
+  ██╔══██╗██╔═══██║╚██╗██╔╝██║██╔═══██╗██╔════╝
+  ██████╔╝██║   ██║ ╚███╔╝ ██║██║   ██║█████╗
+  ██╔══██╗██║   ██║ ██╔██╗ ██║██║   ██║██╔══╝
+  ██║  ██║╚██████╔╝██╔╝ ██╗██║██████╔═╝███████╗
+  ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═════╝  ╚══════╝
+  
 ```
 
 ## Architecture
 
 ```
-rustiqshell/
+RoxideDesktopShell/
 ├── core/         # Rust daemon — IPC, sysmon, search, weather, niri IPC
 └── quickshell/   # QML shell — bar, launcher, widgets, notifications
 ```
 
-The Rust core runs as a single systemd user daemon (`rustiq.service`).
-Quickshell connects to it over a Unix socket at `$XDG_RUNTIME_DIR/rustiq.sock`.
+The Rust core runs as a single systemd user daemon (`roxide.service`).
+Quickshell connects to it over a Unix socket at `$XDG_RUNTIME_DIR/roxide.sock`.
 
 ## Features
 
@@ -62,9 +64,9 @@ Quickshell connects to it over a Unix socket at `$XDG_RUNTIME_DIR/rustiq.sock`.
 
 ```nix
 {
-  inputs.rustiq-shell.url = "github:me-osano/rustiq-shell";
-  imports = [ inputs.rustiq-shell.homeModules.default ];
-  programs.rustiq-shell.enable = true;
+  inputs.roxide-desktop-shell.url = "github:me-osano/RoxideDesktopShell";
+  imports = [ inputs.roxide-desktop-shell.homeModules.default ];
+  programs.roxide-desktop-shell.enable = true;
 }
 ```
 
@@ -78,7 +80,7 @@ nix develop
 nix build
 
 # Run the shell
-./result/bin/rustiq -c ./quickshell
+./result/bin/roxide -c ./quickshell
 ```
 
 ---
@@ -89,8 +91,8 @@ nix build
 
 ```bash
 # Clone the repository
-git clone https://github.com/me-osano/rustiq-shell.git
-cd rustiq-shell
+git clone https://github.com/me-osano/RoxideDesktopShell.git
+cd RoxideDesktopShell
 
 # Build and install
 makepkg -si
@@ -103,23 +105,29 @@ makepkg -si --noconfirm
 
 ```bash
 # Add to AUR helper (e.g., yay, aurman)
-yay -S rustiq-shell-git
+yay -S RoxideDesktopShell-git
 
 # Or build manually
-git clone https://github.com/me-osano/rustiq-shell.git
-cd rustiq-shell/distro/arch
+git clone https://github.com/me-osano/RoxideDesktopShell.git
+cd RoxideDesktopShell/distro/arch
 makepkg -si
 ```
 
 #### Option 3: Manual Build
 
 ```bash
-git clone https://github.com/me-osano/rustiq-shell.git
-cd rustiq-shell
+git clone https://github.com/me-osano/RoxideDesktopShell.git
+cd RoxideDesktopShell
 
 # Run the install script
 chmod +x distro/arch/install.sh
 sudo ./distro/arch/install.sh
+```
+
+#### Option 4: Quick Install (curl)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/me-osano/RoxideDesktopShell/master/distro/arch/install.sh | sh
 ```
 
 **Post-installation (Arch):**
@@ -129,10 +137,10 @@ sudo ./distro/arch/install.sh
 systemctl --user daemon-reload
 
 # Enable and start the daemon
-systemctl --user enable --now rustiq.service
+systemctl --user enable --now roxide.service
 
-# Start quickshell with rustiq config
-quickshell -c ~/.config/rustiq
+# Start quickshell with roxide config
+quickshell -c ~/.config/roxide
 ```
 
 ---
@@ -158,13 +166,13 @@ export QT_PLUGIN_PATH="${QT_PLUGIN_PATH}"
 Set via environment variable:
 
 ```bash
-export RUSTIQ_LOG=debug  # debug, info, warn, error
+export ROXIDE_LOG=debug  # debug, info, warn, error
 ```
 
 ### Alternative Config Location
 
 ```bash
-rustiq -c /path/to/config daemon
+roxide -c /path/to/config daemon
 quickshell -c /path/to/config
 ```
 
@@ -175,25 +183,25 @@ quickshell -c /path/to/config
 ### CLI Commands
 
 ```bash
-rustiq status           # Daemon health check
-rustiq sysmon           # System monitoring snapshot
-rustiq search "query"   # File search
-rustiq weather          # Current weather
-rustiq niri workspaces  # Workspace list
-rustiq niri windows     # Window list
+roxide status           # Daemon health check
+roxide sysmon           # System monitoring snapshot
+roxide search "query"   # File search
+roxide weather          # Current weather
+roxide niri workspaces  # Workspace list
+roxide niri windows     # Window list
 ```
 
 ### Systemd Service
 
 ```bash
 # Enable at login
-systemctl --user enable rustiq.service
+systemctl --user enable roxide.service
 
 # Start manually
-systemctl --user start rustiq.service
+systemctl --user start roxide.service
 
 # View logs
-journalctl --user -u rustiq.service -f
+journalctl --user -u roxide.service -f
 ```
 
 ---
@@ -209,9 +217,9 @@ echo $QT_QML_IMPORT_PATH  # Should include Qt6 paths
 
 ### Socket connection failed
 
-Check that rustiq daemon is running:
+Check that roxide daemon is running:
 ```bash
-systemctl --user status rustiq.service
+systemctl --user status roxide.service
 ```
 
 ### Missing dependencies
@@ -228,4 +236,4 @@ Install required Qt6 components:
 
 ## License
 
-RustiqShell Core is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+RoxideDesktopShell Core is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.

@@ -1,13 +1,13 @@
 [package]
-name = "rustiq"
+name = "roxide"
 version = "0.1.0"
 edition = "2021"
 authors = ["Enosh"]
-description = "Rust backend daemon for RUSTIQ desktop shell"
+description = "Rust backend daemon for ROXIDE desktop shell"
 license = "MIT"
 
 [[bin]]
-name = "rustiq"
+name = "roxide"
 path = "src/main.rs"
 
 [dependencies]

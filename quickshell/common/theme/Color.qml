@@ -6,7 +6,7 @@ import Quickshell.Io
 import qs.common.theme
 
 /*
-RustiqTheme is not strictly a Material Design project, it supports both some predefined
+RoxideTheme is not strictly a Material Design project, it supports both some predefined
 color schemes and dynamic color generation from the wallpaper.
 
 We ultimately decided to use a restricted set of colors that follows the
@@ -348,7 +348,7 @@ Singleton {
   ]
 
   // --------------------------------
-  // Default colors: Rustiq (default) dark — must match assets/ColorScheme/Rustiq-default
+  // Default colors: Roxide (default) dark — must match assets/ColorScheme/Roxide-default
   QtObject {
     id: defaultColors
 

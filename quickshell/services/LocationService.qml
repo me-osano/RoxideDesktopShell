@@ -9,7 +9,7 @@ import qs.common.theme
 Singleton {
   id: root
 
-  property string locationFile: Quickshell.env("RUSTIQ_WEATHER_FILE") || (Settings.cacheDir + "location.json")
+  property string locationFile: Quickshell.env("ROXIDE_WEATHER_FILE") || (Settings.cacheDir + "location.json")
   property int weatherUpdateFrequency: 30 * 60 // 30 minutes expressed in seconds
   property bool isFetchingWeather: false
 

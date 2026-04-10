@@ -29,7 +29,7 @@ Singleton {
   property string ratios: "" // e.g., "16x9,16x10"
   property string colors: "" // Color hex codes
   // API Key Priority: Environment Variable > Local Settings
-  readonly property string envApiKey: Quickshell.env("RUSTIQ_WALLHAVEN_API_KEY") || ""
+  readonly property string envApiKey: Quickshell.env("ROXIDE_WALLHAVEN_API_KEY") || ""
   readonly property string apiKey: envApiKey !== "" ? envApiKey : (Settings.data.wallpaper.wallhavenApiKey || "")
   readonly property bool apiKeyManagedByEnv: envApiKey !== ""
 

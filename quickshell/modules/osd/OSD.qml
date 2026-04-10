@@ -490,7 +490,7 @@ Variants {
       implicitHeight: verticalMode ? (isShortMode ? lockKeyVHeight : longVHeight) : longHHeight
       color: "transparent"
 
-      WlrLayershell.namespace: "rustiq-osd-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "roxide-osd-" + (screen?.name || "unknown")
       WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
       WlrLayershell.layer: Settings.data.osd?.overlayLayer ? WlrLayer.Overlay : WlrLayer.Top
       WlrLayershell.exclusionMode: ExclusionMode.Ignore

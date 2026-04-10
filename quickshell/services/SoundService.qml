@@ -33,7 +33,7 @@ Singleton {
       }
     } catch (e) {
       multimediaAvailable = false;
-      Logger.w("SoundService", "QtMultimedia not available - no audio will be played from rustiq-shell");
+      Logger.w("SoundService", "QtMultimedia not available - no audio will be played from RoxideDesktopShell");
     }
   }
 

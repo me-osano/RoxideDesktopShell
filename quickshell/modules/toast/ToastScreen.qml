@@ -199,7 +199,7 @@ Item {
       color: "transparent"
 
       WlrLayershell.layer: (Settings.data.notifications && Settings.data.notifications.overlayLayer) ? WlrLayer.Overlay : WlrLayer.Top
-      WlrLayershell.namespace: "rustiq-toast-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "roxide-toast-" + (screen?.name || "unknown")
       WlrLayershell.keyboardFocus: WlrKeyboardFocus.None
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
 

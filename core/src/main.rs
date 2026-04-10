@@ -21,7 +21,7 @@ use tracing_subscriber::EnvFilter;
 #[tokio::main]
 async fn main() -> Result<()> {
     tracing_subscriber::fmt()
-        .with_env_filter(EnvFilter::from_env("RUSTIQ_LOG"))
+        .with_env_filter(EnvFilter::from_env("ROXIDE_LOG"))
         .init();
 
     let cmd = Cmd::parse();
@@ -41,7 +41,7 @@ async fn main() -> Result<()> {
 }
 
 async fn run_daemon() -> Result<()> {
-    info!("Starting RUSTIQ daemon v{}", env!("CARGO_PKG_VERSION"));
+    info!("Starting ROXIDE daemon v{}", env!("CARGO_PKG_VERSION"));
 
     let state = ipc::AppState::new().await?;
 

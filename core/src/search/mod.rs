@@ -62,7 +62,7 @@ impl FileKind {
 fn index_dir() -> PathBuf {
     dirs::cache_dir()
         .unwrap_or_else(|| PathBuf::from("/tmp"))
-        .join("rustiq/search-index")
+        .join("roxide/search-index")
 }
 
 fn index_roots() -> Vec<PathBuf> {

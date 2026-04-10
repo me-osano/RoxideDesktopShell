@@ -1,5 +1,5 @@
 /*
-* Rustiq-shell – made by https://github.com/me-osano
+* RoxideDesktopShell – made by https://github.com/me-osano
 * Licensed under the MIT License.
 * Forks and modifications are allowed under the MIT License,
 * but proper credit must be given to the original author.
@@ -40,7 +40,7 @@ ShellRoot {
 
   Component.onCompleted: {
     Logger.i("Shell", "---------------------------");
-    Logger.i("Shell", "Rustiq Hello!");
+    Logger.i("Shell", "Roxide Hello!");
   }
 
   Connections {

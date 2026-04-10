@@ -65,7 +65,7 @@ Loader {
       screen: modelData
       WlrLayershell.layer: WlrLayer.Background
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
-      WlrLayershell.namespace: "rustiq-overview-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "roxide-overview-" + (screen?.name || "unknown")
 
       anchors {
         top: true

@@ -26,7 +26,7 @@ PanelWindow {
 
   // Wayland layer shell configuration
   WlrLayershell.layer: WlrLayer.Top
-  WlrLayershell.namespace: "rustiq-bar-exclusion-" + (screen?.name || "unknown")
+  WlrLayershell.namespace: "roxide-bar-exclusion-" + (screen?.name || "unknown")
   WlrLayershell.exclusionMode: ExclusionMode.Auto
 
   // Anchor based on bar position

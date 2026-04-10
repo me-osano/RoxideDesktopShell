@@ -32,7 +32,7 @@ PanelWindow {
 
   // Wayland layer shell configuration
   WlrLayershell.layer: WlrLayer.Top
-  WlrLayershell.namespace: "rustiq-bar-exclusion-" + edge + "-" + (screen?.name || "unknown")
+  WlrLayershell.namespace: "roxide-bar-exclusion-" + edge + "-" + (screen?.name || "unknown")
   // When auto-hide, non-exclusive mode is enabled, OR bar is explicitly hidden via IPC, don't reserve space
   // Note: We check BarService.isVisible directly, NOT effectivelyVisible, because we want
   // the exclusion zone to stay during overview (effectivelyVisible is false during overview

@@ -1,54 +1,54 @@
-# RUSTIQ CLI Documentation
+# ROXIDE CLI Documentation
 
-Command-line interface for the RUSTIQ desktop shell daemon.
+Command-line interface for the ROXIDE desktop shell daemon.
 
 ## Usage
 
 ```bash
-rustiq [COMMAND]
+roxide [COMMAND]
 ```
 
 ## Process Management Commands
 
 | Command | Description |
 |---------|-------------|
-| `rustiq daemon` | Start only the daemon (backend) |
-| `rustiq run-rds` | Run full shell (daemon + Quickshell UI) |
-| `rustiq run-rds -d` | Run in daemon mode (background) |
-| `rustiq restart` | Kill and relaunch RUSTIQ |
-| `rustiq kill` | Kill all RUSTIQ instances |
+| `roxide daemon` | Start only the daemon (backend) |
+| `roxide run-rds` | Run full shell (daemon + Quickshell UI) |
+| `roxide run-rds -d` | Run in daemon mode (background) |
+| `roxide restart` | Kill and relaunch ROXIDE |
+| `roxide kill` | Kill all ROXIDE instances |
 
 ## Utility Commands
 
 | Command | Description |
 |---------|-------------|
-| `rustiq status` | Check daemon status |
-| `rustiq sysmon` | Print system monitoring snapshot |
-| `rustiq search <query>` | Search files |
-| `rustiq weather` | Print weather snapshot |
-| `rustiq niri <subcommand>` | Niri workspace/window management |
-| `rustiq brightness <subcommand>` | Brightness control |
+| `roxide status` | Check daemon status |
+| `roxide sysmon` | Print system monitoring snapshot |
+| `roxide search <query>` | Search files |
+| `roxide weather` | Print weather snapshot |
+| `roxide niri <subcommand>` | Niri workspace/window management |
+| `roxide brightness <subcommand>` | Brightness control |
 
 ## Examples
 
 ```bash
 # Start daemon and shell
-rustiq run-rds
+roxide run-rds
 
 # Run in background
-rustiq run-rds -d
+roxide run-rds -d
 
 # Check status
-rustiq status
+roxide status
 
 # Get system stats
-rustiq sysmon --json
+roxide sysmon --json
 
 # Restart after config changes
-rustiq restart
+roxide restart
 
-# Stop RUSTIQ
-rustiq kill
+# Stop ROXIDE
+roxide kill
 ```
 
 ## Documentation

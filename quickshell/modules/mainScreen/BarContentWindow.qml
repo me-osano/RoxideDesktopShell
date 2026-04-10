@@ -28,7 +28,7 @@ PanelWindow {
   }
 
   // Wayland layer configuration
-  WlrLayershell.namespace: "rustiq-bar-content-" + (barWindow.screen?.name || "unknown")
+  WlrLayershell.namespace: "roxide-bar-content-" + (barWindow.screen?.name || "unknown")
   // Keep bar widgets above MainScreen's background Shape window when enabled.
   // This prevents bar background opacity changes from visually covering capsules/widgets.
   WlrLayershell.layer: (Settings.data.bar.forceContentOverlay !== false) ? WlrLayer.Overlay : WlrLayer.Top

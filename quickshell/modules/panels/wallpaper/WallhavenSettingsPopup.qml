@@ -14,7 +14,7 @@ Popup {
   // Measure the ENV placeholder text at current font settings
   TextMetrics {
     id: envPlaceholderMetrics
-    text: "Managed via RUSTIQ_WALLHAVEN_API_KEY environment variable."
+    text: "Managed via ROXIDE_WALLHAVEN_API_KEY environment variable."
     font.pointSize: Style.fontSizeM
   }
 
@@ -139,7 +139,7 @@ Popup {
         id: apiKeyInput
         Layout.fillWidth: true
         enabled: !WallhavenService.apiKeyManagedByEnv
-        placeholderText: WallhavenService.apiKeyManagedByEnv ? "Managed via RUSTIQ_WALLHAVEN_API_KEY environment variable." : "Enter your Wallhaven API Key"
+        placeholderText: WallhavenService.apiKeyManagedByEnv ? "Managed via ROXIDE_WALLHAVEN_API_KEY environment variable." : "Enter your Wallhaven API Key"
         text: WallhavenService.apiKeyManagedByEnv ? "" : (Settings.data.wallpaper.wallhavenApiKey || "")
 
         // Fix for password echo mode

@@ -24,10 +24,10 @@ ColumnLayout {
     var filename = pathParts[pathParts.length - 1];
     var schemeName = filename.replace(".json", "");
 
-    if (schemeName === "Rustiq-default") {
-      schemeName = "Rustiq (default)";
-    } else if (schemeName === "Rustiq-legacy") {
-      schemeName = "Rustiq (legacy)";
+    if (schemeName === "Roxide-default") {
+      schemeName = "Roxide (default)";
+    } else if (schemeName === "Roxide-legacy") {
+      schemeName = "Roxide (legacy)";
     } else if (schemeName === "Tokyo-Night") {
       schemeName = "Tokyo Night";
     } else if (schemeName === "Rosepine") {

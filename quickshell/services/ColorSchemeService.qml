@@ -60,10 +60,10 @@ Singleton {
     var filename = chunks[chunks.length - 1];
     var schemeName = filename.replace(".json", "");
     // Convert back to display names for special cases
-    if (schemeName === "Rustiq-default") {
-      return "Rustiq (default)";
-    } else if (schemeName === "Rustiq-legacy") {
-      return "Rustiq (legacy)";
+    if (schemeName === "Roxide-default") {
+      return "Roxide (default)";
+    } else if (schemeName === "Roxide-legacy") {
+      return "Roxide (legacy)";
     } else if (schemeName === "Tokyo-Night") {
       return "Tokyo Night";
     } else if (schemeName === "Rosepine") {
@@ -78,12 +78,12 @@ Singleton {
     if (nameOrPath.indexOf("/") !== -1) {
       return nameOrPath;
     }
-    // Handle special cases for Rustiq schemes
+    // Handle special cases for Roxide schemes
     var schemeName = nameOrPath.replace(".json", "");
-    if (schemeName === "Rustiq (default)") {
-      schemeName = "Rustiq-default";
-    } else if (schemeName === "Rustiq (legacy)") {
-      schemeName = "Rustiq-legacy";
+    if (schemeName === "Roxide (default)") {
+      schemeName = "Roxide-default";
+    } else if (schemeName === "Roxide (legacy)") {
+      schemeName = "Roxide-legacy";
     } else if (schemeName === "Tokyo Night") {
       schemeName = "Tokyo-Night";
     } else if (schemeName === "Rose Pine") {

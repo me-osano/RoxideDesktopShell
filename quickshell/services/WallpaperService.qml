@@ -37,8 +37,8 @@ Singleton {
   property string wallpaperCacheFile: ""
 
   readonly property bool scanning: (scanningCount > 0)
-  readonly property string rustiqDefaultWallpaper: Quickshell.shellDir + "/assets/Wallpaper/rustiq.png"
-  property string defaultWallpaper: rustiqDefaultWallpaper
+  readonly property string roxideDefaultWallpaper: Quickshell.shellDir + "/assets/Wallpaper/roxide.png"
+  property string defaultWallpaper: roxideDefaultWallpaper
 
   // Signals for reactive UI updates
   signal wallpaperChanged(string screenName, string path)
@@ -1082,7 +1082,7 @@ Singleton {
     adapter: JsonAdapter {
       id: wallpaperCacheAdapter
       property var wallpapers: ({})
-      property string defaultWallpaper: root.rustiqDefaultWallpaper
+      property string defaultWallpaper: root.roxideDefaultWallpaper
       property var usedRandomWallpapers: ({})
     }
 
@@ -1091,13 +1091,13 @@ Singleton {
       root.currentWallpapers = wallpaperCacheAdapter.wallpapers || {};
       root.usedRandomWallpapers = wallpaperCacheAdapter.usedRandomWallpapers || {};
 
-      // Load default wallpaper from cache if it exists, otherwise use Rustiq default
+      // Load default wallpaper from cache if it exists, otherwise use Roxide default
       if (wallpaperCacheAdapter.defaultWallpaper && wallpaperCacheAdapter.defaultWallpaper !== "") {
         root.defaultWallpaper = wallpaperCacheAdapter.defaultWallpaper;
         Logger.d("Wallpaper", "Loaded default wallpaper from cache:", wallpaperCacheAdapter.defaultWallpaper);
       } else {
-        root.defaultWallpaper = root.rustiqDefaultWallpaper;
-        Logger.d("Wallpaper", "Using Rustiq default wallpaper");
+        root.defaultWallpaper = root.roxideDefaultWallpaper;
+        Logger.d("Wallpaper", "Using Roxide default wallpaper");
       }
 
       Logger.d("Wallpaper", "Loaded wallpapers from cache file:", Object.keys(root.currentWallpapers).length, "screens");

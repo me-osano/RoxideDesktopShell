@@ -118,7 +118,7 @@ Singleton {
                                     "showBluetoothIcon": true,
                                     "showNotificationIcon": true,
                                     "useDistroLogo": false,
-                                    "icon": "rustiq",
+                                    "icon": "roxide",
                                     "customIconPath": "",
                                     "colorizeDistroLogo": false,
                                     "colorizeSystemIcon": "none",

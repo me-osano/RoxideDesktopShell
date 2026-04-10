@@ -56,7 +56,7 @@ Singleton {
   Component.onCompleted: {
     checkCliphistAvailability();
     // Connect to Rust daemon for real-time updates
-    RustiqIntegration.connect("ClipboardService", ["clipboard_updated"], function(event) {
+    RoxideIntegration.connect("ClipboardService", ["clipboard_updated"], function(event) {
       if (event.type === "clipboard_updated" && event.data) {
         root._handleRustClipboardUpdate(event.data)
       }

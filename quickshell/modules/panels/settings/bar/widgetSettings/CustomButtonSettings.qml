@@ -165,7 +165,7 @@ ColumnLayout {
   RTextInput {
     Layout.fillWidth: true
     label: "IPC Identifier"
-    description: "Unique identifier for IPC commands. Use this identifier with 'qs -c rustiq-shell ipc call cb [action] [identifier]' to control this button via IPC."
+    description: "Unique identifier for IPC commands. Use this identifier with 'qs -c RoxideDesktopShell ipc call cb [action] [identifier]' to control this button via IPC."
     placeholderText: "Enter unique identifier for IPC commands"
     text: valueIpcIdentifier
     onTextChanged: valueIpcIdentifier = text

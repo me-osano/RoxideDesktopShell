@@ -36,7 +36,7 @@ PanelWindow {
   // However, when a dialog is open, always use Top so dialogs appear above apps.
   WlrLayershell.layer: (CompositorService.isLabwc && !hasDialog) ? WlrLayer.Bottom : WlrLayer.Top
   WlrLayershell.keyboardFocus: hasDialog ? WlrKeyboardFocus.OnDemand : WlrKeyboardFocus.None
-  WlrLayershell.namespace: "rustiq-" + windowType + "-" + (screen?.name || "unknown")
+  WlrLayershell.namespace: "roxide-" + windowType + "-" + (screen?.name || "unknown")
   WlrLayershell.exclusionMode: ExclusionMode.Ignore
 
   // Track if a dialog is currently open (needed for keyboard focus)

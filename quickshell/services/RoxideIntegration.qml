@@ -1,10 +1,10 @@
-// RustiqIntegration — Unified Rust daemon integration layer
+// RoxideIntegration — Unified Rust daemon integration layer
 // Provides connection monitoring and event routing to services
 //
 // Usage:
-//   RustiqIntegration.connect("NetworkService", ["network_updated"], function(event) { ... })
-//   RustiqIntegration.get("network", NetworkService.handleUpdate)
-//   RustiqIntegration.disconnect("NetworkService")
+//   RoxideIntegration.connect("NetworkService", ["network_updated"], function(event) { ... })
+//   RoxideIntegration.get("network", NetworkService.handleUpdate)
+//   RoxideIntegration.disconnect("NetworkService")
 
 import QtQuick
 import qs.services
@@ -12,7 +12,7 @@ import qs.services
 QtObject {
     id: root
 
-    readonly property bool connected: RustiqClientService.connected
+    readonly property bool connected: RoxideClientService.connected
     readonly property bool daemonAvailable: _daemonAvailable
 
     property bool _daemonAvailable: false
@@ -24,13 +24,13 @@ QtObject {
     }
 
     function _checkDaemon() {
-        RustiqClientService.ping(function(data, err) {
+        RoxideClientService.ping(function(data, err) {
             _daemonAvailable = !err && data && data.pong
             if (_daemonAvailable) {
-                Logger.i("RustiqIntegration", "Daemon connected: " + (data?.version || "unknown"))
+                Logger.i("RoxideIntegration", "Daemon connected: " + (data?.version || "unknown"))
                 _subscribeAll()
             } else {
-                Logger.w("RustiqIntegration", "Daemon unavailable, retrying in 5s...")
+                Logger.w("RoxideIntegration", "Daemon unavailable, retrying in 5s...")
                 Qt.callLater(function() { _checkDaemon() })
             }
         })
@@ -54,14 +54,14 @@ QtObject {
 
         _subscribeAll()
 
-        Logger.d("RustiqIntegration", "Connected service:", serviceName, "filters:", eventFilters)
+        Logger.d("RoxideIntegration", "Connected service:", serviceName, "filters:", eventFilters)
     }
 
     // Disconnect a service
     function disconnect(serviceName) {
         delete _serviceSubscriptions[serviceName]
         _subscribeAll()
-        Logger.d("RustiqIntegration", "Disconnected service:", serviceName)
+        Logger.d("RoxideIntegration", "Disconnected service:", serviceName)
     }
 
     function _subscribeAll() {
@@ -81,14 +81,14 @@ QtObject {
         }
 
         if (handlers.length > 0) {
-            RustiqClientService.subscribe(allFilters, function(event) {
+            RoxideClientService.subscribe(allFilters, function(event) {
                 for (var serviceName in _serviceSubscriptions) {
                     var sub = _serviceSubscriptions[serviceName]
                     if (sub.handler) {
                         try {
                             sub.handler(event)
                         } catch(e) {
-                            console.error("RustiqIntegration handler error for", serviceName, e)
+                            console.error("RoxideIntegration handler error for", serviceName, e)
                         }
                     }
                 }
@@ -98,19 +98,19 @@ QtObject {
 
     // Unified GET request
     function get(endpoint, callback) {
-        RustiqClientService.get("/" + endpoint, callback)
+        RoxideClientService.get("/" + endpoint, callback)
     }
 
     // Unified POST request
     function post(endpoint, body, callback) {
-        RustiqClientService.post("/" + endpoint, body, callback)
+        RoxideClientService.post("/" + endpoint, body, callback)
     }
 
     // Convenience: fetch data and call service handler
     function fetch(serviceName, endpoint, handler) {
         get(endpoint, function(data, err) {
             if (err) {
-                Logger.e("RustiqIntegration", "Fetch error for", serviceName, ":", err)
+                Logger.e("RoxideIntegration", "Fetch error for", serviceName, ":", err)
             } else if (handler) {
                 handler(data)
             }

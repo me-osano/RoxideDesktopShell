@@ -44,7 +44,7 @@ Variants {
       id: notifWindow
       screen: modelData
 
-      WlrLayershell.namespace: "rustiq-notifications-" + (screen?.name || "unknown")
+      WlrLayershell.namespace: "roxide-notifications-" + (screen?.name || "unknown")
       WlrLayershell.layer: (Settings.data.notifications?.overlayLayer) ? WlrLayer.Overlay : WlrLayer.Top
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
 

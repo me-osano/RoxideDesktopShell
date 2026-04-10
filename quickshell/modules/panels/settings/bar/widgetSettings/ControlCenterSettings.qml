@@ -24,7 +24,7 @@ ColumnLayout {
   property bool valueShowNotificationIcon: (widgetData && widgetData.showNotificationIcon !== undefined) ? widgetData.showNotificationIcon : ((widgetMetadata && widgetMetadata.showNotificationIcon !== undefined) ? widgetMetadata.showNotificationIcon : true)
 
   // Local state - Icon mode
-  property string valueIcon: (widgetData && widgetData.icon !== undefined) ? widgetData.icon : ((widgetMetadata && widgetMetadata.icon) || "rustiq")
+  property string valueIcon: (widgetData && widgetData.icon !== undefined) ? widgetData.icon : ((widgetMetadata && widgetMetadata.icon) || "roxide")
   property bool valueUseDistroLogo: (widgetData && widgetData.useDistroLogo !== undefined) ? widgetData.useDistroLogo : ((widgetMetadata && widgetMetadata.useDistroLogo) || false)
   property string valueCustomIconPath: (widgetData && widgetData.customIconPath !== undefined) ? widgetData.customIconPath : ((widgetMetadata && widgetMetadata.customIconPath) || "")
   property bool valueEnableColorization: (widgetData && widgetData.enableColorization !== undefined) ? widgetData.enableColorization : ((widgetMetadata && widgetMetadata.enableColorization) || false)

@@ -138,8 +138,8 @@ impl NotificationsServer {
 
     fn get_server_information(&self) -> (String, String, String, String) {
         (
-            "rustiq-notifications".to_string(),
-            "RUSTIQ".to_string(),
+            "roxide-notifications".to_string(),
+            "ROXIDE".to_string(),
             env!("CARGO_PKG_VERSION").to_string(),
             "1.2".to_string(),
         )

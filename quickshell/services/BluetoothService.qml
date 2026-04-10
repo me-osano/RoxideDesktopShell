@@ -87,7 +87,7 @@ Singleton {
       Quickshell.execDetached(["rfkill", "block", "bluetooth"]);
     }
     // Connect to Rust daemon for real-time updates
-    RustiqIntegration.connect("BluetoothService", ["bluetooth_updated"], function(event) {
+    RoxideIntegration.connect("BluetoothService", ["bluetooth_updated"], function(event) {
       if (event.type === "bluetooth_updated" && event.data) {
         root._handleRustBluetoothUpdate(event.data)
       }

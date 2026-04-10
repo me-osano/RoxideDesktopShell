@@ -666,7 +666,7 @@ Loader {
           margins.left: !isVertical ? peekCenterOffsetX : (dockPosition === "left" && barAtSameEdge && !showFrameIndicator ? (barHeight + (Settings.data.bar.floating ? Settings.data.bar.marginHorizontal : 0)) : 0)
           margins.right: dockPosition === "right" && barAtSameEdge && !showFrameIndicator ? (barHeight + (Settings.data.bar.floating ? Settings.data.bar.marginHorizontal : 0)) : 0
 
-          WlrLayershell.namespace: "rustiq-dock-peek-" + (screen?.name || "unknown")
+          WlrLayershell.namespace: "roxide-dock-peek-" + (screen?.name || "unknown")
           WlrLayershell.exclusionMode: ExclusionMode.Ignore
           // Larger peek area when bar is at same edge, normal 1px otherwise
           implicitHeight: isVertical ? peekEdgeLength : ((showFrameIndicator || barAtSameEdge) ? indicatorThickness : peekHeight)
@@ -754,7 +754,7 @@ Loader {
           focusable: false
           color: "transparent"
 
-          WlrLayershell.namespace: "rustiq-dock-" + (screen?.name || "unknown")
+          WlrLayershell.namespace: "roxide-dock-" + (screen?.name || "unknown")
           WlrLayershell.exclusionMode: exclusive ? ExclusionMode.Auto : ExclusionMode.Ignore
 
           implicitWidth: dockContainerWrapper.width

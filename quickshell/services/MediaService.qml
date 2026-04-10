@@ -49,7 +49,7 @@ Singleton {
   Component.onCompleted: {
     updateCurrentPlayer();
     // Connect to Rust daemon for real-time updates
-    RustiqIntegration.connect("MediaService", ["media_player_changed"], function(event) {
+    RoxideIntegration.connect("MediaService", ["media_player_changed"], function(event) {
       if (event.type === "media_player_changed" && event.data) {
         root._handleRustMediaUpdate(event.data)
       }

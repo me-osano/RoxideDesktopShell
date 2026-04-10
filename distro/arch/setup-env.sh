@@ -44,21 +44,21 @@ setup_environment() {
         export QT_PLUGIN_PATH="$QT_PLUGIN_PATH"
     fi
     
-    export RUSTIQ_LOG=info
+    export ROXIDE_LOG=info
 }
 
-run_rustiq() {
+run_roxide() {
     setup_environment
     
-    local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/rustiq"
+    local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/roxide"
     
-    rustiq daemon &
-    local rustiq_pid=$!
+    roxide daemon &
+    local roxide_pid=$!
     sleep 2
     
     quickshell -c "$config_dir"
     
-    wait $rustiq_pid
+    wait $roxide_pid
 }
 
 check_dependencies
@@ -66,4 +66,4 @@ check_quickshell
 setup_environment
 
 echo ""
-echo "Environment configured. Run 'rustiq daemon' and then 'quickshell -c ~/.config/rustiq'"
+echo "Environment configured. Run 'roxide daemon' and then 'quickshell -c ~/.config/roxide'"

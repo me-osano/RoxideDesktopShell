@@ -74,7 +74,7 @@ ColumnLayout {
   }
 
   function copyInfoToClipboard() {
-    let info = "Rustiq Shell\n";
+    let info = "Roxide Desktop Shell\n";
     info += "==============\n";
     info += "Installed version: " + root.currentVersion + "\n";
     if (root.isGitVersion && root.commitInfo) {
@@ -132,9 +132,9 @@ ColumnLayout {
         var shellDir = Quickshell.shellDir || "";
         Logger.d("VersionSubTab", "Component.onCompleted - NixOS detected, shellDir:", shellDir);
         if (shellDir) {
-          // Extract commit hash from path like: /nix/store/...-rustiq-shell-2025-11-30_225e6d3/share/rustiq-shell
-          // Pattern matches: rustiq-shell-YYYY-MM-DD_<commit_hash>
-          var match = shellDir.match(/rustiq-shell-\d{4}-\d{2}-\d{2}_([0-9a-f]{7,})/i);
+          // Extract commit hash from path like: /nix/store/...-RoxideDesktopShell-2025-11-30_225e6d3/share/RoxideDesktopShell
+          // Pattern matches: RoxideDesktopShell-YYYY-MM-DD_<commit_hash>
+          var match = shellDir.match(/RoxideDesktopShell-\d{4}-\d{2}-\d{2}_([0-9a-f]{7,})/i);
           if (match && match[1]) {
             // Use first 7 characters of the commit hash
             root.commitInfo = match[1].substring(0, 7);
@@ -183,7 +183,7 @@ ColumnLayout {
 
   Process {
     id: pacmanProcess
-    command: ["pacman", "-Q", "rustiq-shell-git"]
+    command: ["pacman", "-Q", "RoxideDesktopShell-git"]
     running: false
 
     onStarted: {
@@ -196,7 +196,7 @@ ColumnLayout {
       if (exitCode === 0) {
         var output = stdout.text.trim();
         Logger.d("VersionSubTab", "pacmanProcess - Output:", output);
-        var match = output.match(/rustiq-shell-git\s+(.+)/);
+        var match = output.match(/RoxideDesktopShell-git\s+(.+)/);
         if (match && match[1]) {
           // For Arch packages, the version format might be like: 3.4.0.r112.g3f00bec8-1
           // Extract just the commit hash part if it exists
@@ -314,9 +314,9 @@ ColumnLayout {
     Layout.alignment: Qt.AlignHCenter
     spacing: Style.marginXL
 
-    // Rustiq logo
+    // Roxide logo
     Image {
-      source: "../../../../../assets/rustiqlogo.svg"
+      source: "../../../../../assets/roxidelogo.svg"
       width: 96 * Style.uiScaleRatio
       height: width
       fillMode: Image.PreserveAspectFit
@@ -365,7 +365,7 @@ ColumnLayout {
 
     ColumnLayout {
       RHeader {
-        label: "Rustiq shell"
+        label: "Roxide shell"
         // description: "A sleek and minimal desktop shell thoughtfully crafted for Wayland, built with Quickshell."
       }
 
@@ -463,7 +463,7 @@ ColumnLayout {
             onExited: TooltipService.hide()
             onClicked: {
               if (root.commitInfo) {
-                Quickshell.execDetached(["xdg-open", "https://github.com/me-osano/rustiq-shell/commit/" + root.commitInfo]);
+                Quickshell.execDetached(["xdg-open", "https://github.com/me-osano/RoxideDesktopShell/commit/" + root.commitInfo]);
               }
             }
           }
@@ -498,7 +498,7 @@ ColumnLayout {
       outlined: true
       Layout.alignment: Qt.AlignHCenter
       onClicked: {
-        Quickshell.execDetached(["xdg-open", "https://buymeacoffee.com/rustiq"]);
+        Quickshell.execDetached(["xdg-open", "https://buymeacoffee.com/roxide"]);
         ToastService.showNotice("Support us", "Donation page opened in your browser");
       }
     }

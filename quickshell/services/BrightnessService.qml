@@ -156,7 +156,7 @@ Singleton {
       ddcProc.running = true;
     }
     // Connect to Rust daemon for real-time updates
-    RustiqIntegration.connect("BrightnessService", ["brightness_updated"], function(event) {
+    RoxideIntegration.connect("BrightnessService", ["brightness_updated"], function(event) {
       if (event.type === "brightness_updated" && event.data) {
         root._handleRustBrightnessUpdate(event.data)
       }

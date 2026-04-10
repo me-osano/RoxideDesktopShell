@@ -1,18 +1,18 @@
 # IPC - Inter-Process Communication
 
-> RUSTIQ daemon IPC API documentation.
+> ROXIDE daemon IPC API documentation.
 
 ## Overview
 
-The RUSTIQ daemon exposes a REST API over a Unix socket (`/run/user/1000/rustiq.sock`) and optionally a TCP port (default `127.0.0.1:8765`). All endpoints support JSON responses.
+The ROXIDE daemon exposes a REST API over a Unix socket (`/run/user/1000/roxide.sock`) and optionally a TCP port (default `127.0.0.1:8765`). All endpoints support JSON responses.
 
 ## Socket Path
 
 ```
-$XDG_RUNTIME_DIR/rustiq.sock
+$XDG_RUNTIME_DIR/roxide.sock
 ```
 
-Default: `/run/user/1000/rustiq.sock` (assuming UID 1000)
+Default: `/run/user/1000/roxide.sock` (assuming UID 1000)
 
 ## TCP Port
 
@@ -20,7 +20,7 @@ Default: `/run/user/1000/rustiq.sock` (assuming UID 1000)
 127.0.0.1:8765
 ```
 
-Override with `RUSTIQ_PORT` environment variable.
+Override with `ROXIDE_PORT` environment variable.
 
 ---
 
@@ -213,13 +213,13 @@ curl -N "http://localhost/events?filters=sysmon_updated,notification"
 
 ```bash
 # Health check
-curl --unix-socket /run/user/1000/rustiq.sock http://localhost/ping
+curl --unix-socket /run/user/1000/roxide.sock http://localhost/ping
 
 # Get sysmon
-curl --unix-socket /run/user/1000/rustiq.sock http://localhost/sysmon
+curl --unix-socket /run/user/1000/roxide.sock http://localhost/sysmon
 
 # Get sysmon JSON
-curl --unix-socket /run/user/1000/rustiq.sock -H "Accept: application/json" http://localhost/sysmon
+curl --unix-socket /run/user/1000/roxide.sock -H "Accept: application/json" http://localhost/sysmon
 ```
 
 ### Using curl with TCP
@@ -232,10 +232,10 @@ curl http://127.0.0.1:8765/sysmon
 ### Using the CLI
 
 ```bash
-rustiq status
-rustiq sysmon
-rustiq sysmon --json
-rustiq search "query"
+roxide status
+roxide sysmon
+roxide sysmon --json
+roxide search "query"
 ```
 
 ---
@@ -245,5 +245,5 @@ rustiq search "query"
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `XDG_RUNTIME_DIR` | `/tmp` | Socket directory |
-| `RUSTIQ_PORT` | `8765` | TCP port |
-| `RUSTIQ_LOG` | `info` | Log level |
+| `ROXIDE_PORT` | `8765` | TCP port |
+| `ROXIDE_LOG` | `info` | Log level |

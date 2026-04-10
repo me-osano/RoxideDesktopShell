@@ -25,7 +25,7 @@ PanelWindow {
   color: "transparent"
   focusable: false
 
-  WlrLayershell.namespace: "rustiq-bar-trigger-" + (screen?.name || "unknown")
+  WlrLayershell.namespace: "roxide-bar-trigger-" + (screen?.name || "unknown")
   WlrLayershell.layer: WlrLayer.Top
   WlrLayershell.exclusionMode: ExclusionMode.Ignore
 

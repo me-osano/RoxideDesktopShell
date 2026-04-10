@@ -1,5 +1,5 @@
 {
-  description = "RUSTIQ desktop shell (RDS) - a Wayland desktop shell built with Quickshell";
+  description = "ROXIDE desktop shell (RDS) - a Wayland desktop shell built with Quickshell";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -23,17 +23,17 @@
           system: fn system nixpkgs.legacyPackages.${system}
         );
 
-      buildRustiqPkgs = pkgs: {
-        rustiq-shell = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      buildRoxidePkgs = pkgs: {
+        RoxideDesktopShell = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
         quickshell = quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
       };
 
-      mkModuleWithRustiqPkgs =
+      mkModuleWithRoxidePkgs =
         modulePath:
         args@{ pkgs, ... }:
         {
           imports = [
-            (import modulePath (args // { rustiqPkgs = buildRustiqPkgs pkgs; }))
+            (import modulePath (args // { roxidePkgs = buildRoxidePkgs pkgs; }))
           ];
         };
 
@@ -80,47 +80,47 @@
           qtPackages = qmlPkgs pkgs;
         in
         {
-          rustiq-shell = pkgs.lib.makeOverridable (
+          RoxideDesktopShell = pkgs.lib.makeOverridable (
             {
               extraQtPackages ? [ ],
             }:
             (pkgs.rustPlatform.buildRustPackage.override { }) (
               let
-                rustiqPkgs = pkgs;
+                roxidePkgs = pkgs;
               in
               {
                 inherit version;
-                pname = "rustiq-shell";
+                pname = "RoxideDesktopShell";
                 src = coreSrc;
                 cargoLock.lockFile = cargoLockFile;
 
-                nativeBuildInputs = with rustiqPkgs; [
+                nativeBuildInputs = with roxidePkgs; [
                   pkg-config
                   makeWrapper
                 ];
 
-                buildInputs = with rustiqPkgs; [
+                buildInputs = with roxidePkgs; [
                   openssl
                   dbus
                 ];
 
                 postInstall = ''
-                  mkdir -p $out/share/quickshell/rustiq-shell
-                  cp -r ${./quickshell}/. $out/share/quickshell/rustiq-shell/
+                  mkdir -p $out/share/quickshell/RoxideDesktopShell
+                  cp -r ${./quickshell}/. $out/share/quickshell/RoxideDesktopShell/
 
-                  wrapProgram $out/bin/rustiq \
-                    --add-flags "-c $out/share/quickshell/rustiq-shell" \
+                  wrapProgram $out/bin/roxide \
+                    --add-flags "-c $out/share/quickshell/RoxideDesktopShell" \
                     --prefix "NIXPKGS_QT6_QML_IMPORT_PATH" ":" "${
-                      mkQmlImportPath rustiqPkgs (qtPackages ++ extraQtPackages)
+                      mkQmlImportPath roxidePkgs (qtPackages ++ extraQtPackages)
                     }" \
-                    --prefix "QT_PLUGIN_PATH" ":" "${mkQtPluginPath rustiqPkgs (qtPackages ++ extraQtPackages)}"
+                    --prefix "QT_PLUGIN_PATH" ":" "${mkQtPluginPath roxidePkgs (qtPackages ++ extraQtPackages)}"
                 '';
 
                 meta = {
                   description = "Wayland desktop shell built with Quickshell";
-                  homepage = "https://github.com/me-osano/rustiq-shell";
+                  homepage = "https://github.com/me-osano/RoxideDesktopShell";
                   license = pkgs.lib.licenses.mit;
-                  mainProgram = "rustiq";
+                  mainProgram = "roxide";
                   platforms = pkgs.lib.platforms.linux;
                 };
               }
@@ -129,11 +129,11 @@
 
           quickshell = quickshell.packages.${system}.default;
 
-          default = self.packages.${system}.rustiq-shell;
+          default = self.packages.${system}.RoxideDesktopShell;
         }
       );
 
-      homeModules.default = mkModuleWithRustiqPkgs ./distro/nixos/home-module.nix;
+      homeModules.default = mkModuleWithRoxidePkgs ./distro/nixos/home-module.nix;
 
       devShells = forEachSystem (
         system: pkgs:

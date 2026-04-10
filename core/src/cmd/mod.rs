@@ -8,7 +8,7 @@ use serde::Serialize;
 use crate::ipc::server::socket_path;
 
 #[derive(Parser)]
-#[command(name = "rustiq", about = "RUSTIQ desktop shell daemon & CLI")]
+#[command(name = "roxide", about = "ROXIDE desktop shell daemon & CLI")]
 pub struct Cmd {
     #[command(subcommand)]
     pub command: Command,
@@ -16,11 +16,11 @@ pub struct Cmd {
 
 #[derive(Subcommand)]
 pub enum Command {
-    /// Start the RUSTIQ daemon
+    /// Start the ROXIDE daemon
     Daemon,
     /// Check daemon status
     Status,
-    /// Run RUSTIQ (daemon + Quickshell UI)
+    /// Run ROXIDE (daemon + Quickshell UI)
     RunRqs {
         /// Run in daemon mode (detached)
         #[arg(short, long)]
@@ -29,9 +29,9 @@ pub enum Command {
         #[arg(long)]
         session: bool,
     },
-    /// Restart RUSTIQ (kill and relaunch)
+    /// Restart ROXIDE (kill and relaunch)
     Restart,
-    /// Kill all RUSTIQ instances
+    /// Kill all ROXIDE instances
     Kill,
     /// Print system snapshot with diagnostics
     Sysmon {
@@ -249,14 +249,14 @@ impl From<&CheckResult> for CheckResultJSON {
     }
 }
 
-const SYSMON_DOCS_URL: &str = "https://rustiq.sh/docs/cli-sysmon";
+const SYSMON_DOCS_URL: &str = "https://roxide.sh/docs/cli-sysmon";
 
 pub async fn status() -> Result<()> {
     let path = socket_path();
     if path.exists() {
-        println!("RUSTIQ daemon: running ({})", path.display());
+        println!("ROXIDE daemon: running ({})", path.display());
     } else {
-        println!("RUSTIQ daemon: not running");
+        println!("ROXIDE daemon: not running");
     }
     Ok(())
 }
@@ -265,23 +265,23 @@ pub async fn run_rqs(daemon: bool, _session: bool) -> Result<()> {
     let socket = socket_path();
     
     if socket.exists() {
-        println!("RUSTIQ is already running ({})", socket.display());
-        println!("Use 'rustiq restart' to restart, or 'rustiq kill' to stop first.");
+        println!("ROXIDE is already running ({})", socket.display());
+        println!("Use 'roxide restart' to restart, or 'roxide kill' to stop first.");
         return Ok(());
     }
     
-    println!("Starting RUSTIQ daemon...");
+    println!("Starting ROXIDE daemon...");
     
-    let mut cmd = std::process::Command::new("rustiq");
+    let mut cmd = std::process::Command::new("roxide");
     cmd.arg("daemon");
     
     if daemon {
         cmd.spawn()?;
-        println!("RUSTIQ daemon started in background");
+        println!("ROXIDE daemon started in background");
     } else {
         match cmd.spawn() {
             Ok(mut child) => {
-                println!("RUSTIQ daemon started (PID: {})", child.id());
+                println!("ROXIDE daemon started (PID: {})", child.id());
                 let _ = child.wait();
             }
             Err(e) => {
@@ -298,11 +298,11 @@ pub async fn restart_rqs() -> Result<()> {
     
     tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
     
-    println!("Starting RUSTIQ daemon...");
-    let mut cmd = std::process::Command::new("rustiq");
+    println!("Starting ROXIDE daemon...");
+    let mut cmd = std::process::Command::new("roxide");
     cmd.arg("daemon");
     cmd.spawn()?;
-    println!("RUSTIQ daemon started");
+    println!("ROXIDE daemon started");
     
     Ok(())
 }
@@ -311,11 +311,11 @@ pub async fn kill_rqs() -> Result<()> {
     let socket = socket_path();
     
     if !socket.exists() {
-        println!("RUSTIQ is not running");
+        println!("ROXIDE is not running");
         return Ok(());
     }
     
-    println!("Stopping RUSTIQ daemon...");
+    println!("Stopping ROXIDE daemon...");
     
     if let Ok(mut stream) = UnixStream::connect(&socket) {
         let _ = stream.write_all(b"POST /shutdown HTTP/1.0\r\n\r\n");
@@ -327,7 +327,7 @@ pub async fn kill_rqs() -> Result<()> {
         let _ = std::fs::remove_file(&socket);
     }
     
-    println!("RUSTIQ daemon stopped");
+    println!("ROXIDE daemon stopped");
     
     Ok(())
 }
@@ -335,7 +335,7 @@ pub async fn kill_rqs() -> Result<()> {
 pub async fn sysmon_snapshot(verbose: bool, json: bool) -> Result<()> {
     let socket = socket_path();
     if !socket.exists() {
-        return Err(anyhow::anyhow!("Daemon not running. Start with 'rustiq daemon'"));
+        return Err(anyhow::anyhow!("Daemon not running. Start with 'roxide daemon'"));
     }
 
     let mut stream = UnixStream::connect(&socket)?;
@@ -365,21 +365,21 @@ pub async fn sysmon_snapshot(verbose: bool, json: bool) -> Result<()> {
 }
 
 pub async fn search(query: String, limit: usize) -> Result<()> {
-    println!("Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock 'http://localhost/search?q={query}&limit={limit}' | jq");
+    println!("Use: curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock 'http://localhost/search?q={query}&limit={limit}' | jq");
     Ok(())
 }
 
 pub async fn weather_snapshot() -> Result<()> {
-    println!("Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/weather | jq");
+    println!("Use: curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/weather | jq");
     Ok(())
 }
 
 pub async fn niri_cmd(subcommand: NiriCommand) -> Result<()> {
     match subcommand {
-        NiriCommand::Workspaces => println!("Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/workspaces | jq"),
-        NiriCommand::Windows    => println!("Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/windows | jq"),
-        NiriCommand::Activate { id } => println!("Use: curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/workspace/{id}/activate"),
-        NiriCommand::Focus { id }    => println!("Use: curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/window/{id}/focus"),
+        NiriCommand::Workspaces => println!("Use: curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/niri/workspaces | jq"),
+        NiriCommand::Windows    => println!("Use: curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/niri/windows | jq"),
+        NiriCommand::Activate { id } => println!("Use: curl -X POST --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/niri/workspace/{id}/activate"),
+        NiriCommand::Focus { id }    => println!("Use: curl -X POST --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/niri/window/{id}/focus"),
     }
     Ok(())
 }
@@ -626,7 +626,7 @@ fn check_system_info(verbose: bool) -> Vec<CheckResult> {
 
     let (display_status, display_message) = match (wayland_display.as_deref(), xdg_session_type.as_deref()) {
         (Some(_), _) | (_, Some("wayland")) => (CheckStatus::Ok, "Wayland".to_string()),
-        (_, Some("x11")) => (CheckStatus::Error, "X11 (RUSTIQ requires Wayland)".to_string()),
+        (_, Some("x11")) => (CheckStatus::Error, "X11 (ROXIDE requires Wayland)".to_string()),
         _ => (CheckStatus::Warn, "Unknown (ensure you're running Wayland)".to_string()),
     };
 
@@ -653,7 +653,7 @@ fn check_versions(verbose: bool) -> Vec<CheckResult> {
     let version = env!("CARGO_PKG_VERSION");
     results.push(CheckResult {
         category: Category::Versions,
-        name: "RUSTIQ CLI".to_string(),
+        name: "ROXIDE CLI".to_string(),
         status: CheckStatus::Ok,
         message: format!("v{}", version),
         details: if verbose {
@@ -860,7 +860,7 @@ fn check_config_files(verbose: bool) -> Vec<CheckResult> {
     let mut results = Vec::new();
 
     let config_dir = dirs::config_dir()
-        .map(|p| p.join("rustiq"))
+        .map(|p| p.join("roxide"))
         .unwrap_or_default();
 
     if config_dir.exists() {
@@ -893,7 +893,7 @@ fn check_daemon() -> Vec<CheckResult> {
         name: "Daemon".to_string(),
         status: if running { CheckStatus::Ok } else { CheckStatus::Warn },
         message: if running { "Running" } else { "Not running" }.to_string(),
-        details: if !running { "Run 'rustiq daemon' to start".to_string() } else { String::new() },
+        details: if !running { "Run 'roxide daemon' to start".to_string() } else { String::new() },
     }]
 }
 
@@ -934,7 +934,7 @@ fn check_environment_vars(verbose: bool) -> Vec<CheckResult> {
 fn print_results(results: &[CheckResult], verbose: bool) {
     let mut current_category: Option<Category> = None;
 
-    println!("\nRUSTIQ Sysmon - Diagnostic Checks\n");
+    println!("\nROXIDE Sysmon - Diagnostic Checks\n");
 
     for result in results {
         if Some(result.category) != current_category {

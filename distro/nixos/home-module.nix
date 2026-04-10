@@ -1,23 +1,23 @@
 {
   config,
   lib,
-  rustiqPkgs,
+  roxidePkgs,
   ...
 }:
 
 let
-  cfg = config.programs.rustiq-shell;
+  cfg = config.programs.roxide-desktop-shell;
 in
 {
-  options.programs.rustiq-shell = {
-    enable = lib.mkEnableOption "RUSTIQ desktop shell";
+  options.programs.roxide-desktop-shell = {
+    enable = lib.mkEnableOption "ROXIDE desktop shell";
     
-    package = lib.mkPackageOption rustiqPkgs "rustiq-shell" {
-      extraDescription = "The RustiqDesktopShell package to use (defaults to be built from source)";
+    package = lib.mkPackageOption roxidePkgs "RoxideDesktopShell" {
+      extraDescription = "The RoxideDesktopShell package to use (defaults to be built from source)";
     };
 
     quickshell = {
-      package = lib.mkPackageOption rustiqPkgs "quickshell" {
+      package = lib.mkPackageOption roxidePkgs "quickshell" {
         extraDescription = "The quickshell package to use";
       };
     };
@@ -25,15 +25,15 @@ in
     logLevel = lib.mkOption {
       type = lib.types.str;
       default = "info";
-      description = "Log level for rustiq-shell";
+      description = "Log level for roxide-desktop-shell";
     };
 
     systemd = {
-      enable = lib.mkEnableOption "RUSTIQ systemd startup";
+      enable = lib.mkEnableOption "ROXIDE systemd startup";
       restartIfChanged = lib.mkOption {
         type = lib.types.bool;
         default = true;
-        description = "Auto-restart rustiq-shell service when package changes";
+        description = "Auto-restart RoxideDesktopShell service when package changes";
       };
     };
   };
@@ -41,19 +41,19 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = [ cfg.package ];
 
-    xdg.configFile."rustiq-shell/quickshell".source = ../../quickshell;
+    xdg.configFile."RoxideDesktopShell/quickshell".source = ../../quickshell;
 
-    systemd.user.services.rustiq = {
+    systemd.user.services.roxide = {
       Unit = {
-        Description = "RUSTIQ desktop shell daemon";
+        Description = "ROXIDE desktop shell daemon";
         After = [ "graphical-session.target" ];
         PartOf = [ "graphical-session.target" ];
       };
       Service = {
-        ExecStart = "${cfg.package}/bin/rustiq";
+        ExecStart = "${cfg.package}/bin/roxide";
         Restart = "on-failure";
         RestartSec = "3s";
-        Environment = [ "RUSTIQ_LOG=${cfg.logLevel}" ];
+        Environment = [ "ROXIDE_LOG=${cfg.logLevel}" ];
       };
       Install.WantedBy = [ "graphical-session.target" ];
     };

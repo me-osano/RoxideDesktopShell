@@ -1,6 +1,6 @@
-# RUSTIQ Commands
+# ROXIDE Commands
 
-> Command-line interface for RUSTIQ desktop shell daemon.
+> Command-line interface for ROXIDE desktop shell daemon.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@
 ## Usage
 
 ```bash
-rustiq [COMMAND]
+roxide [COMMAND]
 ```
 
 ---
@@ -30,20 +30,20 @@ rustiq [COMMAND]
 
 ### daemon
 
-> Start only the RUSTIQ daemon (backend).
+> Start only the ROXIDE daemon (backend).
 
 ```bash
-rustiq daemon
+roxide daemon
 ```
 
 ---
 
 ### run-rds
 
-> Run RUSTIQ (daemon + Quickshell UI). This is the main command to launch the full shell.
+> Run ROXIDE (daemon + Quickshell UI). This is the main command to launch the full shell.
 
 ```bash
-rustiq run-rds [--daemon] [--session]
+roxide run-rds [--daemon] [--session]
 ```
 
 | Argument | Description |
@@ -55,63 +55,63 @@ rustiq run-rds [--daemon] [--session]
 
 ```bash
 # Run attached to terminal (for testing)
-rustiq run-rds
+roxide run-rds
 
 # Run in daemon mode (background)
-rustiq run-rds --daemon
+roxide run-rds --daemon
 
 # Run for systemd session management
-rustiq run-rds --session
+roxide run-rds --session
 ```
 
 ---
 
 ### restart
 
-> Kill the RUSTIQ daemon and relaunch it. Useful after configuration changes.
+> Kill the ROXIDE daemon and relaunch it. Useful after configuration changes.
 
 ```bash
-rustiq restart
+roxide restart
 ```
 
 **Example:**
 
 ```bash
 # Restart to apply configuration changes
-rustiq restart
+roxide restart
 ```
 
 ---
 
 ### kill
 
-> Kill all running RUSTIQ instances.
+> Kill all running ROXIDE instances.
 
 ```bash
-rustiq kill
+roxide kill
 ```
 
 **Example:**
 
 ```bash
-# Stop RUSTIQ
-rustiq kill
+# Stop ROXIDE
+roxide kill
 ```
 
 ---
 
 ### status
 
-> Check if the RUSTIQ daemon is running.
+> Check if the ROXIDE daemon is running.
 
 ```bash
-rustiq status
+roxide status
 ```
 
 **Output:**
 
 ```
-RUSTIQ daemon: running (/run/user/1000/rustiq.sock)
+ROXIDE daemon: running (/run/user/1000/roxide.sock)
 ```
 
 ---
@@ -121,7 +121,7 @@ RUSTIQ daemon: running (/run/user/1000/rustiq.sock)
 > Print system monitoring snapshot with diagnostics.
 
 ```bash
-rustiq sysmon [--verbose] [--json]
+roxide sysmon [--verbose] [--json]
 ```
 
 | Argument | Description |
@@ -132,9 +132,9 @@ rustiq sysmon [--verbose] [--json]
 **Example:**
 
 ```bash
-rustiq sysmon
-rustiq sysmon --verbose
-rustiq sysmon --json
+roxide sysmon
+roxide sysmon --verbose
+roxide sysmon --json
 ```
 
 **Output:**
@@ -165,8 +165,8 @@ rustiq sysmon --json
   Diagnostics
     ● Architecture .... OK (x86_64)
     ● Display Server .. OK (Wayland)
-    ● RUSTIQ CLI ...... OK (v0.1.0)
-    ● IPC Socket ...... OK (Found at /run/user/1000/rustiq.sock)
+    ● ROXIDE CLI ...... OK (v0.1.0)
+    ● IPC Socket ...... OK (Found at /run/user/1000/roxide.sock)
     ● Active .......... OK (niri)
 
   Status:
@@ -180,7 +180,7 @@ rustiq sysmon --json
 > Search files using the daemon's search functionality.
 
 ```bash
-rustiq search <query> [--limit <number>]
+roxide search <query> [--limit <number>]
 ```
 
 | Argument | Description | Default |
@@ -191,13 +191,13 @@ rustiq search <query> [--limit <number>]
 **Example:**
 
 ```bash
-rustiq search "rust" --limit 20
+roxide search "rust" --limit 20
 ```
 
 **Output:**
 
 ```
-Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock 'http://localhost/search?q=rust&limit=20' | jq
+Use: curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock 'http://localhost/search?q=rust&limit=20' | jq
 ```
 
 ---
@@ -207,13 +207,13 @@ Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock 'http://localhost/search?q=
 > Print current weather snapshot.
 
 ```bash
-rustiq weather
+roxide weather
 ```
 
 **Output:**
 
 ```
-Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/weather | jq
+Use: curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/weather | jq
 ```
 
 ---
@@ -223,7 +223,7 @@ Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/weather | 
 > Control display brightness for backlights and monitors.
 
 ```bash
-rustiq brightness <subcommand>
+roxide brightness <subcommand>
 ```
 
 #### Subcommands
@@ -245,9 +245,9 @@ rustiq brightness <subcommand>
 **Example:**
 
 ```bash
-rustiq brightness list
-rustiq brightness set backlight:amdgpu_bl1 50
-rustiq brightness increase 5 --exponential
+roxide brightness list
+roxide brightness set backlight:amdgpu_bl1 50
+roxide brightness increase 5 --exponential
 ```
 
 ---
@@ -257,7 +257,7 @@ rustiq brightness increase 5 --exponential
 > Niri window manager IPC commands.
 
 ```bash
-rustiq niri <subcommand>
+roxide niri <subcommand>
 ```
 
 #### Subcommands
@@ -276,13 +276,13 @@ rustiq niri <subcommand>
 > List all workspaces.
 
 ```bash
-rustiq niri workspaces
+roxide niri workspaces
 ```
 
 **Output:**
 
 ```
-Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/workspaces | jq
+Use: curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/niri/workspaces | jq
 ```
 
 ---
@@ -292,13 +292,13 @@ Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/works
 > List all windows.
 
 ```bash
-rustiq niri windows
+roxide niri windows
 ```
 
 **Output:**
 
 ```
-Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/windows | jq
+Use: curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/niri/windows | jq
 ```
 
 ---
@@ -308,7 +308,7 @@ Use: curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/windo
 > Activate a workspace by ID.
 
 ```bash
-rustiq niri activate <id>
+roxide niri activate <id>
 ```
 
 | Argument | Description |
@@ -318,13 +318,13 @@ rustiq niri activate <id>
 **Example:**
 
 ```bash
-rustiq niri activate 1
+roxide niri activate 1
 ```
 
 **Output:**
 
 ```
-Use: curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/workspace/1/activate
+Use: curl -X POST --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/niri/workspace/1/activate
 ```
 
 ---
@@ -334,7 +334,7 @@ Use: curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/ni
 > Focus a window by ID.
 
 ```bash
-rustiq niri focus <id>
+roxide niri focus <id>
 ```
 
 | Argument | Description |
@@ -344,23 +344,23 @@ rustiq niri focus <id>
 **Example:**
 
 ```bash
-rustiq niri focus 5
+roxide niri focus 5
 ```
 
 **Output:**
 
 ```
-Use: curl -X POST --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/niri/window/5/focus
+Use: curl -X POST --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/niri/window/5/focus
 ```
 
 ---
 
 ## IPC Socket
 
-> The daemon exposes a Unix socket at `$XDG_RUNTIME_DIR/rustiq.sock` (typically `/run/user/1000/rustiq.sock`).
+> The daemon exposes a Unix socket at `$XDG_RUNTIME_DIR/roxide.sock` (typically `/run/user/1000/roxide.sock`).
 
 All commands can also be accessed directly via HTTP:
 
 ```bash
-curl --unix-socket $XDG_RUNTIME_DIR/rustiq.sock http://localhost/<endpoint>
+curl --unix-socket $XDG_RUNTIME_DIR/roxide.sock http://localhost/<endpoint>
 ```

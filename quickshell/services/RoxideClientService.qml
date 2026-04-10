@@ -1,5 +1,5 @@
-// RustiqClientService — IPC bridge to the Rust daemon
-// Usage: RustiqClientService { id: client }
+// RoxideClientService — IPC bridge to the Rust daemon
+// Usage: RoxideClientService { id: client }
 //
 // Unified API:
 //   client.request("GET", "/sysmon", callback)
@@ -11,7 +11,7 @@ import QtQuick
 QtObject {
     id: root
 
-    readonly property string baseUrl: "http://localhost:" + (Qt.application.environments["RUSTIQ_PORT"] || "8765")
+    readonly property string baseUrl: "http://localhost:" + (Qt.application.environments["ROXIDE_PORT"] || "8765")
 
     // Connection state
     readonly property bool connected: _sseConnected || _pendingRequests > 0
@@ -111,7 +111,7 @@ QtObject {
                             var event = JSON.parse(line.substring(6))
                             _dispatchEvent(event)
                         } catch (e) {
-                            console.error("RustiqClientService: SSE parse error:", e)
+                            console.error("RoxideClientService: SSE parse error:", e)
                         }
                     }
                 }
@@ -125,7 +125,7 @@ QtObject {
 
         _sseXhr.onerror = function() {
             _sseConnected = false
-            console.error("RustiqClientService: SSE connection error")
+            console.error("RoxideClientService: SSE connection error")
             _scheduleReconnect()
         }
 
@@ -141,7 +141,7 @@ QtObject {
         var delay = _reconnectDelayMs
         _reconnectDelayMs = Math.min(_reconnectDelayMs * 2, root.maxReconnectDelayMs)
 
-        console.log("RustiqClientService: Reconnecting in " + delay + "ms (backoff)")
+        console.log("RoxideClientService: Reconnecting in " + delay + "ms (backoff)")
 
         Qt.callLater(function() {
             if (_eventFilters.length > 0 || _sseCallbacks.length > 0) {
@@ -157,7 +157,7 @@ QtObject {
             try {
                 _sseCallbacks[i](event)
             } catch (e) {
-                console.error("RustiqClientService: Event handler error:", e)
+                console.error("RoxideClientService: Event handler error:", e)
             }
         }
     }

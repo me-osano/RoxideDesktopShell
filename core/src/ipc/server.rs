@@ -18,12 +18,12 @@ use crate::ipc::{AppState, EventType};
 
 pub fn socket_path() -> PathBuf {
     let runtime = std::env::var("XDG_RUNTIME_DIR").unwrap_or_else(|_| "/tmp".to_string());
-    PathBuf::from(runtime).join("rustiq.sock")
+    PathBuf::from(runtime).join("roxide.sock")
 }
 
 pub async fn serve(state: AppState) -> Result<()> {
     let path = socket_path();
-    let addr = format!("127.0.0.1:{}", std::env::var("RUSTIQ_PORT").unwrap_or_else(|_| "8765".to_string()));
+    let addr = format!("127.0.0.1:{}", std::env::var("ROXIDE_PORT").unwrap_or_else(|_| "8765".to_string()));
     let addr_display = addr.clone();
 
     if path.exists() {
@@ -31,7 +31,7 @@ pub async fn serve(state: AppState) -> Result<()> {
     }
 
     let listener = TcpListener::bind(&addr).await?;
-    info!("RUSTIQ IPC listening on {} (-> {})", addr_display, path.display());
+    info!("ROXIDE IPC listening on {} (-> {})", addr_display, path.display());
 
     let router = Router::new()
         .route("/events", get(sse_handler))

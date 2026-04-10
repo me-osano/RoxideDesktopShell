@@ -259,7 +259,7 @@ Popup {
       }
     };
 
-    xhr.open("GET", "https://raw.githubusercontent.com/me-osano/rustiq-colorschemes/main/registry.json");
+    xhr.open("GET", "https://raw.githubusercontent.com/me-osano/roxide-colorschemes/main/registry.json");
     xhr.send();
   }
 
@@ -303,7 +303,7 @@ Popup {
           }
         }
       };
-      xhr.open("GET", "https://api.github.com/repos/me-osano/rustiq-colorschemes");
+      xhr.open("GET", "https://api.github.com/repos/me-osano/roxide-colorschemes");
       xhr.send();
     }
   }
@@ -336,7 +336,7 @@ Popup {
         }
       }
     };
-    xhr.open("GET", "https://api.github.com/repos/me-osano/rustiq-colorschemes/git/refs/heads/" + branch);
+    xhr.open("GET", "https://api.github.com/repos/me-osano/roxide-colorschemes/git/refs/heads/" + branch);
     xhr.send();
   }
 
@@ -356,7 +356,7 @@ Popup {
                 if (item.type === "blob" && item.path.startsWith(scheme.path + "/")) {
                   files.push({
                                "path": item.path,
-                               "url": "https://raw.githubusercontent.com/me-osano/rustiq-colorschemes/" + branch + "/" + item.path,
+                               "url": "https://raw.githubusercontent.com/me-osano/roxide-colorschemes/" + branch + "/" + item.path,
                                "name": item.path.split("/").pop()
                              });
                 }
@@ -378,7 +378,7 @@ Popup {
         }
       }
     };
-    xhr.open("GET", "https://api.github.com/repos/me-osano/rustiq-colorschemes/git/trees/" + sha + "?recursive=1");
+    xhr.open("GET", "https://api.github.com/repos/me-osano/roxide-colorschemes/git/trees/" + sha + "?recursive=1");
     xhr.send();
   }
 
@@ -413,7 +413,7 @@ Popup {
         }
       }
     };
-    xhr.open("GET", "https://api.github.com/repos/me-osano/rustiq-colorschemes/contents/" + scheme.path);
+    xhr.open("GET", "https://api.github.com/repos/me-osano/roxide-colorschemes/contents/" + scheme.path);
     xhr.send();
   }
 
@@ -641,11 +641,11 @@ Popup {
 
         // If the deleted scheme was the active one, reset to default BEFORE reloading
         if (needsReset) {
-          Logger.i("ColorSchemeDownload", "Deleted scheme was active, resetting to Rustiq (default)");
+          Logger.i("ColorSchemeDownload", "Deleted scheme was active, resetting to Roxide (default)");
           // Clear the setting immediately so ColorSchemeService won't try to apply the deleted scheme
-          Settings.data.colorSchemes.predefinedScheme = "Rustiq (default)";
+          Settings.data.colorSchemes.predefinedScheme = "Roxide (default)";
           // Apply the default scheme immediately
-          ColorSchemeService.setPredefinedScheme("Rustiq (default)");
+          ColorSchemeService.setPredefinedScheme("Roxide (default)");
         }
 
         // Reload color schemes

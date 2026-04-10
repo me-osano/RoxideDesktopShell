@@ -18,7 +18,7 @@ ColumnLayout {
 
   RToggle {
     label: "Enable wallpaper management"
-    description: "Manage wallpapers with Rustiq. Uncheck if you prefer using another application."
+    description: "Manage wallpapers with Roxide. Uncheck if you prefer using another application."
     checked: Settings.data.wallpaper.enabled
     onToggled: checked => Settings.data.wallpaper.enabled = checked
     defaultValue: Settings.getDefaultValue("wallpaper.enabled")

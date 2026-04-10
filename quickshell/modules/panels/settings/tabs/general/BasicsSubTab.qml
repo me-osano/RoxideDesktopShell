@@ -165,7 +165,7 @@ ColumnLayout {
       outlined: true
       Layout.fillWidth: true
       onClicked: {
-        Qt.openUrlExternally("https://docs.rustiq.dev");
+        Qt.openUrlExternally("https://docs.roxide.dev");
       }
     }
 

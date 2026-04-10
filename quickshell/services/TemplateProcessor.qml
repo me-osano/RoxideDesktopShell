@@ -205,9 +205,9 @@ Singleton {
 
   function addWallpaperTheming(lines, mode) {
     const homeDir = Quickshell.env("HOME");
-    // Rustiq colors JSON
-    lines.push("[templates.rustiq]");
-    lines.push('input_path = "' + Quickshell.shellDir + '/assets/Templates/rustiq.json"');
+    // Roxide colors JSON
+    lines.push("[templates.roxide]");
+    lines.push('input_path = "' + Quickshell.shellDir + '/assets/Templates/roxide.json"');
     lines.push('output_path = "' + Settings.configDir + 'colors.json"');
 
     // Terminal templates
@@ -238,7 +238,7 @@ Singleton {
                                                                                          lines.push(`\n[templates.discord_${themeSuffix}_${client.name}]`);
                                                                                          lines.push(`input_path = "${Quickshell.shellDir}/assets/Templates/${inputFile}"`);
                                                                                          // First input uses legacy name for backward compatibility
-                                                                                         const outputFile = idx === 0 ? "rustiq.theme.css" : `rustiq-${themeSuffix}.theme.css`;
+                                                                                         const outputFile = idx === 0 ? "roxide.theme.css" : `roxide-${themeSuffix}.theme.css`;
                                                                                          const outputPath = client.path.replace("~", homeDir) + `/themes/${outputFile}`;
                                                                                          lines.push(`output_path = "${outputPath}"`);
                                                                                        }
@@ -266,7 +266,7 @@ Singleton {
                                                 ProgramCheckerService.availableEmacsClients.forEach(client => {
                                                                                                       lines.push(`\n[templates.emacs_${client.name}]`);
                                                                                                       lines.push(`input_path = "${Quickshell.shellDir}/assets/Templates/${app.input}"`);
-                                                                                                      const expandedPath = client.path.replace("~", homeDir) + "/themes/rustiq-theme.el";
+                                                                                                      const expandedPath = client.path.replace("~", homeDir) + "/themes/roxide-theme.el";
                                                                                                       lines.push(`output_path = "${expandedPath}"`);
                                                                                                     });
                                               }
@@ -323,15 +323,15 @@ Singleton {
 
     // Use heredoc for wallpaper path to avoid all escaping issues
     let script = `cat > '${pathEsc}' << '${delimiter}'\n${content}\n${delimiter}\n`;
-    script += `RUSTIQ_WP_PATH=$(cat << '${wpDelimiter}'\n${wallpaper}\n${wpDelimiter}\n)\n`;
+    script += `ROXIDE_WP_PATH=$(cat << '${wpDelimiter}'\n${wallpaper}\n${wpDelimiter}\n)\n`;
 
     // Use template-processor.py (Python implementation)
     // Don't pass --mode so templates get both dark and light colors (e.g., zed.json needs both)
     // Pass --default-mode so "default" in templates resolves to the current theme mode
     const schemeType = getSchemeType();
-    script += `python3 "${templateProcessorScript}" "$RUSTIQ_WP_PATH" --scheme-type ${schemeType} --config '${pathEsc}' --default-mode ${mode} `;
+    script += `python3 "${templateProcessorScript}" "$ROXIDE_WP_PATH" --scheme-type ${schemeType} --config '${pathEsc}' --default-mode ${mode} `;
 
-    script += buildUserTemplateCommand("$RUSTIQ_WP_PATH", mode);
+    script += buildUserTemplateCommand("$ROXIDE_WP_PATH", mode);
 
     return script + "\n";
   }
@@ -443,8 +443,8 @@ Singleton {
 
   function getTerminalColorsTemplate(terminal, mode) {
     const schemeNameMap = ({
-                             "Rustiq (default)": "Rustiq-default",
-                             "Rustiq (legacy)": "Rustiq-legacy",
+                             "Roxide (default)": "Roxide-default",
+                             "Roxide (legacy)": "Roxide-legacy",
                              "Tokyo Night": "Tokyo-Night",
                              "Rose Pine": "Rosepine"
                            });

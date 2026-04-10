@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-RUSTIQ_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROXIDE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BIN_DIR="${HOME}/.local/bin"
-CONFIG_DIR="${HOME}/.config/rustiq"
+CONFIG_DIR="${HOME}/.config/roxide"
 SERVICE_DIR="${HOME}/.config/systemd/user"
 
 echo "╔══════════════════════════════╗"
-echo "║   RUSTIQ Shell Installer     ║"
+echo "║   ROXIDE Shell Installer     ║"
 echo "╚══════════════════════════════╝"
 echo ""
 
@@ -24,30 +24,30 @@ check_dep niri
 echo ""
 
 # Build Rust core
-echo "Building RUSTIQ core..."
-cd "${RUSTIQ_DIR}/core"
+echo "Building ROXIDE core..."
+cd "${ROXIDE_DIR}/core"
 cargo build --release
 echo "✓ Build complete"
 echo ""
 
 # Install binary
 mkdir -p "${BIN_DIR}"
-install -Dm755 "target/release/rustiq" "${BIN_DIR}/rustiq"
-echo "✓ Installed binary → ${BIN_DIR}/rustiq"
+install -Dm755 "target/release/roxide" "${BIN_DIR}/roxide"
+echo "✓ Installed binary → ${BIN_DIR}/roxide"
 
 # Install QML config
 mkdir -p "${CONFIG_DIR}"
-cp -r "${RUSTIQ_DIR}/quickshell" "${CONFIG_DIR}/"
+cp -r "${ROXIDE_DIR}/quickshell" "${CONFIG_DIR}/"
 echo "✓ Installed QML → ${CONFIG_DIR}/quickshell"
 
 # Install systemd service
 mkdir -p "${SERVICE_DIR}"
-install -Dm644 "${RUSTIQ_DIR}/distro/arch/rustiq.service" "${SERVICE_DIR}/rustiq.service"
+install -Dm644 "${ROXIDE_DIR}/distro/arch/roxide.service" "${SERVICE_DIR}/roxide.service"
 echo "✓ Installed systemd unit"
 
 # Enable service
 systemctl --user daemon-reload
-systemctl --user enable --now rustiq.service
+systemctl --user enable --now roxide.service
 echo "✓ Service enabled and started"
 
 echo ""
@@ -59,4 +59,4 @@ echo ""
 echo "Add to your niri config:"
 echo '  spawn-at-startup "quickshell" "-p" "'"${CONFIG_DIR}/quickshell"'"'
 echo ""
-echo "Logs: journalctl --user -u rustiq -f"
+echo "Logs: journalctl --user -u roxide -f"
