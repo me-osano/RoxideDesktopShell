@@ -1,0 +1,8 @@
+# Allow users in the 'video' group to write to backlight brightness
+# Install to: /etc/udev/rules.d/90-sysd-backlight.rules
+# Then: sudo udevadm control --reload && sudo udevadm trigger
+# And add yourself to the video group: sudo usermod -aG video $USER
+
+ACTION=="add", SUBSYSTEM=="backlight", \
+  RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness", \
+  RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"

@@ -17,7 +17,7 @@ SHELL_INSTALL_DIR = $(DATA_DIR)/quickshell/roxide
 ASSETS_DIR = assets
 APPLICATIONS_DIR = $(DATA_DIR)/applications
 
-.PHONY: all build clean lint-qml fmt check \
+.PHONY: all build clean lint-qml fmt check test \
 	install install-bin install-shell install-completions install-systemd install-icon install-desktop \
 	uninstall uninstall-bin uninstall-shell uninstall-completions uninstall-systemd uninstall-icon uninstall-desktop \
 	enable disable logs status run dev help
@@ -39,6 +39,9 @@ fmt:
 
 check:
 	@cd core && cargo check && cargo clippy
+
+test:
+	@cd core && cargo test -- --nocapture
 
 lint-qml:
 	@./quickshell/scripts/qmllint-entrypoints.sh 2>/dev/null || echo "qmllint not available, skipping"
@@ -163,6 +166,7 @@ help:
 	@echo "  clean                - Clean build artifacts"
 	@echo "  fmt                  - Format Rust code"
 	@echo "  check                - Run cargo check and clippy"
+	@echo "  test                 - Run unit tests"
 	@echo "  lint-qml             - Run qmllint on shell entrypoints"
 	@echo ""
 	@echo "Run:"

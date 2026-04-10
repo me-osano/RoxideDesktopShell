@@ -1,4 +1,4 @@
-# RUSTIQ Roadmap
+# ROXIDE Roadmap
 
 ## v0.1 — Foundation ✦
 - [x] Rust daemon skeleton (axum Unix socket)

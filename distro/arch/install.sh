@@ -11,11 +11,15 @@ echo "║   ROXIDE Desktop Shell Installer     ║"
 echo "╚══════════════════════════════════════╝"
 echo ""
 
-if ! command -v rustc &> /dev/null; then
-    echo "Error: Rust is not installed."
-    echo "Install via: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
-    exit 1
-fi
+check_dep() {
+    command -v "$1" &>/dev/null || { echo "✗ Missing: $1"; exit 1; }
+    echo "✓ $1"
+}
+
+echo "Checking dependencies..."
+check_dep rustc
+check_dep cargo
+check_dep quickshell
 
 echo "Building roxide-core..."
 cd core

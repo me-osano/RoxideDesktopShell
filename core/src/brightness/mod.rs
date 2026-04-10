@@ -412,3 +412,132 @@ impl DdcBackend {
         self.cache.clear();
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_device_class_display() {
+        assert_eq!(DeviceClass::Backlight.to_string(), "backlight");
+        assert_eq!(DeviceClass::Leds.to_string(), "leds");
+        assert_eq!(DeviceClass::Ddc.to_string(), "ddc");
+    }
+
+    #[test]
+    fn test_device_class_serialization() {
+        assert_eq!(serde_json::to_string(&DeviceClass::Backlight).unwrap(), "\"Backlight\"");
+        assert_eq!(serde_json::to_string(&DeviceClass::Leds).unwrap(), "\"Leds\"");
+        assert_eq!(serde_json::to_string(&DeviceClass::Ddc).unwrap(), "\"Ddc\"");
+    }
+
+    #[test]
+    fn test_device_class_partial_eq() {
+        assert_eq!(DeviceClass::Backlight, DeviceClass::Backlight);
+        assert_eq!(DeviceClass::Leds, DeviceClass::Leds);
+        assert_ne!(DeviceClass::Backlight, DeviceClass::Leds);
+    }
+
+    #[test]
+    fn test_brightness_manager_new() {
+        let manager = BrightnessManager::new();
+        assert!(!manager.state.try_read().unwrap().available);
+        assert!(manager.state.try_read().unwrap().devices.is_empty());
+        assert!(manager.state.try_read().unwrap().selected_device.is_none());
+    }
+
+    #[test]
+    fn test_brightness_manager_default() {
+        let manager = BrightnessManager::default();
+        assert!(!manager.state.try_read().unwrap().available);
+    }
+
+    #[test]
+    fn test_brightness_manager_clone() {
+        let manager = BrightnessManager::new();
+        let cloned = manager.clone();
+        assert!(std::ptr::eq(manager.state.as_ref(), cloned.state.as_ref()) || 
+               Arc::ptr_eq(&manager.state, &cloned.state));
+    }
+
+    #[tokio::test]
+    async fn test_brightness_manager_get_state() {
+        let manager = BrightnessManager::new();
+        let state = manager.get_state().await;
+        assert!(!state.available);
+        assert!(state.devices.is_empty());
+        assert!(state.selected_device.is_none());
+    }
+
+    #[tokio::test]
+    async fn test_brightness_manager_set_selected_device_not_found() {
+        let manager = BrightnessManager::new();
+        let result = manager.set_selected_device("nonexistent").await;
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Device not found");
+    }
+
+    #[test]
+    fn test_percent_to_value_linear() {
+        assert_eq!(BrightnessManager::percent_to_value(0, 100, 1.0), 0);
+        assert_eq!(BrightnessManager::percent_to_value(50, 100, 1.0), 50);
+        assert_eq!(BrightnessManager::percent_to_value(100, 100, 1.0), 100);
+    }
+
+    #[test]
+    fn test_percent_to_value_exponential() {
+        assert_eq!(BrightnessManager::percent_to_value(0, 100, 1.2), 0);
+        
+        let result = BrightnessManager::percent_to_value(50, 100, 1.2);
+        assert!(result < 50);
+        
+        assert_eq!(BrightnessManager::percent_to_value(100, 100, 1.2), 100);
+    }
+
+    #[test]
+    fn test_percent_to_value_rounding() {
+        assert_eq!(BrightnessManager::percent_to_value(33, 100, 1.0), 33);
+        assert_eq!(BrightnessManager::percent_to_value(66, 100, 1.0), 66);
+    }
+
+    #[test]
+    fn test_sysfs_backend_new() {
+        let backend = SysfsBackend::new();
+        assert!(backend.is_ok());
+        let b = backend.unwrap();
+        assert_eq!(b.base_path, PathBuf::from("/sys"));
+    }
+
+    #[test]
+    fn test_sysfs_backend_invalid_device_id() {
+        let backend = SysfsBackend::new().unwrap();
+        let result = backend.set_brightness("invalid", 50);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_sysfs_backend_invalid_device_class() {
+        let backend = SysfsBackend::new().unwrap();
+        let result = backend.set_brightness("invalid_class:device", 50);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_ddc_backend_new() {
+        let backend = DdcBackend::new();
+        assert!(backend.is_ok());
+        let b = backend.unwrap();
+        assert!(b.cache.is_empty());
+    }
+
+    #[test]
+    fn test_ddc_backend_close() {
+        let mut backend = DdcBackend::new().unwrap();
+        backend.cache.insert("test".to_string(), MonitorInfo {
+            bus: "1".to_string(),
+            address: "0x00".to_string(),
+        });
+        backend.close();
+        assert!(backend.cache.is_empty());
+    }
+}

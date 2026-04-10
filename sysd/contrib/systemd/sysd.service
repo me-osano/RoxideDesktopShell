@@ -1,0 +1,14 @@
+[Unit]
+Description=sysd system control daemon
+After=dbus.service bluetooth.service NetworkManager.service
+
+[Service]
+Type=simple
+ExecStart=%h/.cargo/bin/sysdd
+Restart=on-failure
+RestartSec=2s
+# Socket is cleaned up by the daemon itself on startup
+Environment=RUST_LOG=sysd=info
+
+[Install]
+WantedBy=default.target

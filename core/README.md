@@ -28,7 +28,7 @@ Backend daemon for the Roxide desktop shell, designed for the **Niri Wayland com
 │ network  │ bluet.  │ clip.    │ bright.    │
 │ media    │ notify  │ geo      │            │
 └──────────┴──────────┴──────────┴────────────┘
-                      │ HTTP/SSE
+                       │ HTTP/SSE (TCP)
 ┌─────────────────────────────────────────────┐
 │              QML SHELL (UI)                 │
 └─────────────────────────────────────────────┘
@@ -61,7 +61,9 @@ roxide niri workspaces
 
 ## IPC API
 
-The daemon exposes an HTTP API (default port 8765):
+The daemon exposes an HTTP API over TCP (default port 8765):
+
+> Note: Earlier documentation referenced Unix sockets, but the current implementation uses TCP/HTTP for IPC.
 
 ### Endpoints
 

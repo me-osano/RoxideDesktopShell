@@ -50,13 +50,13 @@ setup_environment() {
 run_roxide() {
     setup_environment
     
-    local config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/roxide"
+    local quickshell_dir="/usr/local/share/quickshell/roxide"
     
     roxide daemon &
     local roxide_pid=$!
     sleep 2
     
-    quickshell -c "$config_dir"
+    quickshell -c "$quickshell_dir"
     
     wait $roxide_pid
 }
@@ -66,4 +66,4 @@ check_quickshell
 setup_environment
 
 echo ""
-echo "Environment configured. Run 'roxide daemon' and then 'quickshell -c ~/.config/roxide'"
+echo "Environment configured. Run 'roxide daemon' and then 'roxide run --session'"

@@ -1,7 +1,3 @@
-<file_path>
-Projects/RoxideDesktopShell/docs/README.md
-</file_path>
-
 # RoxideDesktopShell Core Documentation
 
 Welcome to the **RoxideDesktopShell Core** documentation! This document provides an overview of the core components, their functionality, and how to contribute to the development of RoxideDesktopShell.

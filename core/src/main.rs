@@ -13,18 +13,35 @@ mod sysmon;
 mod weather;
 
 use anyhow::Result;
-use clap::Parser;
+use clap::{CommandFactory, Parser};
+use clap_complete::Shell;
 use cmd::{Cmd, Command};
 use tracing::info;
 use tracing_subscriber::EnvFilter;
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    let mut cmd = Cmd::command();
+    
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() >= 2 && args[1] == "completion" {
+        if args.len() >= 3 {
+            let shell: Shell = args[2].parse().expect("Invalid shell");
+            clap_complete::generate(shell, &mut cmd, "roxide", &mut std::io::stdout());
+            std::process::exit(0);
+        } else {
+            eprintln!("Usage: roxide completion <shell>");
+            eprintln!("Supported shells: bash, elvish, fish, powershell, zsh");
+            std::process::exit(1);
+        }
+    }
+
     tracing_subscriber::fmt()
         .with_env_filter(EnvFilter::from_env("ROXIDE_LOG"))
         .init();
 
     let cmd = Cmd::parse();
+    info!("Starting ROXIDE CLI v{}", env!("CARGO_PKG_VERSION"));
 
     match cmd.command {
         Command::Run { daemon, session } => cmd::run(daemon, session).await,

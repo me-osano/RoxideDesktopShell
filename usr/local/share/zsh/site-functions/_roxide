@@ -1,0 +1,729 @@
+#compdef roxide
+
+autoload -U is-at-least
+
+_roxide() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_roxide_commands" \
+"*::: :->roxide" \
+&& ret=0
+    case $state in
+    (roxide)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:roxide-command-$line[1]:"
+        case $line[1] in
+            (run)
+_arguments "${_arguments_options[@]}" : \
+'--daemon[Run only the daemon (background service)]' \
+'--session[Run with Quickshell UI (full session)]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(daemon)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(stop)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(status)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(restart)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(sysmon)
+_arguments "${_arguments_options[@]}" : \
+'-v[Show detailed output including paths and versions]' \
+'--verbose[Show detailed output including paths and versions]' \
+'-j[Output results in JSON format]' \
+'--json[Output results in JSON format]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(search)
+_arguments "${_arguments_options[@]}" : \
+'-l+[]:LIMIT:_default' \
+'--limit=[]:LIMIT:_default' \
+'-h[Print help]' \
+'--help[Print help]' \
+':query:_default' \
+&& ret=0
+;;
+(weather)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(niri)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_roxide__subcmd__niri_commands" \
+"*::: :->niri" \
+&& ret=0
+
+    case $state in
+    (niri)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:roxide-niri-command-$line[1]:"
+        case $line[1] in
+            (workspaces)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(windows)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(activate)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':id:_default' \
+&& ret=0
+;;
+(focus)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+':id:_default' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_roxide__subcmd__niri__subcmd__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:roxide-niri-help-command-$line[1]:"
+        case $line[1] in
+            (workspaces)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(windows)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(activate)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(focus)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(brightness)
+_arguments "${_arguments_options[@]}" : \
+'-h[Print help]' \
+'--help[Print help]' \
+":: :_roxide__subcmd__brightness_commands" \
+"*::: :->brightness" \
+&& ret=0
+
+    case $state in
+    (brightness)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:roxide-brightness-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+'--ddc[Include DDC/I2C monitors (slower)]' \
+'-h[Print help]' \
+'--help[Print help]' \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+'--ddc[Enable DDC/I2C device support]' \
+'-h[Print help]' \
+'--help[Print help]' \
+':device -- Device ID (e.g., backlight\:amdgpu_bl1):_default' \
+&& ret=0
+;;
+(set)
+_arguments "${_arguments_options[@]}" : \
+'--exponent=[Exponent for exponential scaling (default\: 1.2)]:EXPONENT:_default' \
+'--ddc[Enable DDC/I2C device support]' \
+'--exponential[Use exponential brightness scaling]' \
+'-h[Print help]' \
+'--help[Print help]' \
+':device -- Device ID (e.g., backlight\:amdgpu_bl1):_default' \
+':percent -- Brightness percentage (0-100):_default' \
+&& ret=0
+;;
+(increase)
+_arguments "${_arguments_options[@]}" : \
+'--exponent=[Exponent for exponential scaling (default\: 1.2)]:EXPONENT:_default' \
+'--exponential[Enable exponential brightness scaling]' \
+'-h[Print help]' \
+'--help[Print help]' \
+':delta -- Percentage to increase:_default' \
+&& ret=0
+;;
+(decrease)
+_arguments "${_arguments_options[@]}" : \
+'--exponent=[Exponent for exponential scaling (default\: 1.2)]:EXPONENT:_default' \
+'--exponential[Enable exponential brightness scaling]' \
+'-h[Print help]' \
+'--help[Print help]' \
+':delta -- Percentage to decrease:_default' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_roxide__subcmd__brightness__subcmd__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:roxide-brightness-help-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(set)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(increase)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(decrease)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+":: :_roxide__subcmd__help_commands" \
+"*::: :->help" \
+&& ret=0
+
+    case $state in
+    (help)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:roxide-help-command-$line[1]:"
+        case $line[1] in
+            (run)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(daemon)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(stop)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(status)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(restart)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(sysmon)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(search)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(weather)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(niri)
+_arguments "${_arguments_options[@]}" : \
+":: :_roxide__subcmd__help__subcmd__niri_commands" \
+"*::: :->niri" \
+&& ret=0
+
+    case $state in
+    (niri)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:roxide-help-niri-command-$line[1]:"
+        case $line[1] in
+            (workspaces)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(windows)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(activate)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(focus)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(brightness)
+_arguments "${_arguments_options[@]}" : \
+":: :_roxide__subcmd__help__subcmd__brightness_commands" \
+"*::: :->brightness" \
+&& ret=0
+
+    case $state in
+    (brightness)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:roxide-help-brightness-command-$line[1]:"
+        case $line[1] in
+            (list)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(get)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(set)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(increase)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+(decrease)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(help)
+_arguments "${_arguments_options[@]}" : \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+        esac
+    ;;
+esac
+}
+
+(( $+functions[_roxide_commands] )) ||
+_roxide_commands() {
+    local commands; commands=(
+'run:Run ROXIDE (daemon and/or session)' \
+'daemon:Start the daemon directly (internal use)' \
+'stop:Stop the ROXIDE daemon' \
+'status:Check daemon status' \
+'restart:Restart ROXIDE (stop and restart session)' \
+'sysmon:Print system snapshot with diagnostics' \
+'search:Search files' \
+'weather:Print weather snapshot' \
+'niri:Niri IPC commands' \
+'brightness:Brightness control' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'roxide commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness_commands] )) ||
+_roxide__subcmd__brightness_commands() {
+    local commands; commands=(
+'list:List all available brightness devices' \
+'get:Get current brightness for a device' \
+'set:Set brightness percentage for a device' \
+'increase:Increase brightness' \
+'decrease:Decrease brightness' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'roxide brightness commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__decrease_commands] )) ||
+_roxide__subcmd__brightness__subcmd__decrease_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness decrease commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__get_commands] )) ||
+_roxide__subcmd__brightness__subcmd__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness get commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__help_commands] )) ||
+_roxide__subcmd__brightness__subcmd__help_commands() {
+    local commands; commands=(
+'list:List all available brightness devices' \
+'get:Get current brightness for a device' \
+'set:Set brightness percentage for a device' \
+'increase:Increase brightness' \
+'decrease:Decrease brightness' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'roxide brightness help commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__help__subcmd__decrease_commands] )) ||
+_roxide__subcmd__brightness__subcmd__help__subcmd__decrease_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness help decrease commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__help__subcmd__get_commands] )) ||
+_roxide__subcmd__brightness__subcmd__help__subcmd__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness help get commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__help__subcmd__help_commands] )) ||
+_roxide__subcmd__brightness__subcmd__help__subcmd__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness help help commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__help__subcmd__increase_commands] )) ||
+_roxide__subcmd__brightness__subcmd__help__subcmd__increase_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness help increase commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__help__subcmd__list_commands] )) ||
+_roxide__subcmd__brightness__subcmd__help__subcmd__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness help list commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__help__subcmd__set_commands] )) ||
+_roxide__subcmd__brightness__subcmd__help__subcmd__set_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness help set commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__increase_commands] )) ||
+_roxide__subcmd__brightness__subcmd__increase_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness increase commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__list_commands] )) ||
+_roxide__subcmd__brightness__subcmd__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness list commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__brightness__subcmd__set_commands] )) ||
+_roxide__subcmd__brightness__subcmd__set_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide brightness set commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__daemon_commands] )) ||
+_roxide__subcmd__daemon_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide daemon commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help_commands] )) ||
+_roxide__subcmd__help_commands() {
+    local commands; commands=(
+'run:Run ROXIDE (daemon and/or session)' \
+'daemon:Start the daemon directly (internal use)' \
+'stop:Stop the ROXIDE daemon' \
+'status:Check daemon status' \
+'restart:Restart ROXIDE (stop and restart session)' \
+'sysmon:Print system snapshot with diagnostics' \
+'search:Search files' \
+'weather:Print weather snapshot' \
+'niri:Niri IPC commands' \
+'brightness:Brightness control' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'roxide help commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__brightness_commands] )) ||
+_roxide__subcmd__help__subcmd__brightness_commands() {
+    local commands; commands=(
+'list:List all available brightness devices' \
+'get:Get current brightness for a device' \
+'set:Set brightness percentage for a device' \
+'increase:Increase brightness' \
+'decrease:Decrease brightness' \
+    )
+    _describe -t commands 'roxide help brightness commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__brightness__subcmd__decrease_commands] )) ||
+_roxide__subcmd__help__subcmd__brightness__subcmd__decrease_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help brightness decrease commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__brightness__subcmd__get_commands] )) ||
+_roxide__subcmd__help__subcmd__brightness__subcmd__get_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help brightness get commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__brightness__subcmd__increase_commands] )) ||
+_roxide__subcmd__help__subcmd__brightness__subcmd__increase_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help brightness increase commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__brightness__subcmd__list_commands] )) ||
+_roxide__subcmd__help__subcmd__brightness__subcmd__list_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help brightness list commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__brightness__subcmd__set_commands] )) ||
+_roxide__subcmd__help__subcmd__brightness__subcmd__set_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help brightness set commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__daemon_commands] )) ||
+_roxide__subcmd__help__subcmd__daemon_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help daemon commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__help_commands] )) ||
+_roxide__subcmd__help__subcmd__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help help commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__niri_commands] )) ||
+_roxide__subcmd__help__subcmd__niri_commands() {
+    local commands; commands=(
+'workspaces:List workspaces' \
+'windows:List windows' \
+'activate:Activate a workspace by ID' \
+'focus:Focus a window by ID' \
+    )
+    _describe -t commands 'roxide help niri commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__niri__subcmd__activate_commands] )) ||
+_roxide__subcmd__help__subcmd__niri__subcmd__activate_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help niri activate commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__niri__subcmd__focus_commands] )) ||
+_roxide__subcmd__help__subcmd__niri__subcmd__focus_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help niri focus commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__niri__subcmd__windows_commands] )) ||
+_roxide__subcmd__help__subcmd__niri__subcmd__windows_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help niri windows commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__niri__subcmd__workspaces_commands] )) ||
+_roxide__subcmd__help__subcmd__niri__subcmd__workspaces_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help niri workspaces commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__restart_commands] )) ||
+_roxide__subcmd__help__subcmd__restart_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help restart commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__run_commands] )) ||
+_roxide__subcmd__help__subcmd__run_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help run commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__search_commands] )) ||
+_roxide__subcmd__help__subcmd__search_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help search commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__status_commands] )) ||
+_roxide__subcmd__help__subcmd__status_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help status commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__stop_commands] )) ||
+_roxide__subcmd__help__subcmd__stop_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help stop commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__sysmon_commands] )) ||
+_roxide__subcmd__help__subcmd__sysmon_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help sysmon commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__help__subcmd__weather_commands] )) ||
+_roxide__subcmd__help__subcmd__weather_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide help weather commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri_commands] )) ||
+_roxide__subcmd__niri_commands() {
+    local commands; commands=(
+'workspaces:List workspaces' \
+'windows:List windows' \
+'activate:Activate a workspace by ID' \
+'focus:Focus a window by ID' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'roxide niri commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__activate_commands] )) ||
+_roxide__subcmd__niri__subcmd__activate_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide niri activate commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__focus_commands] )) ||
+_roxide__subcmd__niri__subcmd__focus_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide niri focus commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__help_commands] )) ||
+_roxide__subcmd__niri__subcmd__help_commands() {
+    local commands; commands=(
+'workspaces:List workspaces' \
+'windows:List windows' \
+'activate:Activate a workspace by ID' \
+'focus:Focus a window by ID' \
+'help:Print this message or the help of the given subcommand(s)' \
+    )
+    _describe -t commands 'roxide niri help commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__help__subcmd__activate_commands] )) ||
+_roxide__subcmd__niri__subcmd__help__subcmd__activate_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide niri help activate commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__help__subcmd__focus_commands] )) ||
+_roxide__subcmd__niri__subcmd__help__subcmd__focus_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide niri help focus commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__help__subcmd__help_commands] )) ||
+_roxide__subcmd__niri__subcmd__help__subcmd__help_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide niri help help commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__help__subcmd__windows_commands] )) ||
+_roxide__subcmd__niri__subcmd__help__subcmd__windows_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide niri help windows commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__help__subcmd__workspaces_commands] )) ||
+_roxide__subcmd__niri__subcmd__help__subcmd__workspaces_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide niri help workspaces commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__windows_commands] )) ||
+_roxide__subcmd__niri__subcmd__windows_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide niri windows commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__niri__subcmd__workspaces_commands] )) ||
+_roxide__subcmd__niri__subcmd__workspaces_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide niri workspaces commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__restart_commands] )) ||
+_roxide__subcmd__restart_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide restart commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__run_commands] )) ||
+_roxide__subcmd__run_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide run commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__search_commands] )) ||
+_roxide__subcmd__search_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide search commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__status_commands] )) ||
+_roxide__subcmd__status_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide status commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__stop_commands] )) ||
+_roxide__subcmd__stop_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide stop commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__sysmon_commands] )) ||
+_roxide__subcmd__sysmon_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide sysmon commands' commands "$@"
+}
+(( $+functions[_roxide__subcmd__weather_commands] )) ||
+_roxide__subcmd__weather_commands() {
+    local commands; commands=()
+    _describe -t commands 'roxide weather commands' commands "$@"
+}
+
+if [ "$funcstack[1]" = "_roxide" ]; then
+    _roxide "$@"
+else
+    compdef _roxide roxide
+fi

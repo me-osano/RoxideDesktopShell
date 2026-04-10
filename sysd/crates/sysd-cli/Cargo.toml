@@ -1,0 +1,15 @@
+[package]
+name = "sysd-cli"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "sysd"
+path = "src/main.rs"
+
+[dependencies]
+sysd-proto = { path = "../sysd-proto" }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+clap = { workspace = true }

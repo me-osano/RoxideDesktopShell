@@ -1131,3 +1131,187 @@ fn print_diagnostics(verbose: bool) {
         println!("    \x1b[32m{} ok\x1b[0m", status.ok);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_check_status_icon() {
+        assert_eq!(CheckStatus::Ok.icon(), "●");
+        assert_eq!(CheckStatus::Warn.icon(), "●");
+        assert_eq!(CheckStatus::Error.icon(), "●");
+        assert_eq!(CheckStatus::Info.icon(), "○");
+    }
+
+    #[test]
+    fn test_check_status_color() {
+        assert_eq!(CheckStatus::Ok.color(), "\x1b[32m");
+        assert_eq!(CheckStatus::Warn.color(), "\x1b[33m");
+        assert_eq!(CheckStatus::Error.color(), "\x1b[31m");
+        assert_eq!(CheckStatus::Info.color(), "\x1b[90m");
+    }
+
+    #[test]
+    fn test_category_as_str() {
+        assert_eq!(Category::System.as_str(), "System");
+        assert_eq!(Category::Versions.as_str(), "Versions");
+        assert_eq!(Category::Installation.as_str(), "Installation");
+        assert_eq!(Category::Compositor.as_str(), "Compositor");
+        assert_eq!(Category::OptionalFeatures.as_str(), "Optional Features");
+        assert_eq!(Category::ConfigFiles.as_str(), "Config Files");
+        assert_eq!(Category::Services.as_str(), "Services");
+        assert_eq!(Category::Environment.as_str(), "Environment");
+    }
+
+    #[test]
+    fn test_sysmon_status_add() {
+        let mut status = SysmonStatus::default();
+        
+        status.add(&CheckResult {
+            category: Category::System,
+            name: "Test".to_string(),
+            status: CheckStatus::Ok,
+            message: String::new(),
+            details: String::new(),
+        });
+        assert_eq!(status.ok, 1);
+        
+        status.add(&CheckResult {
+            category: Category::System,
+            name: "Test".to_string(),
+            status: CheckStatus::Warn,
+            message: String::new(),
+            details: String::new(),
+        });
+        assert_eq!(status.warnings, 1);
+        
+        status.add(&CheckResult {
+            category: Category::System,
+            name: "Test".to_string(),
+            status: CheckStatus::Error,
+            message: String::new(),
+            details: String::new(),
+        });
+        assert_eq!(status.errors, 1);
+        
+        status.add(&CheckResult {
+            category: Category::System,
+            name: "Test".to_string(),
+            status: CheckStatus::Info,
+            message: String::new(),
+            details: String::new(),
+        });
+        assert_eq!(status.info, 1);
+    }
+
+    #[test]
+    fn test_sysmon_status_has_issues() {
+        let mut status = SysmonStatus::default();
+        assert!(!status.has_issues());
+        
+        status.errors = 1;
+        assert!(status.has_issues());
+        
+        let mut status = SysmonStatus::default();
+        status.warnings = 1;
+        assert!(status.has_issues());
+        
+        let mut status = SysmonStatus::default();
+        status.ok = 1;
+        assert!(!status.has_issues());
+    }
+
+    #[test]
+    fn test_check_result_json_conversion() {
+        let result = CheckResult {
+            category: Category::System,
+            name: "Test Check".to_string(),
+            status: CheckStatus::Ok,
+            message: "Test message".to_string(),
+            details: "Test details".to_string(),
+        };
+        
+        let json: CheckResultJSON = (&result).into();
+        assert_eq!(json.category, "System");
+        assert_eq!(json.name, "Test Check");
+        assert_eq!(json.status, "ok");
+        assert_eq!(json.message, "Test message");
+        assert_eq!(json.details, "Test details");
+    }
+
+    #[test]
+    fn test_check_result_json_all_statuses() {
+        for (status, expected) in [
+            (CheckStatus::Ok, "ok"),
+            (CheckStatus::Warn, "warn"),
+            (CheckStatus::Error, "error"),
+            (CheckStatus::Info, "info"),
+        ] {
+            let result = CheckResult {
+                category: Category::System,
+                name: "Test".to_string(),
+                status,
+                message: String::new(),
+                details: String::new(),
+            };
+            let json: CheckResultJSON = (&result).into();
+            assert_eq!(json.status, expected);
+        }
+    }
+
+    #[test]
+    fn test_percent_to_value_linear() {
+        assert_eq!(percent_to_value(0, 100, 1.0), 0);
+        assert_eq!(percent_to_value(50, 100, 1.0), 50);
+        assert_eq!(percent_to_value(100, 100, 1.0), 100);
+    }
+
+    #[test]
+    fn test_percent_to_value_exponential() {
+        assert_eq!(percent_to_value(0, 100, 1.2), 0);
+        
+        let result = percent_to_value(50, 100, 1.2);
+        assert!(result < 50);
+        
+        assert_eq!(percent_to_value(100, 100, 1.2), 100);
+    }
+
+    #[test]
+    fn test_percent_to_value_with_max() {
+        assert_eq!(percent_to_value(50, 200, 1.0), 100);
+        assert_eq!(percent_to_value(25, 400, 1.0), 100);
+    }
+
+    #[test]
+    fn test_format_bytes() {
+        assert_eq!(format_bytes(500), "500B");
+        assert_eq!(format_bytes(1024), "1.0KB");
+        assert_eq!(format_bytes(1536), "1.5KB");
+        assert_eq!(format_bytes(1024 * 1024), "1.0MB");
+        assert_eq!(format_bytes(1024 * 1024 * 1024), "1.0GB");
+    }
+
+    #[test]
+    fn test_check_status_serde_serialization() {
+        assert_eq!(serde_json::to_string(&CheckStatus::Ok).unwrap(), "\"ok\"");
+        assert_eq!(serde_json::to_string(&CheckStatus::Warn).unwrap(), "\"warn\"");
+        assert_eq!(serde_json::to_string(&CheckStatus::Error).unwrap(), "\"error\"");
+        assert_eq!(serde_json::to_string(&CheckStatus::Info).unwrap(), "\"info\"");
+    }
+
+    #[test]
+    fn test_sysmon_status_serialization() {
+        let status = SysmonStatus {
+            errors: 1,
+            warnings: 2,
+            ok: 3,
+            info: 4,
+        };
+        let json = serde_json::to_string(&status).unwrap();
+        assert!(json.contains("\"errors\":1"));
+        assert!(json.contains("\"warnings\":2"));
+        assert!(json.contains("\"ok\":3"));
+        assert!(json.contains("\"info\":4"));
+    }
+}
