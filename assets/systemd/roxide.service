@@ -1,22 +1,22 @@
 [Unit]
-Description=ROXIDE desktop shell daemon
+Description=ROXIDE Desktop Shell daemon (RDS)
 Documentation=https://github.com/me-osano/RoxideDesktopShell
 After=graphical-session.target
 PartOf=graphical-session.target
 Wants=network.target
+Requisite=graphical-session.target
 
 [Service]
 Type=simple
-ExecStart=%h/.local/bin/roxide daemon
+ExecStart=usr/bin/roxide run --daemon
+ExecReload=/usr/bin/pkill -USR1 -x roxide
 Restart=on-failure
 RestartSec=3s
 
-# Logging
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=roxide
 
-# Environment
 Environment=ROXIDE_LOG=info
 
 [Install]

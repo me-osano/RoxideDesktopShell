@@ -16,23 +16,23 @@ pub struct Cmd {
 
 #[derive(Subcommand)]
 pub enum Command {
-    /// Start the ROXIDE daemon
-    Daemon,
-    /// Check daemon status
-    Status,
-    /// Run ROXIDE (daemon + Quickshell UI)
-    RunRqs {
-        /// Run in daemon mode (detached)
-        #[arg(short, long)]
+    /// Run ROXIDE (daemon and/or session)
+    Run {
+        /// Run only the daemon (background service)
+        #[arg(long)]
         daemon: bool,
-        /// Session managed mode (for systemd)
+        /// Run with Quickshell UI (full session)
         #[arg(long)]
         session: bool,
     },
-    /// Restart ROXIDE (kill and relaunch)
+    /// Start the daemon directly (internal use)
+    Daemon,
+    /// Stop the ROXIDE daemon
+    Stop,
+    /// Check daemon status
+    Status,
+    /// Restart ROXIDE (stop and restart session)
     Restart,
-    /// Kill all ROXIDE instances
-    Kill,
     /// Print system snapshot with diagnostics
     Sysmon {
         /// Show detailed output including paths and versions
@@ -261,31 +261,39 @@ pub async fn status() -> Result<()> {
     Ok(())
 }
 
-pub async fn run_rqs(daemon: bool, _session: bool) -> Result<()> {
+pub async fn run(daemon_only: bool, _session: bool) -> Result<()> {
     let socket = socket_path();
     
     if socket.exists() {
         println!("ROXIDE is already running ({})", socket.display());
-        println!("Use 'roxide restart' to restart, or 'roxide kill' to stop first.");
+        println!("Use 'roxide restart' to restart, or 'roxide stop' to stop first.");
         return Ok(());
     }
     
-    println!("Starting ROXIDE daemon...");
+    let exe = std::env::current_exe()?;
     
-    let mut cmd = std::process::Command::new("roxide");
-    cmd.arg("daemon");
-    
-    if daemon {
+    if daemon_only {
+        println!("Starting ROXIDE daemon...");
+        let mut cmd = std::process::Command::new(&exe);
+        cmd.arg("daemon");
         cmd.spawn()?;
         println!("ROXIDE daemon started in background");
     } else {
-        match cmd.spawn() {
+        println!("Starting ROXIDE session...");
+        let mut cmd = std::process::Command::new(&exe);
+        cmd.arg("daemon");
+        cmd.spawn()?;
+        tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
+        
+        let mut qs_cmd = std::process::Command::new("quickshell");
+        qs_cmd.arg("-p").arg("quickshell/");
+        match qs_cmd.spawn() {
             Ok(mut child) => {
-                println!("ROXIDE daemon started (PID: {})", child.id());
+                println!("ROXIDE session started (Quickshell PID: {})", child.id());
                 let _ = child.wait();
             }
             Err(e) => {
-                return Err(anyhow::anyhow!("Failed to start daemon: {}", e));
+                return Err(anyhow::anyhow!("Failed to start Quickshell: {}", e));
             }
         }
     }
@@ -293,21 +301,7 @@ pub async fn run_rqs(daemon: bool, _session: bool) -> Result<()> {
     Ok(())
 }
 
-pub async fn restart_rqs() -> Result<()> {
-    kill_rqs().await?;
-    
-    tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
-    
-    println!("Starting ROXIDE daemon...");
-    let mut cmd = std::process::Command::new("roxide");
-    cmd.arg("daemon");
-    cmd.spawn()?;
-    println!("ROXIDE daemon started");
-    
-    Ok(())
-}
-
-pub async fn kill_rqs() -> Result<()> {
+pub async fn stop() -> Result<()> {
     let socket = socket_path();
     
     if !socket.exists() {
@@ -332,10 +326,38 @@ pub async fn kill_rqs() -> Result<()> {
     Ok(())
 }
 
+pub async fn restart() -> Result<()> {
+    stop().await?;
+    
+    tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+    
+    println!("Restarting ROXIDE...");
+    let exe = std::env::current_exe()?;
+    
+    let mut cmd = std::process::Command::new(&exe);
+    cmd.arg("daemon");
+    cmd.spawn()?;
+    tokio::time::sleep(tokio::time::Duration::from_millis(500)).await;
+    
+    let mut qs_cmd = std::process::Command::new("quickshell");
+    qs_cmd.arg("-p").arg("quickshell/");
+    match qs_cmd.spawn() {
+        Ok(mut child) => {
+            println!("ROXIDE session restarted (Quickshell PID: {})", child.id());
+            let _ = child.wait();
+        }
+        Err(e) => {
+            return Err(anyhow::anyhow!("Failed to start Quickshell: {}", e));
+        }
+    }
+    
+    Ok(())
+}
+
 pub async fn sysmon_snapshot(verbose: bool, json: bool) -> Result<()> {
     let socket = socket_path();
     if !socket.exists() {
-        return Err(anyhow::anyhow!("Daemon not running. Start with 'roxide daemon'"));
+        return Err(anyhow::anyhow!("Daemon not running. Start with 'roxide run --daemon'"));
     }
 
     let mut stream = UnixStream::connect(&socket)?;
@@ -893,7 +915,7 @@ fn check_daemon() -> Vec<CheckResult> {
         name: "Daemon".to_string(),
         status: if running { CheckStatus::Ok } else { CheckStatus::Warn },
         message: if running { "Running" } else { "Not running" }.to_string(),
-        details: if !running { "Run 'roxide daemon' to start".to_string() } else { String::new() },
+        details: if !running { "Run 'roxide run --daemon' to start".to_string() } else { String::new() },
     }]
 }
 

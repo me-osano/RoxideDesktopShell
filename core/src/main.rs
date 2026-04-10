@@ -27,11 +27,11 @@ async fn main() -> Result<()> {
     let cmd = Cmd::parse();
 
     match cmd.command {
+        Command::Run { daemon, session } => cmd::run(daemon, session).await,
         Command::Daemon => run_daemon().await,
+        Command::Stop => cmd::stop().await,
         Command::Status => cmd::status().await,
-        Command::RunRqs { daemon, session } => cmd::run_rqs(daemon, session).await,
-        Command::Restart => cmd::restart_rqs().await,
-        Command::Kill => cmd::kill_rqs().await,
+        Command::Restart => cmd::restart().await,
         Command::Sysmon { verbose, json } => cmd::sysmon_snapshot(verbose, json).await,
         Command::Search { query, limit } => cmd::search(query, limit).await,
         Command::Weather => cmd::weather_snapshot().await,
